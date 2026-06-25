@@ -21,8 +21,8 @@ import { getMeta, getNews } from "../api/store";
 import { DonatePanel } from "../components/DonatePanel";
 import { ExternalLink } from "../components/ExternalLink";
 import { SeismicConsole } from "../components/SeismicConsole";
-import { ArrowRightIcon, ExternalIcon, PeopleIcon, ResourceIcon, ClockIcon } from "../components/icons";
-import { PEOPLE_FINDER_URL } from "../config";
+import { ArrowRightIcon, ExternalIcon, PeopleIcon, ResourceIcon, MapIcon, ClockIcon } from "../components/icons";
+import { PEOPLE_FINDER_URL, DAMAGE_MAP_URL } from "../config";
 import { needsLanguageIndicator, sourceHostLabel } from "../domain/core";
 import type { NewsItem } from "../domain/types";
 import { useI18n } from "../i18n/I18nProvider";
@@ -37,6 +37,7 @@ export default function CommandCenter() {
   const news = useSubsystem(() => getNews(), []);
   const meta = useSubsystem(() => getMeta(), []);
   const peopleHost = sourceHostLabel(PEOPLE_FINDER_URL).label;
+  const damageMapHost = sourceHostLabel(DAMAGE_MAP_URL).label;
 
   return (
     <div className="cc">
@@ -51,8 +52,9 @@ export default function CommandCenter() {
         <div className="cc-strip__stats">
           <Stat value="7.5" label={t("cc.stat.magnitude")} accent />
           <Stat value="2" label={t("cc.stat.quakes")} />
-          <Stat value="13" label={t("cc.stat.hours")} />
-          <Stat value="3" label={t("cc.stat.states")} />
+          <Stat value="32+" label={t("cc.stat.deaths")} />
+          <Stat value="700" label={t("cc.stat.injuries")} />
+          <Stat value={t("cc.stat.missing.value")} label={t("cc.stat.missing")} />
         </div>
         <div className="cc-strip__updated">
           {meta.status === "ready" ? (
@@ -89,6 +91,54 @@ export default function CommandCenter() {
           </div>
         </section>
 
+        {/* Quick links — sits above the seismic console (People / Resources / Damage Map) */}
+        <nav className="cc-links" aria-label={t("cc.links.label")}>
+          {/* People Finder — outbound */}
+          <a
+            className="tile tile--link tile--people"
+            href={PEOPLE_FINDER_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="tile-link__icon"><PeopleIcon size={22} /></span>
+            <span className="tile-link__body">
+              <span className="tile-link__title">
+                {t("nav.peopleFinder")} <ExternalIcon size={14} />
+              </span>
+              <span className="tile-link__sub">{t("cc.people.sub")}</span>
+            </span>
+            <span className="tile-link__host">{peopleHost}</span>
+          </a>
+
+          {/* Mapa de Daño — outbound external damage map */}
+          <a
+            className="tile tile--link tile--damagemap"
+            href={DAMAGE_MAP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="tile-link__icon"><MapIcon size={22} /></span>
+            <span className="tile-link__body">
+              <span className="tile-link__title">
+                {t("nav.damageMap")} <ExternalIcon size={14} />
+              </span>
+              <span className="tile-link__sub">{t("nav.damageMap.sub")}</span>
+            </span>
+            <span className="tile-link__host">{damageMapHost}</span>
+          </a>
+
+          {/* Resource Directory — internal route (currently in progress) */}
+          <Link className="tile tile--link tile--resources" to="/resources">
+            <span className="tile-link__icon"><ResourceIcon size={22} /></span>
+            <span className="tile-link__body">
+              <span className="tile-link__title">
+                {t("nav.resources")} <ArrowRightIcon size={15} />
+              </span>
+              <span className="tile-link__sub">{t("cc.resources.sub")}</span>
+            </span>
+          </Link>
+        </nav>
+
         {/* Seismic console — wide centerpiece */}
         <section className="tile tile--seismic" aria-label={t("seismic.title")}>
           <SeismicConsole />
@@ -99,34 +149,6 @@ export default function CommandCenter() {
           <TileHead id="tile-donate-h" title={t("cc.tile.donate")} />
           <DonatePanel />
         </section>
-
-        {/* People Finder — outbound */}
-        <a
-          className="tile tile--link tile--people"
-          href={PEOPLE_FINDER_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span className="tile-link__icon"><PeopleIcon size={22} /></span>
-          <span className="tile-link__body">
-            <span className="tile-link__title">
-              {t("nav.peopleFinder")} <ExternalIcon size={14} />
-            </span>
-            <span className="tile-link__sub">{t("cc.people.sub")}</span>
-          </span>
-          <span className="tile-link__host">{peopleHost}</span>
-        </a>
-
-        {/* Resource Directory — internal route */}
-        <Link className="tile tile--link tile--resources" to="/resources">
-          <span className="tile-link__icon"><ResourceIcon size={22} /></span>
-          <span className="tile-link__body">
-            <span className="tile-link__title">
-              {t("nav.resources")} <ArrowRightIcon size={15} />
-            </span>
-            <span className="tile-link__sub">{t("cc.resources.sub")}</span>
-          </span>
-        </Link>
       </div>
     </div>
   );

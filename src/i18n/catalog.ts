@@ -47,13 +47,25 @@ const en = {
     "Two earthquakes struck western Venezuela, the stronger at magnitude 7.5. This console brings together live seismic monitoring, verified news, vetted donation channels, and tools to find people and resources.",
   "cc.stat.magnitude": "Peak magnitude",
   "cc.stat.quakes": "Earthquakes",
-  "cc.stat.hours": "Hours since main shock",
-  "cc.stat.states": "States under emergency",
+  "cc.stat.deaths": "Reported deaths",
+  "cc.stat.injuries": "Reported injuries",
+  "cc.stat.missing": "Reported missing",
+  // Worded values for figures still undetermined / not a single count.
+  "cc.stat.undetermined": "—",
+  "cc.stat.missing.value": "Hundreds",
   "cc.tile.news": "News & relevant info",
   "cc.tile.donate": "Donate",
   "cc.viewAll": "View all",
   "cc.people.sub": "Report or search for missing & displaced people",
-  "cc.resources.sub": "Search vetted relief organizations & services",
+  "cc.resources.sub": "Vetted relief organizations & services — coming soon",
+  "cc.links.label": "Quick links",
+
+  // Resource Directory — in progress (no verified entries published yet)
+  "resources.soon.kicker": "In the works",
+  "resources.soon.title": "Resource Directory is being built",
+  "resources.soon.body":
+    "We're curating and verifying relief organizations and services before publishing them here. Every entry is checked before it goes live, so this directory will open once the first listings are verified. In the meantime, use the live news feed and the links below.",
+  "resources.soon.backHome": "Back to the command center",
 
   // Seismic console
   "seismic.title": "Live seismic updates",
@@ -196,13 +208,25 @@ const es: Record<MessageId, string> = {
     "Dos terremotos sacudieron el occidente de Venezuela; el más fuerte de magnitud 7.5. Esta consola reúne monitoreo sísmico en vivo, noticias verificadas, canales de donación validados y herramientas para encontrar personas y recursos.",
   "cc.stat.magnitude": "Magnitud máxima",
   "cc.stat.quakes": "Terremotos",
-  "cc.stat.hours": "Horas desde el sismo principal",
-  "cc.stat.states": "Estados en emergencia",
+  "cc.stat.deaths": "Fallecidos reportados",
+  "cc.stat.injuries": "Heridos reportados",
+  "cc.stat.missing": "Desaparecidos reportados",
+  // Valores en texto para cifras aún indeterminadas / que no son un solo conteo.
+  "cc.stat.undetermined": "—",
+  "cc.stat.missing.value": "Cientos",
   "cc.tile.news": "Noticias e información relevante",
   "cc.tile.donate": "Donar",
   "cc.viewAll": "Ver todo",
   "cc.people.sub": "Reporta o busca personas desaparecidas y desplazadas",
-  "cc.resources.sub": "Busca organizaciones y servicios de ayuda validados",
+  "cc.resources.sub": "Organizaciones y servicios de ayuda validados — próximamente",
+  "cc.links.label": "Enlaces rápidos",
+
+  // Directorio de Recursos — en construcción (aún sin entradas verificadas)
+  "resources.soon.kicker": "En construcción",
+  "resources.soon.title": "El Directorio de Recursos está en construcción",
+  "resources.soon.body":
+    "Estamos seleccionando y verificando organizaciones y servicios de ayuda antes de publicarlos aquí. Cada entrada se revisa antes de hacerse pública, así que el directorio se abrirá una vez verificadas las primeras entradas. Mientras tanto, usa el feed de noticias en vivo y los enlaces de abajo.",
+  "resources.soon.backHome": "Volver al centro de comando",
 
   "seismic.title": "Actualizaciones sísmicas en vivo",
   "seismic.source": "Datos de USGS",

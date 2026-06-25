@@ -95,12 +95,21 @@
   flex: 1;
   min-height: 0;
   display: grid;
-  grid-template-columns: 1fr 0.78fr 0.78fr 1fr;
-  grid-template-rows: 1fr auto;
+  grid-template-columns: 1fr 1.56fr 1fr;
+  grid-template-rows: auto 1fr;
   grid-template-areas:
-    "news seismic seismic donate"
-    "news people resources donate";
+    "news links   donate"
+    "news seismic donate";
   gap: clamp(16px, 1.9vw, 24px);
+}
+
+/* Quick-links band — sits above the seismic console (People / Resources / Damage Map) */
+.cc-links {
+  grid-area: links;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 1.9vw, 24px);
+  min-width: 0;
 }
 
 .tile {
@@ -123,12 +132,6 @@
 }
 .tile--donate {
   grid-area: donate;
-}
-.tile--people {
-  grid-area: people;
-}
-.tile--resources {
-  grid-area: resources;
 }
 
 /* --- Tile header ---------------------------------------------------------- */
@@ -310,6 +313,21 @@
   font-size: 0.66rem;
   color: var(--ink-dim);
   flex: none;
+}
+.tile--damagemap .tile-link__icon {
+  color: var(--vz-red);
+}
+
+/* Within the quick-links band the tiles are narrow — stack icon over text and
+   tuck the host under the subtitle so each card breathes. */
+.cc-links .tile--link {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px 18px;
+}
+.cc-links .tile-link__host {
+  margin-top: 2px;
 }
 
 /* =============================================================================
@@ -632,8 +650,6 @@
 .donate-panel__desc {
   font-size: 0.84rem;
   color: var(--ink-soft);
-  flex: 1;
-  min-height: 0;
 }
 .donate-amounts {
   display: grid;
@@ -917,20 +933,9 @@
   .cc-grid {
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
+      "links links"
       "seismic seismic"
-      "news donate"
-      "people resources";
-  }
-  .tile--people,
-  .tile--resources {
-    grid-area: auto;
-    grid-column: auto;
-  }
-  .tile--people {
-    grid-area: people;
-  }
-  .tile--resources {
-    grid-area: resources;
+      "news donate";
   }
   .tile--news {
     min-height: 380px;
@@ -994,11 +999,17 @@
   .cc-grid {
     grid-template-columns: 1fr;
     grid-template-areas:
+      "links"
       "seismic"
       "news"
-      "donate"
-      "people"
-      "resources";
+      "donate";
+  }
+  .cc-links {
+    grid-template-columns: 1fr;
+  }
+  .cc-links .tile--link {
+    flex-direction: row;
+    align-items: center;
   }
   .console {
     grid-template-columns: 1fr;

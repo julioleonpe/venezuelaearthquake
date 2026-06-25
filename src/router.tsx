@@ -14,7 +14,10 @@ import { LoadingBlock } from "./components/primitives";
 const CommandCenter = lazy(() => import("./pages/CommandCenter"));
 const NewsFeedPage = lazy(() => import("./pages/NewsFeedPage"));
 const DonationsPage = lazy(() => import("./pages/DonationsPage"));
-const ResourceDirectoryPage = lazy(() => import("./pages/ResourceDirectoryPage"));
+// The full ResourceDirectoryPage is built but has no verified content to show
+// yet, so /resources renders an "in the works" placeholder. Swap back to
+// ResourceDirectoryPage once the first Resource_Entries are verified.
+const ResourceDirectoryComingSoon = lazy(() => import("./pages/ResourceDirectoryComingSoon"));
 
 function withSuspense(node: React.ReactNode) {
   return (
@@ -39,7 +42,7 @@ export const router = createBrowserRouter([
       { index: true, element: withSuspense(<CommandCenter />), errorElement: <RouteError /> },
       { path: "news", element: withSuspense(<NewsFeedPage />), errorElement: <RouteError /> },
       { path: "donate", element: withSuspense(<DonationsPage />), errorElement: <RouteError /> },
-      { path: "resources", element: withSuspense(<ResourceDirectoryPage />), errorElement: <RouteError /> },
+      { path: "resources", element: withSuspense(<ResourceDirectoryComingSoon />), errorElement: <RouteError /> },
       { path: "*", element: <RouteError /> },
     ],
   },
