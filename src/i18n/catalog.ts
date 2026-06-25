@@ -76,7 +76,7 @@ const en = {
 
   // Donate panel (Caritas link-out card)
   "donate.verified": "Verified channel",
-  "donate.recipient": "Caritas Australia — Emergency Response Appeal",
+  "donate.recipient": "Caritas — Emergency Response Appeal",
   "donate.affiliation": "International aid agency of the Catholic Church",
   "donate.description":
     "Funds food, clean water, shelter, and medical aid for communities affected by the earthquake, through Caritas's emergency response.",
@@ -235,7 +235,7 @@ const es: Record<MessageId, string> = {
   "seismic.mapHint": "Epicentros · últimos 30 días",
 
   "donate.verified": "Canal verificado",
-  "donate.recipient": "Caritas Australia — Llamado de Respuesta a Emergencias",
+  "donate.recipient": "Caritas — Llamado de Respuesta a Emergencias",
   "donate.affiliation": "Agencia internacional de ayuda de la Iglesia Católica",
   "donate.description":
     "Financia alimentos, agua potable, refugio y atención médica para las comunidades afectadas por el terremoto, mediante la respuesta de emergencia de Caritas.",
