@@ -52,8 +52,8 @@ export default function CommandCenter() {
         <div className="cc-strip__stats">
           <Stat value="7.5" label={t("cc.stat.magnitude")} accent />
           <Stat value="2" label={t("cc.stat.quakes")} />
-          <Stat value="32+" label={t("cc.stat.deaths")} />
-          <Stat value="700" label={t("cc.stat.injuries")} />
+          <Stat value="164" label={t("cc.stat.deaths")} />
+          <Stat value="971" label={t("cc.stat.injuries")} />
           <Stat value={t("cc.stat.missing.value")} label={t("cc.stat.missing")} />
         </div>
         <div className="cc-strip__updated">

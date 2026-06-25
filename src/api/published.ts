@@ -30,7 +30,7 @@ export const publishedNews: NewsItem[] = [
     contentLanguage: "en",
     createdAt: "2026-06-25T09:30:00-04:00",
     updatedAt: "2026-06-25T09:30:00-04:00",
-    // Primary source: The New York Times live coverage of the earthquake.
+    // Primary source: The New York Times live coverage. Kept first.
     headline: "Live coverage: Powerful earthquakes hit western Venezuela",
     summary:
       "The New York Times is tracking the aftermath of the two earthquakes — the stronger at magnitude 7.5 — with continuously updated reporting on casualties, damage, and the international relief response.",
@@ -39,70 +39,144 @@ export const publishedNews: NewsItem[] = [
     publishedAt: "2026-06-25T09:15:00-04:00",
   },
   {
+    id: "n-reuters",
+    verificationStatus: "verified",
+    contentLanguage: "en",
+    createdAt: "2026-06-25T09:10:00-04:00",
+    updatedAt: "2026-06-25T09:10:00-04:00",
+    headline: "US says it is mobilizing assistance to Venezuela after earthquakes",
+    summary:
+      "The United States says it is mobilizing emergency assistance for Venezuela following the twin earthquakes, as international relief efforts ramp up across the affected region.",
+    sourceAttribution: "Reuters",
+    sourceLink:
+      "https://www.reuters.com/world/americas/us-says-it-is-mobilizing-assistance-venezuela-after-earthquakes-2026-06-25/",
+    publishedAt: "2026-06-25T09:08:00-04:00",
+  },
+  {
+    id: "n-cnn",
+    verificationStatus: "verified",
+    contentLanguage: "en",
+    createdAt: "2026-06-25T09:06:00-04:00",
+    updatedAt: "2026-06-25T09:06:00-04:00",
+    headline: "Venezuela earthquake: Live updates and Puerto Rico tsunami advisory",
+    summary:
+      "CNN's live coverage of the Venezuela earthquakes, including the tsunami advisory issued for Puerto Rico, evolving casualty figures, and the regional emergency response.",
+    sourceAttribution: "CNN",
+    sourceLink:
+      "https://www.cnn.com/2026/06/24/weather/live-news/venezuela-earthquake-puerto-rico-tsunami",
+    publishedAt: "2026-06-25T09:05:00-04:00",
+  },
+  {
+    id: "n-un",
+    verificationStatus: "verified",
+    contentLanguage: "es",
+    createdAt: "2026-06-25T08:55:00-04:00",
+    updatedAt: "2026-06-25T08:55:00-04:00",
+    headline:
+      "Desastre por terremotos en Venezuela: la ONU coordina ayuda de emergencia internacional para ayudar a las víctimas",
+    summary:
+      "Naciones Unidas coordina la respuesta humanitaria internacional tras los terremotos en Venezuela, movilizando equipos y suministros de emergencia para apoyar a las personas afectadas.",
+    sourceAttribution: "Noticias ONU",
+    sourceLink: "https://news.un.org/es/story/2026/06/1541604",
+    publishedAt: "2026-06-25T08:50:00-04:00",
+  },
+  {
+    id: "n-ap",
+    verificationStatus: "verified",
+    contentLanguage: "en",
+    createdAt: "2026-06-25T08:45:00-04:00",
+    updatedAt: "2026-06-25T08:45:00-04:00",
+    headline: "Photos: Earthquake damage in Caracas, Venezuela",
+    summary:
+      "An Associated Press photo gallery documenting the destruction in Caracas and surrounding areas — collapsed structures, rescue efforts, and displaced residents in the quakes' aftermath.",
+    sourceAttribution: "Associated Press",
+    sourceLink:
+      "https://apnews.com/photo-gallery/venezuela-earthquake-caracas-8ac96a783cd3c3b4312653806511d824",
+    publishedAt: "2026-06-25T08:40:00-04:00",
+  },
+  {
     id: "n1",
     verificationStatus: "verified",
     contentLanguage: "en",
-    createdAt: "2026-06-25T08:10:00-04:00",
-    updatedAt: "2026-06-25T08:10:00-04:00",
-    headline: "Government declares state of emergency across three western states",
+    createdAt: "2026-06-25T09:10:00-04:00",
+    updatedAt: "2026-06-25T09:10:00-04:00",
+    headline: "Venezuela earthquakes live: 164 killed, many buried as US offers support",
     summary:
-      "Authorities confirmed coordinated relief operations in the most affected regions, with shelters opening in municipal buildings. Officials report main highway access is being restored in stages.",
-    sourceAttribution: "Agence France-Presse",
-    sourceLink: "https://www.afp.com/en",
-    publishedAt: "2026-06-25T07:45:00-04:00",
+      "Al Jazeera's live blog tracks rescue operations as crews search collapsed buildings, hospitals treat the injured, and the United States pledges assistance following the twin quakes.",
+    sourceAttribution: "Al Jazeera",
+    sourceLink:
+      "https://www.aljazeera.com/news/liveblog/2026/6/25/venezuela-earthquakes-live-two-powerful-quakes-shake-s-american-country",
+    publishedAt: "2026-06-25T08:30:00-04:00",
   },
   {
     id: "n2",
     verificationStatus: "verified",
-    contentLanguage: "es",
-    createdAt: "2026-06-25T06:30:00-04:00",
-    updatedAt: "2026-06-25T06:30:00-04:00",
-    headline: "Equipos de rescate amplían la búsqueda en zonas rurales de los Andes",
+    contentLanguage: "en",
+    createdAt: "2026-06-25T08:20:00-04:00",
+    updatedAt: "2026-06-25T08:20:00-04:00",
+    headline: "Venezuela earthquakes kill at least 164 people, injure 971",
     summary:
-      "Brigadas de Protección Civil y voluntarios trabajan en comunidades de montaña donde los deslizamientos bloquearon el acceso. Se habilitaron puntos de acopio de agua y alimentos.",
-    sourceAttribution: "Cruz Roja Venezolana",
-    sourceLink: "https://www.cruzrojavenezolana.org",
-    publishedAt: "2026-06-25T05:50:00-04:00",
+      "Authorities report rising casualties after back-to-back magnitude 7.5 and 7.2 quakes struck the country's west, with widespread structural damage and a declared state of emergency.",
+    sourceAttribution: "Al Jazeera",
+    sourceLink:
+      "https://www.aljazeera.com/news/2026/6/25/venezuela-struck-by-back-to-back-earthquakes-high-casualties-feared",
+    publishedAt: "2026-06-25T08:10:00-04:00",
   },
   {
     id: "n3",
     verificationStatus: "verified",
     contentLanguage: "en",
-    createdAt: "2026-06-24T19:05:00-04:00",
-    updatedAt: "2026-06-24T19:05:00-04:00",
-    headline: "International medical teams arrive to support overwhelmed hospitals",
+    createdAt: "2026-06-25T07:40:00-04:00",
+    updatedAt: "2026-06-25T07:40:00-04:00",
+    headline: "Venezuela rocked by 7.5, 7.2 earthquakes: What happened and what we know",
     summary:
-      "Field hospitals are being established near the epicenter. Relief agencies are coordinating supply corridors for medicine, clean water, and temporary shelter materials.",
-    sourceAttribution: "Reuters",
-    sourceLink: "https://www.reuters.com/world/americas",
-    publishedAt: "2026-06-24T18:30:00-04:00",
+      "An explainer on the twin earthquakes — their timing, epicenters near the western coast, the regions hit hardest, and the emergency response now under way.",
+    sourceAttribution: "Al Jazeera",
+    sourceLink:
+      "https://www.aljazeera.com/news/2026/6/25/venezuela-rocked-by-7-5-7-2-earthquakes-what-happened-and-what-we-know",
+    publishedAt: "2026-06-25T07:30:00-04:00",
   },
   {
     id: "n4",
     verificationStatus: "verified",
     contentLanguage: "en",
-    createdAt: "2026-06-24T14:00:00-04:00",
-    updatedAt: "2026-06-24T14:00:00-04:00",
-    // Verified but no source link → "unverified source" label (Req 7.2).
-    headline: "Telecommunications partially restored in coastal corridor",
+    createdAt: "2026-06-25T06:50:00-04:00",
+    updatedAt: "2026-06-25T06:50:00-04:00",
+    headline: "Venezuela earthquakes: How will sanctions impact aid operations?",
     summary:
-      "Mobile network operators report progressive service restoration. Residents are advised that emergency lines have priority and to keep non-urgent calls brief.",
-    sourceAttribution: "National emergency briefing",
-    sourceLink: null,
-    publishedAt: "2026-06-24T13:20:00-04:00",
+      "Analysis of how existing sanctions and limited diplomatic channels could complicate the delivery of international relief and emergency supplies to affected areas.",
+    sourceAttribution: "Al Jazeera",
+    sourceLink:
+      "https://www.aljazeera.com/news/2026/6/25/venezuela-quakes-how-will-sanctions-impact-aid-operations",
+    publishedAt: "2026-06-25T06:40:00-04:00",
   },
   {
     id: "n5",
     verificationStatus: "verified",
-    contentLanguage: "es",
-    createdAt: "2026-06-24T09:15:00-04:00",
-    updatedAt: "2026-06-24T09:15:00-04:00",
-    headline: "Habilitan albergues temporales en escuelas y centros deportivos",
+    contentLanguage: "en",
+    createdAt: "2026-06-25T06:10:00-04:00",
+    updatedAt: "2026-06-25T06:10:00-04:00",
+    headline: "'We hugged each other and ran': Venezuelans recount earthquake horror",
     summary:
-      "Las autoridades locales informan la apertura de albergues con capacidad para familias desplazadas. Se solicita donación de colchonetas, agua potable y kits de higiene.",
-    sourceAttribution: "Alcaldía Metropolitana",
-    sourceLink: "https://example.gob.ve/albergues",
-    publishedAt: "2026-06-24T08:40:00-04:00",
+      "Survivors describe the moments the quakes hit — fleeing shaking buildings, searching for family, and the long night that followed in the streets and shelters.",
+    sourceAttribution: "Al Jazeera",
+    sourceLink:
+      "https://www.aljazeera.com/news/2026/6/25/we-hugged-each-other-and-ran-venezuelans-recount-earthquake-horror",
+    publishedAt: "2026-06-25T06:00:00-04:00",
+  },
+  {
+    id: "n6",
+    verificationStatus: "verified",
+    contentLanguage: "en",
+    createdAt: "2026-06-25T05:30:00-04:00",
+    updatedAt: "2026-06-25T05:30:00-04:00",
+    headline: "Venezuela earthquakes: Why is Central America so vulnerable to tremors?",
+    summary:
+      "Context on the region's seismic risk — the fault systems beneath northern South America and the Caribbean, and why dense, older construction raises the human toll.",
+    sourceAttribution: "Al Jazeera",
+    sourceLink:
+      "https://www.aljazeera.com/news/2026/6/25/venezuela-earthquakes-why-is-central-america-so-vulnerable-to-tremors",
+    publishedAt: "2026-06-25T05:20:00-04:00",
   },
 ];
 
