@@ -57,3 +57,4 @@ Endpoints (all GET, verified-only): `/api/news`, `/api/donations`, `/api/resourc
 subsystem read has a 5 s budget; `?fail=news,donations,resources` forces a 503 per
 named subsystem so the graceful-degradation UI is demonstrable end to end.
 
+# venezuelaearthquake
