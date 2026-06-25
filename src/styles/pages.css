@@ -1,0 +1,1027 @@
+/* =============================================================================
+   Page-specific styles. Imported after global.css.
+   Sections: Command Center (bento home) · Seismic console · Donate panel ·
+   Drill-down pages (news / donations / resources).
+   ========================================================================== */
+
+/* =============================================================================
+   COMMAND CENTER — the bento home, locked to one viewport on desktop.
+   ========================================================================== */
+.cc {
+  height: calc(100vh - var(--bar-h));
+  max-width: 1860px;
+  margin-inline: auto;
+  padding: clamp(14px, 1.6vw, 24px) clamp(16px, 1.8vw, 26px) clamp(16px, 1.6vw, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 1.9vw, 24px);
+  min-height: 0;
+}
+
+/* --- Status strip --------------------------------------------------------- */
+.cc-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) auto;
+  grid-template-areas: "lead stats" "updated stats";
+  align-items: center;
+  gap: 4px 28px;
+  flex: none;
+}
+.cc-strip__lead {
+  grid-area: lead;
+  min-width: 0;
+}
+.cc-strip__lead h1 {
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  letter-spacing: -0.02em;
+  outline: none;
+}
+.cc-strip__blurb {
+  margin-top: 4px;
+  color: var(--ink-soft);
+  font-size: clamp(0.82rem, 1vw, 0.93rem);
+  max-width: 82ch;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.cc-strip__updated {
+  grid-area: updated;
+  align-self: start;
+}
+.cc-strip__stats {
+  grid-area: stats;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.cc-stat {
+  text-align: center;
+  padding: 11px 20px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+  min-width: 86px;
+}
+.cc-stat--accent {
+  border-color: var(--accent-line);
+  background: linear-gradient(160deg, var(--accent-tint), var(--surface));
+}
+.cc-stat__value {
+  display: block;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+  line-height: 1;
+  color: var(--ink);
+}
+.cc-stat--accent .cc-stat__value {
+  color: var(--accent);
+}
+.cc-stat__label {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* --- Bento grid ----------------------------------------------------------- */
+.cc-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 0.78fr 0.78fr 1fr;
+  grid-template-rows: 1fr auto;
+  grid-template-areas:
+    "news seismic seismic donate"
+    "news people resources donate";
+  gap: clamp(16px, 1.9vw, 24px);
+}
+
+.tile {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+.tile--news {
+  grid-area: news;
+}
+.tile--seismic {
+  grid-area: seismic;
+  padding: 0;
+}
+.tile--donate {
+  grid-area: donate;
+}
+.tile--people {
+  grid-area: people;
+}
+.tile--resources {
+  grid-area: resources;
+}
+
+/* --- Tile header ---------------------------------------------------------- */
+.tile__head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.tile__title {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.tile__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 4px 8px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+}
+.tile__cta:hover {
+  background: var(--accent-tint);
+  border-color: var(--accent-line);
+  text-decoration: none;
+}
+.tile__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 8px 10px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-2) transparent;
+}
+.tile__scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.tile__scroll::-webkit-scrollbar-thumb {
+  background: var(--line-2);
+  border-radius: 999px;
+}
+
+/* --- News rows (in the tile) --------------------------------------------- */
+.news-row {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 15px 14px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  background: none;
+  border-bottom: 1px solid var(--line);
+}
+.news-row:last-child {
+  border-bottom: 0;
+}
+.news-row.is-link {
+  cursor: pointer;
+  transition: background 0.14s ease, border-color 0.14s ease;
+}
+.news-row.is-link:hover {
+  background: var(--surface-2);
+  border-color: var(--line-2);
+}
+.news-row__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+.news-row__time {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--ink-faint);
+}
+.news-row__lang {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--info-fg);
+  background: var(--info-bg);
+  border: 1px solid var(--info-line);
+  border-radius: 999px;
+  padding: 1px 6px;
+}
+.news-row__head {
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.32;
+  color: var(--ink);
+  letter-spacing: 0;
+}
+.news-row__summary {
+  margin-top: 3px;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.news-row__foot {
+  margin-top: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.news-row__src {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+.news-row__ext {
+  color: var(--accent);
+}
+
+/* --- Link tiles (people / resources) ------------------------------------- */
+.tile--link {
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+}
+.tile--link:hover {
+  background: var(--surface-2);
+  border-color: var(--line-2);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+.tile-link__icon {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  border: 1px solid var(--line-2);
+  color: var(--accent);
+}
+.tile--people .tile-link__icon {
+  color: var(--vz-blue);
+}
+.tile-link__body {
+  flex: 1;
+  min-width: 0;
+}
+.tile-link__title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.tile-link__sub {
+  display: block;
+  font-size: 0.74rem;
+  color: var(--ink-faint);
+  margin-top: 1px;
+}
+.tile-link__host {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--ink-dim);
+  flex: none;
+}
+
+/* =============================================================================
+   SEISMIC CONSOLE — feed + map
+   ========================================================================== */
+.console {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.92fr) 1.4fr;
+  height: 100%;
+  min-height: 0;
+}
+.console__feed {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid var(--line);
+}
+.console__feed-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 15px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.console__feed-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.console__feed-src {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--ink-faint);
+}
+.console__feed-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-2) transparent;
+}
+.console__feed-body::-webkit-scrollbar {
+  width: 8px;
+}
+.console__feed-body::-webkit-scrollbar-thumb {
+  background: var(--line-2);
+  border-radius: 999px;
+}
+.console__msg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 16px;
+  color: var(--ink-faint);
+  font-size: 0.86rem;
+}
+.console__msg--err {
+  color: var(--danger-fg);
+}
+
+/* Quake rows */
+.quake-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-left: 3px solid transparent;
+  padding: 14px 16px;
+  transition: background 0.12s ease;
+}
+.quake-row:hover {
+  background: var(--surface-2);
+}
+.quake-row.is-selected {
+  background: var(--surface-2);
+  border-left-color: var(--accent);
+}
+.quake-row__dot {
+  flex: none;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+.quake-row__body {
+  flex: 1;
+  min-width: 0;
+}
+.quake-row__place {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.quake-row__meta {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--ink-faint);
+  margin-top: 1px;
+}
+.quake-row__mag {
+  flex: none;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1rem;
+}
+.quake-row__mag-k {
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+}
+
+/* Magnitude scale colors */
+.quake-dot--minor,
+.quake-mag--minor {
+  color: var(--mag-minor);
+}
+.quake-dot--minor {
+  background: var(--mag-minor);
+}
+.quake-dot--light {
+  background: var(--mag-light);
+}
+.quake-mag--light {
+  color: var(--mag-light);
+}
+.quake-dot--moderate {
+  background: var(--mag-moderate);
+}
+.quake-mag--moderate {
+  color: var(--mag-moderate);
+}
+.quake-dot--strong {
+  background: var(--mag-strong);
+}
+.quake-mag--strong {
+  color: var(--mag-strong);
+}
+.quake-dot--major {
+  background: var(--mag-major);
+  box-shadow: 0 0 0 4px rgba(226, 59, 59, 0.18);
+}
+.quake-mag--major {
+  color: var(--mag-major);
+}
+
+/* Map */
+.console__map {
+  position: relative;
+  min-height: 0;
+}
+.seismic-map {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+}
+.console__map-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    linear-gradient(rgba(24, 34, 46, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(24, 34, 46, 0.04) 1px, transparent 1px),
+    var(--bg-2);
+  background-size: 28px 28px, 28px 28px, 100% 100%;
+}
+.console__map-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 500;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  padding: 4px 10px;
+  pointer-events: none;
+  box-shadow: var(--shadow-sm);
+}
+.console__map-link {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.03em;
+  color: var(--accent);
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--accent-line);
+  border-radius: 999px;
+  padding: 4px 11px;
+  box-shadow: var(--shadow-sm);
+  transition: background 0.14s ease, border-color 0.14s ease;
+}
+.console__map-link:hover {
+  background: var(--accent-tint);
+  text-decoration: none;
+}
+
+/* =============================================================================
+   DONATE PANEL — embedded Caritas appeal
+   ========================================================================== */
+.donate-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+  padding: 18px 20px 20px;
+}
+.donate-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.donate-panel__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--verified-fg);
+  background: var(--verified-bg);
+  border: 1px solid var(--verified-line);
+  border-radius: 999px;
+  padding: 3px 9px;
+}
+.donate-panel__host {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--ink-faint);
+}
+.donate-panel__org {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.02rem;
+  line-height: 1.2;
+}
+.donate-panel__affil {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  color: var(--info-fg);
+  margin-top: 2px;
+  margin-bottom: 10px;
+}
+
+/* "Why Australia?" info popover */
+.why-au {
+  position: relative;
+  display: inline-flex;
+}
+.why-au__btn {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--info-line);
+  background: var(--info-bg);
+  color: var(--info-fg);
+  padding: 0;
+  transition: background 0.14s ease, border-color 0.14s ease;
+}
+.why-au__btn:hover {
+  background: #d7e4f6;
+  border-color: var(--info-fg);
+}
+.why-au__pop {
+  position: absolute;
+  z-index: 30;
+  right: 0;
+  top: calc(100% + 8px);
+  width: 260px;
+  max-width: min(260px, 78vw);
+  display: block;
+  padding: 11px 13px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  box-shadow: var(--shadow-md);
+  color: var(--ink-soft);
+  font-size: 0.76rem;
+  line-height: 1.5;
+  animation: pop 0.14s ease both;
+}
+.why-au__title {
+  display: block;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+.donate-panel__desc {
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  flex: 1;
+  min-height: 0;
+}
+.donate-amounts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 12px 0 4px;
+}
+.donate-amount {
+  display: grid;
+  place-items: center;
+  padding: 12px 4px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line-2);
+  background: var(--surface-2);
+  text-decoration: none;
+  transition: border-color 0.14s ease, background 0.14s ease, transform 0.1s ease;
+}
+.donate-amount:hover {
+  border-color: var(--accent-line);
+  background: var(--accent-tint);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+.donate-amount__value {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--ink);
+}
+.donate-amount:hover .donate-amount__value {
+  color: var(--accent);
+}
+.donate-panel__frame-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 120px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line-2);
+  overflow: hidden;
+  background: #fff;
+}
+.donate-panel__frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.donate-panel__frame.is-loaded {
+  opacity: 1;
+}
+.donate-panel__frame-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+}
+.donate-panel__fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 20px;
+  background: var(--surface-2);
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+}
+.donate-panel__cta {
+  margin-top: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+.donate-panel__cta:hover {
+  background: var(--accent-deep);
+  text-decoration: none;
+}
+.donate-panel__note {
+  margin-top: 8px;
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+  text-align: center;
+}
+
+/* =============================================================================
+   DRILL-DOWN PAGES (news / donations / resources)
+   ========================================================================== */
+.record-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.record-card {
+  padding: 22px 24px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+.record-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.record-card h3 {
+  font-size: 1.32rem;
+  line-height: 1.2;
+}
+.record-card__desc {
+  color: var(--ink-soft);
+  margin-top: 8px;
+  max-width: 72ch;
+}
+.record-card__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.record-card__time {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+}
+.news-card {
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.14s ease, border-color 0.14s ease;
+}
+.news-card:hover {
+  border-color: var(--line-2);
+  box-shadow: var(--shadow-md);
+}
+.news-card__attribution {
+  font-weight: 600;
+  color: var(--ink-soft);
+  font-size: 0.86rem;
+}
+
+.donation-card {
+  border-left: 4px solid var(--accent);
+}
+.donation-card__org {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.donation-card__affiliation {
+  font-size: 0.82rem;
+  color: var(--info-fg);
+  background: var(--info-bg);
+  border: 1px solid var(--info-line);
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: flex-end;
+  margin-bottom: 24px;
+  padding: 18px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+.field input,
+.field select {
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+  background: var(--bg-2);
+  color: var(--ink);
+  min-width: 0;
+}
+.field input::placeholder {
+  color: var(--ink-dim);
+}
+.field input:focus,
+.field select:focus {
+  border-color: var(--accent);
+}
+.search-field {
+  flex: 1 1 280px;
+}
+.search-field .search-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-field .search-input-wrap svg {
+  position: absolute;
+  left: 12px;
+  color: var(--ink-faint);
+  pointer-events: none;
+}
+.search-field input {
+  width: 100%;
+  padding-left: 38px;
+}
+.category-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+.chip {
+  border: 1px solid var(--line-2);
+  background: var(--surface);
+  color: var(--ink-soft);
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+.chip[aria-pressed="true"] {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+.chip:not([aria-pressed="true"]):hover {
+  background: var(--surface-2);
+}
+.result-count {
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+  margin-bottom: 14px;
+  font-family: var(--font-mono);
+}
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+/* =============================================================================
+   RESPONSIVE — below 1080px the bento relaxes into a natural scroll stack.
+   ========================================================================== */
+@media (max-width: 1080px) {
+  .app--console,
+  .app--console .app__main {
+    height: auto;
+    overflow: visible;
+  }
+  .cc {
+    height: auto;
+    min-height: 0;
+  }
+  .cc-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "seismic seismic"
+      "news donate"
+      "people resources";
+  }
+  .tile--people,
+  .tile--resources {
+    grid-area: auto;
+    grid-column: auto;
+  }
+  .tile--people {
+    grid-area: people;
+  }
+  .tile--resources {
+    grid-area: resources;
+  }
+  .tile--news {
+    min-height: 380px;
+  }
+  .tile--seismic {
+    min-height: 460px;
+  }
+  .tile--donate {
+    min-height: 520px;
+  }
+}
+
+@media (max-width: 860px) {
+  .nav-toggle {
+    display: inline-flex;
+  }
+  .cmd-bar__status {
+    display: none;
+  }
+  .primary-nav {
+    position: absolute;
+    top: calc(100% + 1px);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    box-shadow: var(--shadow-md);
+    padding: 12px clamp(14px, 4vw, 26px) 18px;
+  }
+  .primary-nav[data-open="false"] {
+    display: none;
+  }
+  .other-menu__panel {
+    position: static;
+    width: 100%;
+    box-shadow: none;
+    margin-top: 2px;
+  }
+  .nav-link {
+    font-size: 1rem;
+    padding: 12px 14px;
+  }
+  .lang-toggle {
+    margin-left: 0;
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 720px) {
+  .cc-strip {
+    grid-template-columns: 1fr;
+    grid-template-areas: "lead" "stats" "updated";
+    gap: 10px;
+  }
+  .cc-strip__stats {
+    justify-content: flex-start;
+  }
+  .cc-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "seismic"
+      "news"
+      "donate"
+      "people"
+      "resources";
+  }
+  .console {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 320px;
+  }
+  .console__feed {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    max-height: 300px;
+  }
+  .resources-grid {
+    grid-template-columns: 1fr;
+  }
+  .tile--seismic {
+    min-height: 560px;
+  }
+}
+
+@media (max-width: 520px) {
+  body {
+    font-size: 15.5px;
+  }
+  .brand-tag {
+    display: none;
+  }
+}
