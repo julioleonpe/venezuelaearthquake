@@ -34,6 +34,7 @@ const en = {
   "nav.other.aria": "Other relief tools",
   "nav.resources": "Resource Directory",
   "nav.peopleFinder": "People Finder",
+  "nav.peopleFinder2": "Missing Persons Registry",
   "nav.damageMap": "Mapa de Daño",
   "nav.damageMap.sub": "Community map of reported earthquake damage",
   "nav.home": "Hub home",
@@ -57,6 +58,7 @@ const en = {
   "cc.tile.donate": "Donate",
   "cc.viewAll": "View all",
   "cc.people.sub": "Report or search for missing & displaced people",
+  "cc.people2.sub": "Community registry of people reported missing",
   "cc.resources.sub": "Vetted relief organizations & services — coming soon",
   "cc.links.label": "Quick links",
 
@@ -197,6 +199,7 @@ const es: Record<MessageId, string> = {
   "nav.other.aria": "Otras herramientas de ayuda",
   "nav.resources": "Directorio de recursos",
   "nav.peopleFinder": "Buscador de Personas",
+  "nav.peopleFinder2": "Registro de Desaparecidos",
   "nav.damageMap": "Mapa de Daño",
   "nav.damageMap.sub": "Mapa comunitario de daños reportados por el terremoto",
   "nav.home": "Inicio del Centro",
@@ -218,6 +221,7 @@ const es: Record<MessageId, string> = {
   "cc.tile.donate": "Donar",
   "cc.viewAll": "Ver todo",
   "cc.people.sub": "Reporta o busca personas desaparecidas y desplazadas",
+  "cc.people2.sub": "Registro comunitario de personas reportadas como desaparecidas",
   "cc.resources.sub": "Organizaciones y servicios de ayuda validados — próximamente",
   "cc.links.label": "Enlaces rápidos",
 

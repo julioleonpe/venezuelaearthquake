@@ -103,11 +103,12 @@
   gap: clamp(16px, 1.9vw, 24px);
 }
 
-/* Quick-links band — sits above the seismic console (People / Resources / Damage Map) */
+/* Quick-links band — sits above the seismic console
+   (People Finder / Missing Persons Registry / Mapa de Daño / Resource Directory) */
 .cc-links {
   grid-area: links;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: clamp(16px, 1.9vw, 24px);
   min-width: 0;
 }

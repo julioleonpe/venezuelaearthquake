@@ -10,6 +10,15 @@
 export const PEOPLE_FINDER_URL = "https://venezuelatebusca.com/";
 
 /**
+ * Second external People_Finder — a separate, pre-existing community-run registry
+ * of missing persons after the earthquake. The Hub only links out to it (new tab),
+ * consistent with the People_Finder pattern; it neither builds nor embeds it.
+ * (The `fbclid` Facebook click-id from the shared link is intentionally dropped:
+ * it is an ephemeral tracking token, not part of the canonical URL.)
+ */
+export const PEOPLE_FINDER_2_URL = "https://desaparecidosterremotovenezuela.com/";
+
+/**
  * External "Mapa de Daño" (damage map) — a separate, pre-existing community system
  * mapping earthquake damage. The Hub only links out to it (new tab), consistent
  * with the People_Finder pattern; it does not build or embed the map.

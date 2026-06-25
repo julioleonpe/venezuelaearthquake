@@ -22,7 +22,7 @@ import { DonatePanel } from "../components/DonatePanel";
 import { ExternalLink } from "../components/ExternalLink";
 import { SeismicConsole } from "../components/SeismicConsole";
 import { ArrowRightIcon, ExternalIcon, PeopleIcon, ResourceIcon, MapIcon, ClockIcon } from "../components/icons";
-import { PEOPLE_FINDER_URL, DAMAGE_MAP_URL } from "../config";
+import { PEOPLE_FINDER_URL, PEOPLE_FINDER_2_URL, DAMAGE_MAP_URL } from "../config";
 import { needsLanguageIndicator, sourceHostLabel } from "../domain/core";
 import type { NewsItem } from "../domain/types";
 import { useI18n } from "../i18n/I18nProvider";
@@ -37,6 +37,7 @@ export default function CommandCenter() {
   const news = useSubsystem(() => getNews(), []);
   const meta = useSubsystem(() => getMeta(), []);
   const peopleHost = sourceHostLabel(PEOPLE_FINDER_URL).label;
+  const peopleHost2 = sourceHostLabel(PEOPLE_FINDER_2_URL).label;
   const damageMapHost = sourceHostLabel(DAMAGE_MAP_URL).label;
 
   return (
@@ -108,6 +109,23 @@ export default function CommandCenter() {
               <span className="tile-link__sub">{t("cc.people.sub")}</span>
             </span>
             <span className="tile-link__host">{peopleHost}</span>
+          </a>
+
+          {/* People Finder (2) — second outbound missing-persons registry */}
+          <a
+            className="tile tile--link tile--people"
+            href={PEOPLE_FINDER_2_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="tile-link__icon"><PeopleIcon size={22} /></span>
+            <span className="tile-link__body">
+              <span className="tile-link__title">
+                {t("nav.peopleFinder2")} <ExternalIcon size={14} />
+              </span>
+              <span className="tile-link__sub">{t("cc.people2.sub")}</span>
+            </span>
+            <span className="tile-link__host">{peopleHost2}</span>
           </a>
 
           {/* Mapa de Daño — outbound external damage map */}
