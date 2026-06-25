@@ -13,7 +13,7 @@ import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useI18n } from "../i18n/I18nProvider";
 import { LanguageToggle } from "./LanguageToggle";
 import { OtherMenu } from "./OtherMenu";
-import { BrandMark, MenuIcon, CloseIcon } from "./icons";
+import { MenuIcon, CloseIcon } from "./icons";
 
 export function AppShell() {
   const { t } = useI18n();
@@ -36,21 +36,6 @@ export function AppShell() {
 
       <header className="cmd-bar">
         <div className="cmd-bar__inner">
-          <Link to="/" className="brand" aria-label={t("nav.home")}>
-            <span className="brand-mark">
-              <BrandMark size={22} />
-            </span>
-            <span className="brand-text">
-              <span className="brand-name">{t("brand.name")}</span>
-              <span className="brand-tag">{t("brand.tagline")}</span>
-            </span>
-          </Link>
-
-          <span className="cmd-bar__status" aria-live="off">
-            <span className="live-dot" aria-hidden="true" />
-            {t("cmd.status")}
-          </span>
-
           <button
             type="button"
             className="nav-toggle"
