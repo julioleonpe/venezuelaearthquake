@@ -23,7 +23,7 @@ import { ExternalLink } from "../components/ExternalLink";
 import { SeismicConsole } from "../components/SeismicConsole";
 import { ArrowRightIcon, ExternalIcon, PeopleIcon, ResourceIcon, MapIcon, ClockIcon } from "../components/icons";
 import { PEOPLE_FINDER_URL, PEOPLE_FINDER_2_URL, DAMAGE_MAP_URL } from "../config";
-import { needsLanguageIndicator, sourceHostLabel } from "../domain/core";
+import { needsLanguageIndicator } from "../domain/core";
 import type { NewsItem } from "../domain/types";
 import { useI18n } from "../i18n/I18nProvider";
 import { formatDateTime, formatDateTimeTz } from "../lib/datetime";
@@ -36,9 +36,6 @@ export default function CommandCenter() {
   const h1Ref = usePageHeadingFocus<HTMLHeadingElement>(t("brand.name"));
   const news = useSubsystem(() => getNews(), []);
   const meta = useSubsystem(() => getMeta(), []);
-  const peopleHost = sourceHostLabel(PEOPLE_FINDER_URL).label;
-  const peopleHost2 = sourceHostLabel(PEOPLE_FINDER_2_URL).label;
-  const damageMapHost = sourceHostLabel(DAMAGE_MAP_URL).label;
 
   return (
     <div className="cc">
@@ -108,7 +105,6 @@ export default function CommandCenter() {
               </span>
               <span className="tile-link__sub">{t("cc.people.sub")}</span>
             </span>
-            <span className="tile-link__host">{peopleHost}</span>
           </a>
 
           {/* People Finder (2) — second outbound missing-persons registry */}
@@ -125,7 +121,6 @@ export default function CommandCenter() {
               </span>
               <span className="tile-link__sub">{t("cc.people2.sub")}</span>
             </span>
-            <span className="tile-link__host">{peopleHost2}</span>
           </a>
 
           {/* Mapa de Daño — outbound external damage map */}
@@ -142,7 +137,6 @@ export default function CommandCenter() {
               </span>
               <span className="tile-link__sub">{t("nav.damageMap.sub")}</span>
             </span>
-            <span className="tile-link__host">{damageMapHost}</span>
           </a>
 
           {/* Resource Directory — internal route (currently in progress) */}
