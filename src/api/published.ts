@@ -122,62 +122,6 @@ export const publishedNews: NewsItem[] = [
       "https://www.aljazeera.com/news/2026/6/25/venezuela-struck-by-back-to-back-earthquakes-high-casualties-feared",
     publishedAt: "2026-06-25T08:10:00-04:00",
   },
-  {
-    id: "n3",
-    verificationStatus: "verified",
-    contentLanguage: "en",
-    createdAt: "2026-06-25T07:40:00-04:00",
-    updatedAt: "2026-06-25T07:40:00-04:00",
-    headline: "Venezuela rocked by 7.5, 7.2 earthquakes: What happened and what we know",
-    summary:
-      "An explainer on the twin earthquakes — their timing, epicenters near the western coast, the regions hit hardest, and the emergency response now under way.",
-    sourceAttribution: "Al Jazeera",
-    sourceLink:
-      "https://www.aljazeera.com/news/2026/6/25/venezuela-rocked-by-7-5-7-2-earthquakes-what-happened-and-what-we-know",
-    publishedAt: "2026-06-25T07:30:00-04:00",
-  },
-  {
-    id: "n4",
-    verificationStatus: "verified",
-    contentLanguage: "en",
-    createdAt: "2026-06-25T06:50:00-04:00",
-    updatedAt: "2026-06-25T06:50:00-04:00",
-    headline: "Venezuela earthquakes: How will sanctions impact aid operations?",
-    summary:
-      "Analysis of how existing sanctions and limited diplomatic channels could complicate the delivery of international relief and emergency supplies to affected areas.",
-    sourceAttribution: "Al Jazeera",
-    sourceLink:
-      "https://www.aljazeera.com/news/2026/6/25/venezuela-quakes-how-will-sanctions-impact-aid-operations",
-    publishedAt: "2026-06-25T06:40:00-04:00",
-  },
-  {
-    id: "n5",
-    verificationStatus: "verified",
-    contentLanguage: "en",
-    createdAt: "2026-06-25T06:10:00-04:00",
-    updatedAt: "2026-06-25T06:10:00-04:00",
-    headline: "'We hugged each other and ran': Venezuelans recount earthquake horror",
-    summary:
-      "Survivors describe the moments the quakes hit — fleeing shaking buildings, searching for family, and the long night that followed in the streets and shelters.",
-    sourceAttribution: "Al Jazeera",
-    sourceLink:
-      "https://www.aljazeera.com/news/2026/6/25/we-hugged-each-other-and-ran-venezuelans-recount-earthquake-horror",
-    publishedAt: "2026-06-25T06:00:00-04:00",
-  },
-  {
-    id: "n6",
-    verificationStatus: "verified",
-    contentLanguage: "en",
-    createdAt: "2026-06-25T05:30:00-04:00",
-    updatedAt: "2026-06-25T05:30:00-04:00",
-    headline: "Venezuela earthquakes: Why is Central America so vulnerable to tremors?",
-    summary:
-      "Context on the region's seismic risk — the fault systems beneath northern South America and the Caribbean, and why dense, older construction raises the human toll.",
-    sourceAttribution: "Al Jazeera",
-    sourceLink:
-      "https://www.aljazeera.com/news/2026/6/25/venezuela-earthquakes-why-is-central-america-so-vulnerable-to-tremors",
-    publishedAt: "2026-06-25T05:20:00-04:00",
-  },
 ];
 
 export const publishedDonations: DonationChannel[] = [

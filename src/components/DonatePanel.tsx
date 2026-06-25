@@ -13,6 +13,7 @@
  */
 
 import { useEffect, useId, useRef, useState } from "react";
+import { track } from "@vercel/analytics";
 import {
   CARITAS_EMBED_ENABLED,
   CARITAS_EMBED_URL,
@@ -125,6 +126,7 @@ function CaritasCard({ host }: { host: string }) {
             href={amountUrl(amt)}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => track("donate_click", { surface: "suggested_amount", amount: amt })}
           >
             <span className="donate-amount__value">${amt}</span>
             <span className="sr-only"> — {host}, {t("ext.opensNewTab")}</span>
@@ -132,7 +134,13 @@ function CaritasCard({ host }: { host: string }) {
         ))}
       </div>
 
-      <a className="donate-panel__cta" href={CARITAS_SITE_URL} target="_blank" rel="noopener noreferrer">
+      <a
+        className="donate-panel__cta"
+        href={CARITAS_SITE_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => track("donate_click", { surface: "cta" })}
+      >
         <HeartIcon size={16} />
         {t("donate.cta")}
         <ExternalIcon size={14} />
@@ -187,7 +195,13 @@ function CaritasEmbed() {
           </div>
         )}
       </div>
-      <a className="donate-panel__cta" href={CARITAS_SITE_URL} target="_blank" rel="noopener noreferrer">
+      <a
+        className="donate-panel__cta"
+        href={CARITAS_SITE_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => track("donate_click", { surface: blocked ? "embed_fallback" : "embed_linkout" })}
+      >
         {t("donate.openOfficial")}
         <ExternalIcon size={15} />
         <span className="sr-only">— {host}, {t("ext.opensNewTab")}</span>
