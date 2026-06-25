@@ -999,10 +999,10 @@
   .cc-grid {
     grid-template-columns: 1fr;
     grid-template-areas:
+      "donate"
       "links"
-      "seismic"
       "news"
-      "donate";
+      "seismic";
   }
   .cc-links {
     grid-template-columns: 1fr;
