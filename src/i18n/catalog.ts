@@ -45,7 +45,7 @@ const en = {
   // Command center (bento home)
   "cc.headline": "2026 Venezuela Earthquake — Information Hub",
   "cc.blurb":
-    "Two earthquakes struck western Venezuela, the stronger at magnitude 7.5. This console brings together live seismic monitoring, verified news, vetted donation channels, and tools to find people and resources.",
+    "Two earthquakes struck northern Venezuela, the stronger at magnitude 7.5. This console brings together live seismic monitoring, verified news, vetted donation channels, and tools to find people and resources.",
   "cc.stat.magnitude": "Peak magnitude",
   "cc.stat.quakes": "Earthquakes",
   "cc.stat.deaths": "Reported deaths",
@@ -83,13 +83,9 @@ const en = {
   "donate.description":
     "Funds food, clean water, shelter, and medical aid for communities affected by the earthquake, through Caritas's emergency response.",
   "donate.amountsLabel": "Suggested donation amounts",
-  "donate.whyTitle": "Why Australia?",
-  "donate.whyAria": "Why donate through Caritas Australia?",
-  "donate.why":
-    "Regulatory and banking restrictions make it hard to send funds directly into Venezuela. Caritas Australia is a trusted Caritas member that can receive international donations and route them straight to relief partners working on the ground.",
   "donate.cta": "Donate via Caritas",
   "donate.openOfficial": "Open official site",
-  "donate.frameTitle": "Caritas Australia donation form",
+  "donate.frameTitle": "Caritas donation form",
   "donate.fallback":
     "The donation form could not be embedded here. Use the button below to donate on Caritas's official site.",
   "donate.note": "You'll complete your gift securely on Caritas's own site. The Hub never handles your payment.",
@@ -208,7 +204,7 @@ const es: Record<MessageId, string> = {
 
   "cc.headline": "Terremoto de Venezuela 2026 — Centro de Información",
   "cc.blurb":
-    "Dos terremotos sacudieron el occidente de Venezuela; el más fuerte de magnitud 7.5. Esta consola reúne monitoreo sísmico en vivo, noticias verificadas, canales de donación validados y herramientas para encontrar personas y recursos.",
+    "Dos terremotos sacudieron el norte de Venezuela; el más fuerte de magnitud 7.5. Esta consola reúne monitoreo sísmico en vivo, noticias verificadas, canales de donación validados y herramientas para encontrar personas y recursos.",
   "cc.stat.magnitude": "Magnitud máxima",
   "cc.stat.quakes": "Terremotos",
   "cc.stat.deaths": "Fallecidos reportados",
@@ -244,13 +240,9 @@ const es: Record<MessageId, string> = {
   "donate.description":
     "Financia alimentos, agua potable, refugio y atención médica para las comunidades afectadas por el terremoto, mediante la respuesta de emergencia de Caritas.",
   "donate.amountsLabel": "Montos de donación sugeridos",
-  "donate.whyTitle": "¿Por qué Australia?",
-  "donate.whyAria": "¿Por qué donar a través de Caritas Australia?",
-  "donate.why":
-    "Las restricciones regulatorias y bancarias dificultan enviar fondos directamente a Venezuela. Caritas Australia es un miembro de confianza de Caritas que puede recibir donaciones internacionales y dirigirlas directamente a los socios de ayuda que trabajan sobre el terreno.",
   "donate.cta": "Donar con Caritas",
   "donate.openOfficial": "Abrir sitio oficial",
-  "donate.frameTitle": "Formulario de donación de Caritas Australia",
+  "donate.frameTitle": "Formulario de donación de Caritas",
   "donate.fallback":
     "No se pudo incrustar el formulario de donación aquí. Usa el botón de abajo para donar en el sitio oficial de Caritas.",
   "donate.note": "Completarás tu donación de forma segura en el sitio oficial de Caritas. El Centro nunca gestiona tu pago.",

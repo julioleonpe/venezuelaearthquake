@@ -128,10 +128,10 @@ export const seedDonations: DonationChannel[] = [
     contentLanguage: "en",
     createdAt: "2026-06-24T10:00:00-04:00",
     updatedAt: "2026-06-25T07:00:00-04:00",
-    recipientOrganization: "Caritas Australia — Venezuela Earthquake Appeal",
+    recipientOrganization: "Caritas — Bringing Relief in Venezuela Appeal",
     description:
-      "Emergency appeal funding food, clean water, shelter, and medical aid for affected families. Donations are processed on Caritas Australia's own official site.",
-    destinationLink: "https://www.caritas.org.au",
+      "Emergency appeal funding food, clean water, shelter, and medical aid for affected families. Donations are processed on Caritas's own official site.",
+    destinationLink: "https://donate.caritas.org/venezuela/",
     affiliationLabel: "International aid agency of the Catholic Church",
   },
   {

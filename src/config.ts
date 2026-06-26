@@ -29,15 +29,15 @@ export const DAMAGE_MAP_URL = "https://terremotovenezuela.com/";
 export const SITE_ORIGIN = "https://venezuelaearthquake2026.com";
 
 /**
- * Caritas Australia — the launch donation channel, the Catholic Church's
+ * Caritas Internationalis — the launch donation channel, the Catholic Church's
  * international aid agency. The Donate tile links out to Caritas's own
- * Venezuela Earthquake appeal page, where donations are processed entirely on
- * Caritas's own infrastructure — the Hub never sees card data or funds.
- * (The `srsltid` tracking token from the shared link is intentionally dropped:
- * it is an ephemeral Google click-id, not part of the canonical appeal URL.)
+ * "Bringing relief in Venezuela" appeal page, where donations are processed
+ * entirely on Caritas's own infrastructure — the Hub never sees card data or
+ * funds. Caritas Internationalis is a global confederation of 162 members that
+ * can receive international donations and route them to relief partners on the
+ * ground in Venezuela.
  */
-export const CARITAS_SITE_URL =
-  "https://www.caritas.org.au/donate/emergency-appeals/venezuela-earthquake/";
+export const CARITAS_SITE_URL = "https://donate.caritas.org/venezuela/";
 
 /**
  * Embedded-widget support. Caritas (like most reputable charities) forbids being

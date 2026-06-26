@@ -12,7 +12,7 @@
  * form URL, with this card as the guaranteed fallback.
  */
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { track } from "@vercel/analytics";
 import {
   CARITAS_EMBED_ENABLED,
@@ -21,7 +21,7 @@ import {
 } from "../config";
 import { sourceHostLabel } from "../domain/core";
 import { useI18n } from "../i18n/I18nProvider";
-import { ExternalIcon, HeartIcon, InfoIcon, ShieldCheckIcon } from "./icons";
+import { ExternalIcon, HeartIcon, ShieldCheckIcon } from "./icons";
 
 const SUGGESTED = [50, 100, 250] as const;
 
@@ -42,7 +42,6 @@ export function DonatePanel() {
       <div className="donate-panel__org">{t("donate.recipient")}</div>
       <div className="donate-panel__affil">
         <span>{t("donate.affiliation")}</span>
-        <WhyAustralia />
       </div>
 
       {CARITAS_EMBED_ENABLED && CARITAS_EMBED_URL ? (
@@ -51,60 +50,6 @@ export function DonatePanel() {
         <CaritasCard host={host} />
       )}
     </div>
-  );
-}
-
-/**
- * "Why Australia?" info popover — explains why donations route through Caritas
- * Australia rather than directly to Venezuela. Accessible disclosure: a small
- * info button toggles a panel; Escape and outside-click close it.
- */
-function WhyAustralia() {
-  const { t } = useI18n();
-  const [open, setOpen] = useState(false);
-  const panelId = useId();
-  const wrapRef = useRef<HTMLSpanElement>(null);
-  const btnRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    if (!open) return;
-    function onDocClick(e: MouseEvent) {
-      if (wrapRef.current && !wrapRef.current.contains(e.target as Node)) setOpen(false);
-    }
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") {
-        setOpen(false);
-        btnRef.current?.focus();
-      }
-    }
-    document.addEventListener("mousedown", onDocClick);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDocClick);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
-
-  return (
-    <span className="why-au" ref={wrapRef}>
-      <button
-        ref={btnRef}
-        type="button"
-        className="why-au__btn"
-        aria-expanded={open}
-        aria-controls={panelId}
-        aria-label={t("donate.whyAria")}
-        onClick={() => setOpen((v) => !v)}
-      >
-        <InfoIcon size={15} />
-      </button>
-      {open && (
-        <span className="why-au__pop" id={panelId} role="note">
-          <span className="why-au__title">{t("donate.whyTitle")}</span>
-          {t("donate.why")}
-        </span>
-      )}
-    </span>
   );
 }
 

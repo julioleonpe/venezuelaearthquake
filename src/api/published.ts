@@ -29,14 +29,27 @@ export const publishedNews: NewsItem[] = [
     verificationStatus: "verified",
     contentLanguage: "en",
     createdAt: "2026-06-25T14:00:00-04:00",
-    updatedAt: "2026-06-25T14:00:00-04:00",
+    updatedAt: "2026-06-26T09:45:00-04:00",
     // Primary source: The New York Times live coverage. Kept first.
-    headline: "Live coverage: Powerful earthquakes hit western Venezuela",
+    headline: "Live coverage: Death toll rises to 589 as rescuers search for quake survivors",
     summary:
-      "The New York Times is tracking the aftermath of the two earthquakes — the stronger at magnitude 7.5 — with continuously updated reporting on casualties, damage, and the international relief response.",
+      "The New York Times is tracking the aftermath of the two earthquakes — the stronger at magnitude 7.5 — with continuously updated reporting. Venezuela's government says the death toll has risen to 589 with nearly 3,000 injured, as international rescue teams arrive and hundreds remain missing or trapped under rubble.",
     sourceAttribution: "The New York Times",
     sourceLink: "https://www.nytimes.com/live/2026/06/25/world/venezuela-earthquake",
-    publishedAt: "2026-06-25T13:45:00-04:00",
+    publishedAt: "2026-06-26T09:42:00-04:00",
+  },
+  {
+    id: "n-cnn-vis",
+    verificationStatus: "verified",
+    contentLanguage: "en",
+    createdAt: "2026-06-26T09:00:00-04:00",
+    updatedAt: "2026-06-26T09:00:00-04:00",
+    headline: "A visual guide to the Venezuela earthquakes",
+    summary:
+      "CNN maps the disaster with charts and satellite imagery: the two quakes were a rare 'doublet,' with the 7.5 magnitude main shock striking 39 seconds after a 7.2 foreshock — the largest recorded earthquake in Venezuela in more than a century. More than 100 buildings have collapsed in La Guaira state, designated a disaster zone.",
+    sourceAttribution: "CNN",
+    sourceLink: "https://www.cnn.com/2026/06/25/americas/venezuela-earthquake-map-vis",
+    publishedAt: "2026-06-26T09:10:00-04:00",
   },
   {
     id: "n-cbs",
@@ -130,10 +143,10 @@ export const publishedDonations: DonationChannel[] = [
     contentLanguage: "en",
     createdAt: "2026-06-24T10:00:00-04:00",
     updatedAt: "2026-06-25T07:00:00-04:00",
-    recipientOrganization: "Caritas Australia — Venezuela Earthquake Appeal",
+    recipientOrganization: "Caritas — Bringing Relief in Venezuela Appeal",
     description:
-      "Emergency appeal funding food, clean water, shelter, and medical aid for affected families. Donations are processed on Caritas Australia's own official site.",
-    destinationLink: "https://www.caritas.org.au",
+      "Emergency appeal funding food, clean water, shelter, and medical aid for affected families. Donations are processed on Caritas's own official site.",
+    destinationLink: "https://donate.caritas.org/venezuela/",
     affiliationLabel: "International aid agency of the Catholic Church",
   },
   {

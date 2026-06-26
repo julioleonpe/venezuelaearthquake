@@ -603,51 +603,6 @@
   margin-bottom: 10px;
 }
 
-/* "Why Australia?" info popover */
-.why-au {
-  position: relative;
-  display: inline-flex;
-}
-.why-au__btn {
-  display: inline-grid;
-  place-items: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 1px solid var(--info-line);
-  background: var(--info-bg);
-  color: var(--info-fg);
-  padding: 0;
-  transition: background 0.14s ease, border-color 0.14s ease;
-}
-.why-au__btn:hover {
-  background: #d7e4f6;
-  border-color: var(--info-fg);
-}
-.why-au__pop {
-  position: absolute;
-  z-index: 30;
-  right: 0;
-  top: calc(100% + 8px);
-  width: 260px;
-  max-width: min(260px, 78vw);
-  display: block;
-  padding: 11px 13px;
-  border-radius: var(--radius);
-  background: var(--surface);
-  border: 1px solid var(--line-2);
-  box-shadow: var(--shadow-md);
-  color: var(--ink-soft);
-  font-size: 0.76rem;
-  line-height: 1.5;
-  animation: pop 0.14s ease both;
-}
-.why-au__title {
-  display: block;
-  font-weight: 700;
-  color: var(--ink);
-  margin-bottom: 3px;
-}
 .donate-panel__desc {
   font-size: 0.84rem;
   color: var(--ink-soft);
