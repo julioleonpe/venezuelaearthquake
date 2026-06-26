@@ -17,14 +17,14 @@
  */
 
 import { Link } from "react-router-dom";
-import { getMeta, getNews } from "../api/store";
+import { getDonations, getMeta, getNews } from "../api/store";
 import { DonatePanel } from "../components/DonatePanel";
 import { ExternalLink } from "../components/ExternalLink";
 import { SeismicConsole } from "../components/SeismicConsole";
-import { ArrowRightIcon, ExternalIcon, PeopleIcon, ResourceIcon, MapIcon, ClockIcon } from "../components/icons";
-import { PEOPLE_FINDER_URL, PEOPLE_FINDER_2_URL, DAMAGE_MAP_URL } from "../config";
-import { needsLanguageIndicator } from "../domain/core";
-import type { NewsItem } from "../domain/types";
+import { ArrowRightIcon, ExternalIcon, PeopleIcon, ResourceIcon, MapIcon, ClockIcon, ShieldCheckIcon } from "../components/icons";
+import { PEOPLE_FINDER_URL, PEOPLE_FINDER_2_URL, DAMAGE_MAP_URL, CARITAS_SITE_URL } from "../config";
+import { needsLanguageIndicator, sourceHostLabel } from "../domain/core";
+import type { DonationChannel, NewsItem } from "../domain/types";
 import { useI18n } from "../i18n/I18nProvider";
 import { formatDateTime, formatDateTimeTz } from "../lib/datetime";
 import { openExternal } from "../lib/openExternal";
@@ -35,6 +35,7 @@ export default function CommandCenter() {
   const { t, lang } = useI18n();
   const h1Ref = usePageHeadingFocus<HTMLHeadingElement>(t("brand.name"));
   const news = useSubsystem(() => getNews(), []);
+  const donations = useSubsystem(() => getDonations(), []);
   const meta = useSubsystem(() => getMeta(), []);
 
   return (
@@ -156,10 +157,28 @@ export default function CommandCenter() {
           <SeismicConsole />
         </section>
 
-        {/* Donate — embedded Caritas appeal */}
+        {/* Donate — Caritas featured + scrollable list of other verified channels */}
         <section className="tile tile--donate" aria-labelledby="tile-donate-h">
-          <TileHead id="tile-donate-h" title={t("cc.tile.donate")} />
-          <DonatePanel />
+          <TileHead id="tile-donate-h" title={t("cc.tile.donate")} to="/donate" cta={t("cc.viewAll")} />
+          <div className="tile__scroll tile__scroll--donate">
+            {/* Caritas — the launch channel, highlighted in its own card. */}
+            <div className="donate-featured">
+              <DonatePanel />
+            </div>
+            {donations.status === "ready" && (() => {
+              // Caritas is already featured above; list the remaining verified channels.
+              const others = donations.data.filter((c) => c.destinationLink !== CARITAS_SITE_URL);
+              if (others.length === 0) return null;
+              return (
+                <div className="donate-more">
+                  <div className="donate-more__label">{t("cc.donate.more")}</div>
+                  {others.map((c) => (
+                    <DonationRow key={c.id} channel={c} lang={lang} />
+                  ))}
+                </div>
+              );
+            })()}
+          </div>
         </section>
       </div>
     </div>
@@ -185,6 +204,38 @@ function TileHead({ id, title, to, cta }: { id: string; title: string; to?: stri
         </Link>
       )}
     </header>
+  );
+}
+
+function DonationRow({ channel, lang }: { channel: DonationChannel; lang: "en" | "es" }) {
+  const { t } = useI18n();
+  const showLang = needsLanguageIndicator(channel.contentLanguage, lang);
+
+  const host = sourceHostLabel(channel.destinationLink).label;
+
+  return (
+    <article className="donate-row">
+      <div className="donate-row__head">
+        <span className="donate-panel__badge">
+          <ShieldCheckIcon size={13} />
+          {t("donate.verified")}
+        </span>
+        <span className="donate-panel__host">{host}</span>
+      </div>
+      <div className="donate-row__main">
+        <h3 className="donate-row__org">{channel.recipientOrganization}</h3>
+        {channel.affiliationLabel && (
+          <span className="donate-row__affil">{channel.affiliationLabel}</span>
+        )}
+        <p className="donate-row__desc">{channel.description}</p>
+      </div>
+      <div className="donate-row__foot">
+        {showLang && <span className="news-row__lang">{channel.contentLanguage.toUpperCase()}</span>}
+        <ExternalLink href={channel.destinationLink} variant="button">
+          {t("donations.give")}
+        </ExternalLink>
+      </div>
+    </article>
   );
 }
 

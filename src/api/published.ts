@@ -173,6 +173,36 @@ export const publishedDonations: DonationChannel[] = [
     destinationLink: "https://www.unicef.org/emergencies",
     affiliationLabel: "Fondo de las Naciones Unidas para la Infancia",
   },
+  {
+    id: "d6",
+    verificationStatus: "verified",
+    contentLanguage: "en",
+    createdAt: "2026-06-26T10:00:00-04:00",
+    updatedAt: "2026-06-26T10:00:00-04:00",
+    // Healing Venezuela — UK-registered medical relief charity (Charity Comm. no. 1170709).
+    // Primary link-out is the GlobalGiving project (multi-currency, built for international
+    // donors, third-party vetted). Funds are processed on GlobalGiving's platform, not the Hub.
+    recipientOrganization: "Healing Venezuela — Earthquake Emergency Appeal",
+    description:
+      "Funds emergency medical response to the June 2026 earthquake: first-aid supplies and trauma kits for hospitals, treatment of the injured by the charity's doctors, and distribution of potable water. Donations are processed on GlobalGiving's platform.",
+    destinationLink: "https://www.globalgiving.org/projects/emergency-appeal-earthquake-in-venezuela/",
+    affiliationLabel: "UK-registered medical relief charity (Charity Comm. no. 1170709) working in Venezuela",
+  },
+  {
+    id: "d7",
+    verificationStatus: "verified",
+    contentLanguage: "es",
+    createdAt: "2026-06-26T10:05:00-04:00",
+    updatedAt: "2026-06-26T10:05:00-04:00",
+    // Yummy donation portal. Unlike the pass-through charities, funds move on Yummy's OWN
+    // infrastructure (Stripe / Pago Móvil / ACH). The Hub honors its "never proxy funds"
+    // invariant by LINKING OUT to Yummy's portal — never embedding the donation flow.
+    recipientOrganization: "Yummy — Donaciones por el terremoto",
+    description:
+      "Portal de donaciones de Yummy para la emergencia, con Pago Móvil, tarjeta internacional y ACH. Yummy iguala el 25% de lo recaudado hasta $100.000. Los fondos se procesan en la propia plataforma de Yummy.",
+    destinationLink: "https://dona.yummyrides.com/",
+    affiliationLabel: "Super-app venezolana (Yummy Rides)",
+  },
 ];
 
 export const publishedResources: ResourceEntry[] = [
@@ -248,5 +278,46 @@ export const publishedResources: ResourceEntry[] = [
       "Sign up to volunteer with vetted relief organizations. Lists current needs by skill, location, and shift.",
     category: "Volunteering",
     sourceLink: "https://example.org/volunteer",
+  },
+  {
+    id: "r8",
+    verificationStatus: "verified",
+    contentLanguage: "es",
+    createdAt: "2026-06-26T10:10:00-04:00",
+    updatedAt: "2026-06-26T10:10:00-04:00",
+    // Yummy "Heroes" — verified first-party Yummy program (free/subsidized rides for
+    // first responders). Service link-out only; no funds involved.
+    name: "Yummy Heroes — Viajes para personal de emergencias",
+    description:
+      "Personal de emergencias (paramédicos, bomberos, rescatistas, Protección Civil, Cruz Roja, policía) registra su cuenta de Yummy para activar viajes subsidiados durante la emergencia.",
+    category: "Transportation",
+    sourceLink: "https://heroes.yummyrides.com/",
+  },
+  {
+    id: "r9",
+    verificationStatus: "verified",
+    contentLanguage: "es",
+    createdAt: "2026-06-26T10:15:00-04:00",
+    updatedAt: "2026-06-26T10:15:00-04:00",
+    // Missing-persons registry. Community-run; self-presents as independent and non-profit.
+    name: "Ubicados Venezuela — Registro de personas",
+    description:
+      "Registro comunitario para reportar y buscar personas tras el terremoto, con detección de duplicados asistida por IA y validación humana. También permite proponer centros de acopio y reportar edificaciones afectadas.",
+    category: "Missing Persons",
+    sourceLink: "https://ubicadosvzla.com/",
+  },
+  {
+    id: "r10",
+    verificationStatus: "verified",
+    contentLanguage: "es",
+    createdAt: "2026-06-26T10:20:00-04:00",
+    updatedAt: "2026-06-26T10:20:00-04:00",
+    // Encuéntralos — community missing-persons registry (also aggregates shelters, donation
+    // points, affected zones). Included for completeness as a tool in the directory.
+    name: "Encuéntralos — Buscador de personas",
+    description:
+      "Iniciativa ciudadana para reportar y buscar personas desaparecidas tras el terremoto. Incluye directorio de teléfonos de emergencia, refugios, centros de acopio y zonas afectadas.",
+    category: "Missing Persons",
+    sourceLink: "https://encuentralos.tecnosoft.dev/",
   },
 ];

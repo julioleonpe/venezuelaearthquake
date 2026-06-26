@@ -20,10 +20,30 @@ export const PEOPLE_FINDER_2_URL = "https://desaparecidosterremotovenezuela.com/
 
 /**
  * External "Mapa de Daño" (damage map) — a separate, pre-existing community system
- * mapping earthquake damage. The Hub only links out to it (new tab), consistent
- * with the People_Finder pattern; it does not build or embed the map.
+ * mapping earthquake damage. The Hub links out to it (new tab), and now also pulls
+ * its public report data live onto the seismic console map (see DAMAGE_SOURCE).
  */
 export const DAMAGE_MAP_URL = "https://terremotovenezuela.com/";
+
+/**
+ * Live community damage-report feed. terremotovenezuela.com is a community-run,
+ * Supabase-backed registry of buildings reported damaged by the earthquake; its
+ * `buildings` table is exposed read-only via PostgREST with a public publishable
+ * key (the same key the site ships in its own browser bundle). We pull it live as
+ * a clearly-labelled, *community-reported / unverified* overlay on the seismic map.
+ *
+ * This is deliberately NOT routed through the Hub's verification gate: it is
+ * third-party data the Hub neither owns nor curates, presented as an attributed
+ * external layer — never laundered into the Hub's own verified record types.
+ */
+export const DAMAGE_SOURCE = {
+  restUrl: "https://jckifxsdlnsvbztxydes.supabase.co/rest/v1/buildings",
+  /** Public publishable (anon) key — read-only, safe to ship client-side. */
+  anonKey: "sb_publishable_i7iEDrCVZcSt0k3RGFrY4g_WrtZBB4w",
+  /** Canonical site, for attribution + per-report detail links. */
+  siteUrl: DAMAGE_MAP_URL,
+  hostLabel: "terremotovenezuela.com",
+} as const;
 
 /** Public site origin (ships at venezuelaearthquake2026.com). */
 export const SITE_ORIGIN = "https://venezuelaearthquake2026.com";

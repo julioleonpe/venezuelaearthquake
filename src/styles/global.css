@@ -40,6 +40,12 @@
   --mag-strong: #cf5a25;
   --mag-major: #d6342f;
 
+  /* Community damage scale — a cool ramp kept distinct from the seismic amber→red
+     so a building's damage level is never misread as an earthquake magnitude. */
+  --dmg-parcial: #3f87c4;
+  --dmg-severo: #8a5cd1;
+  --dmg-total: #d6347f;
+
   /* --- Venezuela civic tricolor (thin instrument markers, never fills) ----- */
   --vz-yellow: #f2c14e;
   --vz-blue: #2f6bc4;
@@ -884,6 +890,39 @@ h4 {
 }
 .quake-popup .leaflet-popup-tip {
   background: var(--surface);
+}
+
+/* Damage markers — small rotated squares (distinct from seismic circles). */
+.dmg-marker {
+  display: block;
+  width: 11px;
+  height: 11px;
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  border-radius: 2px;
+  transform: rotate(45deg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+.dmg-popup .dmg-popup__lvl {
+  display: inline-block;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.dmg-popup .dmg-popup__lvl--total {
+  color: var(--dmg-total);
+}
+.dmg-popup .dmg-popup__lvl--severo {
+  color: var(--dmg-severo);
+}
+.dmg-popup .dmg-popup__lvl--parcial {
+  color: var(--dmg-parcial);
+}
+.dmg-popup .dmg-popup__src {
+  color: var(--ink-faint);
+  font-size: 0.76rem;
 }
 
 /* =============================================================================

@@ -59,8 +59,9 @@ const en = {
   "cc.viewAll": "View all",
   "cc.people.sub": "Report or search for missing & displaced people",
   "cc.people2.sub": "Community registry of people reported missing",
-  "cc.resources.sub": "Vetted relief organizations & services — coming soon",
+  "cc.resources.sub": "Vetted relief organizations & services",
   "cc.links.label": "Quick links",
+  "cc.donate.more": "More verified channels",
 
   // Resource Directory — in progress (no verified entries published yet)
   "resources.soon.kicker": "In the works",
@@ -75,6 +76,23 @@ const en = {
   "seismic.unavailable": "Live seismic data is temporarily unavailable.",
   "seismic.empty": "No recent earthquakes recorded in the region.",
   "seismic.mapHint": "Epicenters · last 30 days",
+
+  // Seismic console — layer toggle + community damage layer
+  "console.layer.seismic": "Seismic",
+  "console.layer.damage": "Damage",
+  "console.layer.aria": "Choose map layer",
+  "damage.title": "Community damage reports",
+  "damage.source": "terremotovenezuela.com",
+  "damage.attribution": "Community-reported · unverified · via terremotovenezuela.com",
+  "damage.unavailable": "Community damage reports are temporarily unavailable.",
+  "damage.empty": "No mapped damage reports are currently available.",
+  "damage.mapHint": "Reported damage · community-sourced",
+  "damage.level.total": "Total",
+  "damage.level.severo": "Severe",
+  "damage.level.parcial": "Partial",
+  "damage.reportCount": "reports",
+  "damage.openReport": "View on source site",
+  "subsystem.damage": "Community damage reports",
 
   // Donate panel (Caritas link-out card)
   "donate.verified": "Verified channel",
@@ -218,8 +236,9 @@ const es: Record<MessageId, string> = {
   "cc.viewAll": "Ver todo",
   "cc.people.sub": "Reporta o busca personas desaparecidas y desplazadas",
   "cc.people2.sub": "Registro comunitario de personas reportadas como desaparecidas",
-  "cc.resources.sub": "Organizaciones y servicios de ayuda validados — próximamente",
+  "cc.resources.sub": "Organizaciones y servicios de ayuda validados",
   "cc.links.label": "Enlaces rápidos",
+  "cc.donate.more": "Más canales verificados",
 
   // Directorio de Recursos — en construcción (aún sin entradas verificadas)
   "resources.soon.kicker": "En construcción",
@@ -233,6 +252,22 @@ const es: Record<MessageId, string> = {
   "seismic.unavailable": "Los datos sísmicos en vivo no están disponibles temporalmente.",
   "seismic.empty": "No se registraron sismos recientes en la región.",
   "seismic.mapHint": "Epicentros · últimos 30 días",
+
+  "console.layer.seismic": "Sismos",
+  "console.layer.damage": "Daños",
+  "console.layer.aria": "Elegir capa del mapa",
+  "damage.title": "Reportes de daños de la comunidad",
+  "damage.source": "terremotovenezuela.com",
+  "damage.attribution": "Reportado por la comunidad · sin verificar · vía terremotovenezuela.com",
+  "damage.unavailable": "Los reportes de daños de la comunidad no están disponibles temporalmente.",
+  "damage.empty": "No hay reportes de daños mapeados disponibles en este momento.",
+  "damage.mapHint": "Daños reportados · fuente comunitaria",
+  "damage.level.total": "Total",
+  "damage.level.severo": "Severo",
+  "damage.level.parcial": "Parcial",
+  "damage.reportCount": "reportes",
+  "damage.openReport": "Ver en el sitio de origen",
+  "subsystem.damage": "Reportes de daños de la comunidad",
 
   "donate.verified": "Canal verificado",
   "donate.recipient": "Caritas — Llamado de Respuesta a Emergencias",

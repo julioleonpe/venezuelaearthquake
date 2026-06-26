@@ -262,6 +262,90 @@
   color: var(--accent);
 }
 
+/* --- Donate tile: featured Caritas card + list of other channels ---------- */
+/* The donate tile scrolls internally so additional channels stay in one viewport. */
+.tile__scroll--donate {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 14px;
+}
+/* Caritas — the launch channel, boxed and highlighted within the Donate tile. */
+.donate-featured {
+  border: 1px solid var(--accent-line);
+  border-radius: var(--radius-lg);
+  background: var(--accent-tint);
+  box-shadow: var(--shadow-sm);
+}
+/* Inside the featured box the panel must NOT flex-grow (it would clip its CTA and
+   push the amount buttons under the next section's label). Let it size to content. */
+.donate-featured .donate-panel {
+  flex: none;
+  padding: 16px 18px 18px;
+}
+.donate-more {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.donate-more__label {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  padding: 0 2px 2px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 2px;
+}
+.donate-row {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+.donate-row__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+.donate-row__org {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+}
+.donate-row__affil {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  margin-top: 2px;
+}
+.donate-row__desc {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.donate-row__foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.donate-row__foot .btn {
+  font-size: 0.78rem;
+  padding: 7px 12px;
+}
+
 /* --- Link tiles (people / resources) ------------------------------------- */
 .tile--link {
   flex-direction: row;
@@ -550,6 +634,149 @@
 .console__map-link:hover {
   background: var(--accent-tint);
   text-decoration: none;
+}
+
+/* Layer toggle (segmented control above the feed) */
+.console__layers {
+  flex: none;
+  display: flex;
+  gap: 4px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+}
+.console__layer-tab {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 8px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease;
+}
+.console__layer-tab:hover {
+  background: var(--surface-3);
+}
+.console__layer-tab.is-active {
+  color: var(--ink);
+  background: var(--surface);
+  border-color: var(--line-2);
+  box-shadow: var(--shadow-sm);
+}
+.console__layers-count {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--ink-faint);
+  background: var(--surface-3);
+  border-radius: 999px;
+  padding: 1px 6px;
+}
+
+/* Damage report rows (reuse quake-row layout, distinct accents) */
+.dmg-row.is-selected {
+  border-left-color: var(--dmg-severo);
+}
+.dmg-row__badge {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+.dmg-badge--total {
+  color: #fff;
+  background: var(--dmg-total);
+}
+.dmg-badge--severo {
+  color: #fff;
+  background: var(--dmg-severo);
+}
+.dmg-badge--parcial {
+  color: #fff;
+  background: var(--dmg-parcial);
+}
+.dmg-dot--total {
+  background: var(--dmg-total);
+}
+.dmg-dot--severo {
+  background: var(--dmg-severo);
+}
+.dmg-dot--parcial {
+  background: var(--dmg-parcial);
+}
+
+/* Damage legend (bottom-left of the map on the damage layer) */
+.console__legend {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  color: var(--ink-soft);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+  padding: 7px 10px;
+  box-shadow: var(--shadow-sm);
+}
+.console__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.console__legend-swatch {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+}
+.console__legend-count {
+  margin-left: auto;
+  padding-left: 8px;
+  font-weight: 700;
+  color: var(--ink-faint);
+}
+
+/* Provenance line — anchored bottom-right on the damage layer */
+.console__map-attrib {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  max-width: 58%;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+  color: var(--ink-soft);
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+  padding: 4px 9px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.14s ease;
+}
+.console__map-attrib:hover {
+  text-decoration: underline;
 }
 
 /* =============================================================================
@@ -974,7 +1201,7 @@
   .console__feed {
     border-right: 0;
     border-bottom: 1px solid var(--line);
-    max-height: 300px;
+    max-height: 340px;
   }
   .resources-grid {
     grid-template-columns: 1fr;
