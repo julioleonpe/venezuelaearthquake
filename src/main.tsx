@@ -7,10 +7,10 @@ import { router } from "./router";
 import "./styles/global.css";
 import "./styles/pages.css";
 
-// Vercel Analytics: privacy-friendly, cookieless pageview tracking. The component
-// auto-detects React Router client-side navigations, so all four routes (/, /news,
-// /donate, /resources) are counted without per-route wiring. Custom engagement
-// events (e.g. donate_click) are fired via `track()` at the relevant chokepoints.
+// Vercel Analytics: privacy-friendly, cookieless pageview tracking. The Hub is a
+// single command-center view (no drill-down routes), so this mainly counts the
+// home pageview; custom engagement events (e.g. donate_click) are fired via
+// `track()` at the relevant chokepoints.
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <I18nProvider>

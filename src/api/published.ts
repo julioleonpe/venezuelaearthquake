@@ -174,6 +174,49 @@ export const publishedDonations: DonationChannel[] = [
     affiliationLabel: "Fondo de las Naciones Unidas para la Infancia",
   },
   {
+    id: "d10",
+    verificationStatus: "verified",
+    contentLanguage: "en",
+    createdAt: "2026-06-26T11:10:00-04:00",
+    updatedAt: "2026-06-26T11:10:00-04:00",
+    // International Rescue Committee — confirmed live event-specific press release with
+    // donate CTAs. IRC has operated in Venezuela since 2021. Funds processed on rescue.org.
+    recipientOrganization: "International Rescue Committee (IRC) — Venezuela Earthquake Response",
+    description:
+      "Mobilizing an emergency response in the hardest-hit areas: distribution of essential relief items and emergency medical supplies to frontline workers, building on the IRC's health and protection work in Venezuela since 2021. Donations are processed on the IRC's own site.",
+    destinationLink: "https://www.rescue.org/press-release/venezuela-irc-launches-emergency-response-twin-earthquakes",
+    affiliationLabel: "International humanitarian NGO",
+  },
+  {
+    id: "d8",
+    verificationStatus: "verified",
+    contentLanguage: "en",
+    createdAt: "2026-06-26T11:00:00-04:00",
+    updatedAt: "2026-06-26T11:00:00-04:00",
+    // World Central Kitchen — event-specific campaign donate page confirmed live
+    // (multi-currency; Charity Navigator 4-star / Candid Platinum). Funds processed
+    // on WCK's own platform — the Hub only links out.
+    recipientOrganization: "World Central Kitchen — Venezuela Earthquake Relief",
+    description:
+      "Funds fresh meals for families and first responders affected by the earthquakes, served through WCK's Relief Team and longtime local partners. Donations are processed on World Central Kitchen's own platform.",
+    destinationLink: "https://donate.wck.org/campaign/815521/donate",
+    affiliationLabel: "Disaster-relief nonprofit founded by chef José Andrés (501(c)(3))",
+  },
+  {
+    id: "d9",
+    verificationStatus: "verified",
+    contentLanguage: "en",
+    createdAt: "2026-06-26T11:05:00-04:00",
+    updatedAt: "2026-06-26T11:05:00-04:00",
+    // Direct Relief — event page states 100% of donations go to Venezuela earthquake
+    // response; coordinates medical aid with local providers and PAHO. Link-out only.
+    recipientOrganization: "Direct Relief — Venezuela Earthquake Response",
+    description:
+      "Funds emergency medical aid — wound care, surgical supplies, antibiotics, and field medic packs — mobilized to health providers near the epicenter. Direct Relief states 100% of donations go to Venezuela earthquake response, processed on its own site.",
+    destinationLink: "https://www.directrelief.org/2026/06/venezuela-earthquake-caracas-damage/",
+    affiliationLabel: "U.S. medical relief nonprofit (501(c)(3))",
+  },
+  {
     id: "d6",
     verificationStatus: "verified",
     contentLanguage: "en",

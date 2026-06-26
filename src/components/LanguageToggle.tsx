@@ -15,19 +15,15 @@ export function LanguageToggle() {
         type="button"
         aria-pressed={lang === "en"}
         onClick={() => setLang("en")}
-        title={t("lang.en.full")}
       >
-        {t("lang.en")}
-        <span className="sr-only"> — {t("lang.en.full")}</span>
+        {t("lang.en.full")}
       </button>
       <button
         type="button"
         aria-pressed={lang === "es"}
         onClick={() => setLang("es")}
-        title={t("lang.es.full")}
       >
-        {t("lang.es")}
-        <span className="sr-only"> — {t("lang.es.full")}</span>
+        {t("lang.es.full")}
       </button>
     </div>
   );

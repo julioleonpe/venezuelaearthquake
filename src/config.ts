@@ -45,6 +45,89 @@ export const DAMAGE_SOURCE = {
   hostLabel: "terremotovenezuela.com",
 } as const;
 
+/**
+ * Relief Tools & Apps — the single source of truth for the outbound apps/tools
+ * launcher on the command center. These are external, pre-existing systems the
+ * Hub only links out to (new tab, via ExternalLink); it neither builds nor curates
+ * them. Grouping them here (instead of splitting finders across config constants
+ * AND resource entries) keeps the launcher consistent and lets it scale as more
+ * tools arrive. Each item's `labelKey`/`subKey` resolve in the i18n catalog so the
+ * chrome stays bilingual; `note` is an optional inline scope hint (already localized
+ * copy lives in the catalog when it must be translated).
+ *
+ * Ordering within a group is meaningful: the most authoritative / broadest-coverage
+ * tool is listed first so the multiple people-finders read as ranked alternatives.
+ */
+export interface ReliefTool {
+  url: string;
+  labelKey: string;
+  subKey: string;
+  /** When true, `url` is an in-app route (rendered as a client-side <Link>, not a
+   *  new-tab external anchor). Used by the in-Hub stakeholder map. */
+  internal?: boolean;
+}
+export interface ReliefToolGroup {
+  key: "people" | "damage" | "services" | "donate" | "organizations";
+  titleKey: string;
+  tools: ReliefTool[];
+}
+
+export const RELIEF_TOOLS: ReliefToolGroup[] = [
+  {
+    key: "people",
+    titleKey: "tools.group.people",
+    tools: [
+      { url: PEOPLE_FINDER_URL, labelKey: "tools.vtb.label", subKey: "tools.vtb.sub" },
+      { url: PEOPLE_FINDER_2_URL, labelKey: "tools.dtv.label", subKey: "tools.dtv.sub" },
+      { url: "https://ubicadosvzla.com/", labelKey: "tools.ubicados.label", subKey: "tools.ubicados.sub" },
+      { url: "https://encuentralos.tecnosoft.dev/", labelKey: "tools.encuentralos.label", subKey: "tools.encuentralos.sub" },
+    ],
+  },
+  {
+    key: "damage",
+    titleKey: "tools.group.damage",
+    tools: [
+      { url: "https://sos.yummyrides.com/", labelKey: "tools.yummysos.label", subKey: "tools.yummysos.sub" },
+      { url: DAMAGE_MAP_URL, labelKey: "tools.damagemap.label", subKey: "tools.damagemap.sub" },
+    ],
+  },
+  {
+    key: "services",
+    titleKey: "tools.group.services",
+    tools: [
+      { url: "https://heroes.yummyrides.com/", labelKey: "tools.yummyheroes.label", subKey: "tools.yummyheroes.sub" },
+      { url: "https://dona.yummyrides.com/", labelKey: "tools.yummydona.label", subKey: "tools.yummydona.sub" },
+    ],
+  },
+  {
+    // Mirrors the verified Donate channels — intentionally duplicated here so the
+    // launcher is a complete index of where to give as well as which tools exist.
+    key: "donate",
+    titleKey: "tools.group.donate",
+    tools: [
+      { url: "https://donate.caritas.org/venezuela/", labelKey: "tools.caritas.label", subKey: "tools.caritas.sub" },
+      { url: "https://www.ifrc.org/emergencies", labelKey: "tools.ifrc.label", subKey: "tools.ifrc.sub" },
+      { url: "https://www.unicef.org/emergencies", labelKey: "tools.unicef.label", subKey: "tools.unicef.sub" },
+      { url: "https://www.rescue.org/press-release/venezuela-irc-launches-emergency-response-twin-earthquakes", labelKey: "tools.irc.label", subKey: "tools.irc.sub" },
+      { url: "https://donate.wck.org/campaign/815521/donate", labelKey: "tools.wck.label", subKey: "tools.wck.sub" },
+      { url: "https://www.directrelief.org/2026/06/venezuela-earthquake-caracas-damage/", labelKey: "tools.directrelief.label", subKey: "tools.directrelief.sub" },
+      { url: "https://www.globalgiving.org/projects/emergency-appeal-earthquake-in-venezuela/", labelKey: "tools.healing.label", subKey: "tools.healing.sub" },
+      { url: "https://dona.yummyrides.com/", labelKey: "tools.yummydona.label", subKey: "tools.yummydona.sub" },
+    ],
+  },
+  {
+    // Relief organizations — the in-Hub stakeholder map: a reference index of who is
+    // responding, grouped by function. A single in-app route (not an external link),
+    // so the launcher app navigates to /stakeholders inside the Hub. The map itself
+    // links out to each organization (PAHO, OCHA, etc.) with the usual host labels.
+    key: "organizations",
+    titleKey: "tools.group.organizations",
+    tools: [
+      { url: "/stakeholders", labelKey: "tools.stakeholders.label", subKey: "tools.stakeholders.sub", internal: true },
+    ],
+  },
+];
+
 /** Public site origin (ships at venezuelaearthquake2026.com). */
 export const SITE_ORIGIN = "https://venezuelaearthquake2026.com";
 

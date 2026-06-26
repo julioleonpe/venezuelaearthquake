@@ -76,9 +76,18 @@ export function SeismicConsole() {
             <span className="live-dot" aria-hidden="true" />
             {isDamage ? t("damage.title") : t("seismic.title")}
           </span>
-          <span className="console__feed-src">
-            {isDamage ? t("damage.source") : t("seismic.source")}
-          </span>
+          {isDamage ? (
+            <a
+              className="console__feed-src console__feed-src--link"
+              href={DAMAGE_MAP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t("damage.source")} <ExternalIcon size={10} />
+            </a>
+          ) : (
+            <span className="console__feed-src">{t("seismic.source")}</span>
+          )}
         </header>
 
         {/* Layer toggle (segmented control) */}

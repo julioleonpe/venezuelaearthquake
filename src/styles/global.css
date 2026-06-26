@@ -213,12 +213,18 @@ h4 {
    App shell — console command bar
    ========================================================================== */
 .app {
+  position: relative; /* anchor for the floating nav */
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 .app__main {
   flex: 1;
+}
+/* Sub-pages (non-console) scroll normally — reserve the top safe-area so their
+   content doesn't start under the floating nav. */
+.app:not(.app--console) .app__main {
+  padding-top: var(--bar-h);
 }
 
 /* Home route locks to one viewport; the bento owns internal scroll. */
@@ -232,93 +238,30 @@ h4 {
   overflow: hidden;
 }
 
-.cmd-bar {
+/* Tricolor instrument marker pinned to the very top edge (replaces the bar). */
+.topline {
   position: sticky;
   top: 0;
-  z-index: 40;
-  height: var(--bar-h);
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: saturate(150%) blur(12px);
-  border-bottom: 1px solid var(--line);
-}
-.cmd-bar::after {
-  content: "";
-  display: block;
-  height: 2px;
+  z-index: 41;
+  height: 3px;
   background: linear-gradient(
     90deg,
     var(--vz-yellow) 0 33.33%,
     var(--vz-blue) 33.33% 66.66%,
     var(--vz-red) 66.66% 100%
   );
-  opacity: 0.85;
-}
-.cmd-bar__inner {
-  height: calc(var(--bar-h) - 2px);
-  max-width: 1860px;
-  margin-inline: auto;
-  padding-inline: clamp(14px, 1.8vw, 26px);
-  display: flex;
-  align-items: center;
-  gap: 16px;
 }
 
-.brand {
+/* Floating navigation — left-aligned box over the content, no chrome bar.
+   Shape matches the stat/tile boxes (rounded rectangle, --radius-lg). */
+.floating-nav {
+  position: absolute;
+  top: 14px;
+  left: clamp(16px, 1.8vw, 26px); /* match .cc padding-inline so it aligns with the headline */
+  z-index: 40;
   display: flex;
-  align-items: center;
-  gap: 11px;
-  text-decoration: none;
-  color: var(--ink);
-}
-.brand:hover {
-  text-decoration: none;
-}
-.brand-mark {
-  position: relative;
-  width: 38px;
-  height: 38px;
-  flex: none;
-  border-radius: 10px;
-  background: linear-gradient(160deg, #1f2c3a, #131c26);
-  border: 1px solid #0d141c;
-  display: grid;
-  place-items: center;
-  box-shadow: var(--shadow-sm);
-}
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.08;
-}
-.brand-name {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.02rem;
-  letter-spacing: -0.01em;
-}
-.brand-tag {
-  font-family: var(--font-mono);
-  font-size: 0.64rem;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-}
-
-.cmd-bar__status {
-  display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-right: auto;
-  margin-left: 6px;
-  padding: 5px 12px;
-  border-radius: 999px;
-  border: 1px solid var(--line-2);
-  background: var(--surface);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
 }
 
 /* Pulsing live indicator */
@@ -342,12 +285,17 @@ h4 {
   }
 }
 
-/* --- Primary navigation --------------------------------------------------- */
+/* --- Primary navigation (floating box) ----------------------------------- */
 .primary-nav {
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-left: auto; /* brand/status removed — keep nav right-aligned in the bar */
+  padding: 6px;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: saturate(150%) blur(12px);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
 }
 .nav-link {
   display: inline-flex;
@@ -448,12 +396,11 @@ h4 {
   overflow: hidden;
   background: var(--surface);
   flex: none;
-  margin-left: 4px;
 }
 .lang-toggle button {
   border: 0;
   background: none;
-  padding: 6px 11px;
+  padding: 7px 14px;
   font-family: var(--font-mono);
   font-size: 0.76rem;
   font-weight: 600;
@@ -472,11 +419,12 @@ h4 {
 /* --- Mobile nav toggle ---------------------------------------------------- */
 .nav-toggle {
   display: none;
-  margin-left: auto; /* brand/status removed — keep the toggle right-aligned */
-  border: 1px solid var(--line-2);
-  background: var(--surface);
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: saturate(150%) blur(12px);
   border-radius: var(--radius);
-  padding: 8px 10px;
+  box-shadow: var(--shadow-sm);
+  padding: 9px 11px;
   color: var(--ink);
 }
 

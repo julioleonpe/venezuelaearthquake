@@ -1,8 +1,9 @@
 /**
- * Route table. Subsystem pages are lazy-loaded (route-level code-splitting) to
- * keep each route's above-the-fold payload small and protect the 3s navigation
- * budget (Req 1.5, 8.1). A shared Suspense fallback + RouteError handle the
- * pending and failure cases (Req 1.6, 8.2).
+ * Route table. The Hub is a single, self-contained Command Center — the curated
+ * subsystems (news, donations, relief tools) all live in that one view. The only
+ * drill-down is /stakeholders: an informational reference index of responding
+ * organizations that is too large for a bento tile and is not trust-gated content.
+ * Any unknown path falls back to the Command Center.
  */
 
 import { lazy, Suspense } from "react";
@@ -12,12 +13,7 @@ import { RouteError } from "./components/RouteError";
 import { LoadingBlock } from "./components/primitives";
 
 const CommandCenter = lazy(() => import("./pages/CommandCenter"));
-const NewsFeedPage = lazy(() => import("./pages/NewsFeedPage"));
-const DonationsPage = lazy(() => import("./pages/DonationsPage"));
-// The full ResourceDirectoryPage is built but has no verified content to show
-// yet, so /resources renders an "in the works" placeholder. Swap back to
-// ResourceDirectoryPage once the first Resource_Entries are verified.
-const ResourceDirectoryComingSoon = lazy(() => import("./pages/ResourceDirectoryComingSoon"));
+const StakeholderMap = lazy(() => import("./pages/StakeholderMap"));
 
 function withSuspense(node: React.ReactNode) {
   return (
@@ -40,10 +36,10 @@ export const router = createBrowserRouter([
     errorElement: <AppShell />, // keeps chrome; the child error renders within
     children: [
       { index: true, element: withSuspense(<CommandCenter />), errorElement: <RouteError /> },
-      { path: "news", element: withSuspense(<NewsFeedPage />), errorElement: <RouteError /> },
-      { path: "donate", element: withSuspense(<DonationsPage />), errorElement: <RouteError /> },
-      { path: "resources", element: withSuspense(<ResourceDirectoryComingSoon />), errorElement: <RouteError /> },
-      { path: "*", element: <RouteError /> },
+      // The one drill-down: the stakeholder/relief-organization reference index.
+      { path: "stakeholders", element: withSuspense(<StakeholderMap />), errorElement: <RouteError /> },
+      // Any other path falls back to the Command Center.
+      { path: "*", element: withSuspense(<CommandCenter />) },
     ],
   },
 ]);

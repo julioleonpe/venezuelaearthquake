@@ -8,10 +8,13 @@
    COMMAND CENTER — the bento home, locked to one viewport on desktop.
    ========================================================================== */
 .cc {
+  /* Reserve --bar-h at the top as a safe-area for the floating nav, so the status
+     strip (incl. its right-aligned stats) never sits under the nav pills. */
   height: calc(100vh - var(--bar-h));
+  margin-top: var(--bar-h);
   max-width: 1860px;
   margin-inline: auto;
-  padding: clamp(14px, 1.6vw, 24px) clamp(16px, 1.8vw, 26px) clamp(16px, 1.6vw, 24px);
+  padding: clamp(10px, 1.2vw, 16px) clamp(16px, 1.8vw, 26px) clamp(16px, 1.6vw, 24px);
   display: flex;
   flex-direction: column;
   gap: clamp(16px, 1.9vw, 24px);
@@ -96,21 +99,24 @@
   min-height: 0;
   display: grid;
   grid-template-columns: 1fr 1.56fr 1fr;
-  grid-template-rows: auto 1fr;
+  /* Middle column: the Tools launcher is CONTENT-SIZED (auto) — compact when its
+     folders are collapsed, growing only when one expands — so it never reserves
+     dead white space. The seismic console takes whatever height is left (1fr) and
+     thus shrinks/grows inversely as folders open and close. */
+  grid-template-rows: auto minmax(0, 1fr);
   grid-template-areas:
-    "news links   donate"
+    "news tools   donate"
     "news seismic donate";
   gap: clamp(16px, 1.9vw, 24px);
 }
 
-/* Quick-links band — sits above the seismic console
-   (People Finder / Missing Persons Registry / Mapa de Daño / Resource Directory) */
-.cc-links {
-  grid-area: links;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: clamp(16px, 1.9vw, 24px);
-  min-width: 0;
+.tile--tools {
+  grid-area: tools;
+  /* Don't stretch to fill the track — size to content so the box hugs the apps. */
+  align-self: start;
+  /* Safety cap: if many folders/tools ever exceed this, scroll inside rather than
+     crushing the seismic console. */
+  max-height: 60vh;
 }
 
 .tile {
@@ -346,6 +352,168 @@
   padding: 7px 12px;
 }
 
+/* --- Relief Tools & Apps launcher (iOS-style app grid) ------------------- */
+.tools-launcher {
+  padding: 14px 12px 16px;
+}
+.app-launcher {
+  display: flex;
+  flex-direction: column;
+}
+/* App icons sit in a responsive grid; a folder's expanded panel spans the full row. */
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+/* Each category renders as an app icon (anchor for single tools, button for folders). */
+.app-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 7px;
+  padding: 14px 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  text-decoration: none;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  transition: border-color 0.13s ease, background 0.13s ease, transform 0.1s ease, box-shadow 0.13s ease;
+}
+.app-icon:hover {
+  border-color: var(--accent-line);
+  background: var(--accent-tint);
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.app-icon.is-open {
+  border-color: var(--accent-line);
+  background: var(--accent-tint);
+}
+/* The rounded "app glyph" square — iOS app-tile feel. */
+.app-icon__glyph {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  border: 1px solid var(--line-2);
+  color: var(--accent);
+}
+.app-icon--people .app-icon__glyph {
+  color: var(--vz-blue);
+}
+.app-icon--damage .app-icon__glyph {
+  color: var(--vz-red);
+}
+/* Count badge on a folder glyph (how many tools it holds). */
+.app-icon__badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 18px;
+  border: 2px solid var(--surface);
+}
+.app-icon__label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ink);
+}
+.app-icon__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--ink-faint);
+}
+.app-icon__meta svg {
+  flex: none;
+}
+/* Expanded folder panel — spans the full grid width below the icons. */
+.app-folder {
+  grid-column: 1 / -1;
+  padding: 12px;
+  border: 1px solid var(--accent-line);
+  border-radius: var(--radius);
+  background: var(--accent-tint);
+}
+.app-folder__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tool-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 11px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  text-decoration: none;
+  color: var(--ink);
+  transition: border-color 0.13s ease, background 0.13s ease, transform 0.1s ease;
+}
+.tool-row:hover {
+  border-color: var(--accent-line);
+  background: var(--accent-tint);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+.tool-row__body {
+  min-width: 0;
+}
+.tool-row__label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.tool-row__label svg {
+  color: var(--ink-faint);
+  flex: none;
+}
+.tool-row__sub {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  margin-top: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tool-row__host {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--ink-dim);
+}
+
 /* --- Link tiles (people / resources) ------------------------------------- */
 .tile--link {
   flex-direction: row;
@@ -453,6 +621,18 @@
   font-family: var(--font-mono);
   font-size: 0.66rem;
   color: var(--ink-faint);
+}
+.console__feed-src--link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.14s ease;
+}
+.console__feed-src--link:hover {
+  color: var(--accent-deep);
+  text-decoration: underline;
 }
 .console__feed-body {
   flex: 1;
@@ -1115,10 +1295,14 @@
   }
   .cc-grid {
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: none;
     grid-template-areas:
-      "links links"
+      "tools tools"
       "seismic seismic"
       "news donate";
+  }
+  .tile--tools {
+    min-height: 320px;
   }
   .tile--news {
     min-height: 380px;
@@ -1135,21 +1319,17 @@
   .nav-toggle {
     display: inline-flex;
   }
-  .cmd-bar__status {
-    display: none;
-  }
+  /* The nav collapses into a rounded popover anchored under the floating toggle. */
   .primary-nav {
     position: absolute;
-    top: calc(100% + 1px);
+    top: calc(100% + 8px);
     left: 0;
-    right: 0;
     flex-direction: column;
     align-items: stretch;
     gap: 4px;
-    background: var(--surface);
-    border-bottom: 1px solid var(--line);
-    box-shadow: var(--shadow-md);
-    padding: 12px clamp(14px, 4vw, 26px) 18px;
+    width: min(300px, 84vw);
+    border-radius: var(--radius-lg);
+    padding: 10px;
   }
   .primary-nav[data-open="false"] {
     display: none;
@@ -1165,7 +1345,6 @@
     padding: 12px 14px;
   }
   .lang-toggle {
-    margin-left: 0;
     align-self: flex-start;
   }
 }
@@ -1179,21 +1358,6 @@
   .cc-strip__stats {
     justify-content: flex-start;
   }
-  .cc-grid {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "donate"
-      "links"
-      "news"
-      "seismic";
-  }
-  .cc-links {
-    grid-template-columns: 1fr;
-  }
-  .cc-links .tile--link {
-    flex-direction: row;
-    align-items: center;
-  }
   .console {
     grid-template-columns: 1fr;
     grid-template-rows: auto 320px;
@@ -1206,8 +1370,122 @@
   .resources-grid {
     grid-template-columns: 1fr;
   }
-  .tile--seismic {
-    min-height: 560px;
+
+  /* ── Mobile accordion: the whole console fits one screen ─────────────────
+     Each tile collapses to its "app button" header; the open section flexes to
+     fill the remaining height and scrolls internally. No page scroll. */
+  .cc--mobile {
+    height: calc(100dvh - var(--bar-h));
+    min-height: 0;
+    overflow: hidden;
+    gap: 10px;
+  }
+  /* Keep the status strip tight so sections get the room. */
+  .cc--mobile .cc-strip__blurb {
+    display: none;
+  }
+  .cc--mobile .cc-stat {
+    padding: 7px 12px;
+    min-width: 64px;
+  }
+  .cc--mobile .cc-grid {
+    display: flex;
+    flex-direction: column;
+    grid-template: none;
+    gap: 10px;
+    flex: 1;
+    min-height: 0;
+  }
+  /* Collapsed tiles size to their header; the open one fills the leftover space. */
+  .cc--mobile .tile--collapsible {
+    flex: none;
+    min-height: 0;
+  }
+  .cc--mobile .tile--collapsible.is-open {
+    flex: 1;
+    min-height: 0;
+  }
+  /* The app-button header (icon + title + chevron). */
+  .tile__appbtn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 15px 16px;
+    background: var(--surface);
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+    color: var(--ink);
+    text-align: left;
+  }
+  .tile__appbtn-icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: var(--surface-2);
+    border: 1px solid var(--line-2);
+    color: var(--accent);
+    flex: none;
+  }
+  .tile--donate .tile__appbtn-icon {
+    color: var(--vz-red);
+  }
+  .tile__appbtn-title {
+    flex: 1;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+  }
+  .tile__appbtn > svg {
+    color: var(--ink-faint);
+    flex: none;
+    transition: transform 0.18s ease;
+  }
+  .tile--collapsible.is-open .tile__appbtn > svg {
+    transform: rotate(180deg);
+  }
+  .tile--collapsible.is-open .tile__appbtn {
+    border-bottom: 1px solid var(--line);
+  }
+  /* Body of an open section: fills remaining height, scrolls inside. */
+  .tile__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+  .tile__body--bare {
+    overflow: hidden; /* the seismic console manages its own internal scroll/map */
+  }
+  .tile__body .tile__scroll {
+    flex: 1;
+  }
+  /* Footer "view all" link inside an expanded section. */
+  .tile__body-cta {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 4px 14px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  /* Give the seismic console real height when it's the open section. */
+  .cc--mobile .tile--seismic.is-open .console {
+    height: 100%;
+    grid-template-rows: minmax(120px, 40%) 1fr;
+  }
+  .cc--mobile .tile--seismic.is-open .console__feed {
+    max-height: none;
   }
 }
 
@@ -1215,7 +1493,239 @@
   body {
     font-size: 15.5px;
   }
-  .brand-tag {
-    display: none;
+}
+
+/* =============================================================================
+   STAKEHOLDER MAP (/stakeholders) — relief-organization reference index.
+   SINGLE-VIEW like the Command Center: a fixed header (back · title · notice ·
+   legend) over one internal scroll region. The document never scrolls; only
+   .stake__scroll does — so the back button and disclaimer stay pinned. Reuses
+   .notice and .badge. Below 720px it relaxes to a normal document stack.
+   ========================================================================== */
+.stake {
+  height: calc(100vh - var(--bar-h));
+  margin-top: var(--bar-h);
+  max-width: 1860px;
+  margin-inline: auto;
+  padding: clamp(10px, 1.2vw, 16px) clamp(16px, 1.8vw, 26px) clamp(16px, 1.6vw, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.2vw, 16px);
+  min-height: 0;
+}
+
+/* --- Fixed header -------------------------------------------------------- */
+.stake__head {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.stake__head-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.stake__titles .kicker {
+  margin: 0 0 2px;
+}
+.stake__titles h1 {
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  letter-spacing: -0.02em;
+  margin: 0;
+  outline: none;
+}
+
+/* Back-to-command-center button (primary affordance, pinned top-left). */
+.stake__back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: var(--ink-soft);
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  padding: 7px 14px 7px 11px;
+  box-shadow: var(--shadow-sm);
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+.stake__back-btn:hover {
+  color: var(--accent-deep);
+  border-color: var(--accent-line);
+  background: var(--accent-tint);
+}
+.stake__back-arrow {
+  display: inline-flex;
+}
+/* The glyph is a right-arrow; flip it so it points home (left). */
+.stake__back-arrow svg {
+  transform: scaleX(-1);
+}
+.stake__count-pill {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.stake__disclaimer {
+  margin: 0;
+}
+.stake__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  font-size: 0.82rem;
+  color: var(--ink-faint);
+}
+.stake__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* --- Single internal scroll region --------------------------------------- */
+.stake__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 4px 2px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-2) transparent;
+}
+.stake__scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.stake__scroll::-webkit-scrollbar-thumb {
+  background: var(--line-2);
+  border-radius: 999px;
+}
+
+/* Status badges — reuse the .badge base; map status → semantic palette. */
+.stake-badge {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+}
+.stake-badge--hub {
+  color: var(--verified-fg);
+  background: var(--verified-bg);
+  border-color: var(--verified-line);
+}
+.stake-badge--cand {
+  color: var(--info-fg);
+  background: var(--info-bg);
+  border-color: var(--info-line);
+}
+.stake-badge--verify {
+  color: var(--warn-fg);
+  background: var(--warn-bg);
+  border-color: var(--warn-line);
+}
+
+.stake__cat {
+  margin-top: 26px;
+}
+.stake__cat:first-child {
+  margin-top: 4px;
+}
+.stake__cat-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  border-bottom: 1px solid var(--line-2);
+  padding-bottom: 8px;
+}
+.stake__cat-num {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent-deep);
+}
+.stake__cat-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+.stake__cat-count {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-dim);
+  margin-left: auto;
+}
+
+.stake__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+.stake-org {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 14px 15px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+.stake-org__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.stake-org__name {
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0;
+  color: var(--ink);
+}
+.stake-org__role {
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  margin: 0;
+}
+.stake-org__foot {
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.stake__sources {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line-2);
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+  max-width: 80ch;
+}
+
+/* --- Mobile / narrow: relax the fixed shell into a normal document stack --- */
+@media (max-width: 720px) {
+  .stake--mobile {
+    height: auto;
+    min-height: 0;
+    display: block;
+    padding-bottom: 32px;
+  }
+  .stake--mobile .stake__scroll {
+    overflow-y: visible;
+    flex: none;
+  }
+  .stake--mobile .stake__grid {
+    grid-template-columns: 1fr;
   }
 }
