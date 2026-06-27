@@ -56,13 +56,23 @@ const en = {
   "cc.stat.undetermined": "—",
   "cc.stat.missing.value": "+50,000",
   "cc.tile.news": "News & relevant info",
-  "cc.tile.donate": "Donate",
+  "cc.tile.donate": "Donate Now",
   "cc.viewAll": "View all",
   "cc.people.sub": "Report or search for missing & displaced people",
   "cc.people2.sub": "Community registry of people reported missing",
   "cc.resources.sub": "Vetted relief organizations & services",
   "cc.links.label": "Quick links",
   "cc.donate.more": "More verified channels",
+
+  // Situation overview (modal opened from the status strip)
+  "cc.overview.open": "Situation overview",
+  "cc.overview.title": "Situation Overview",
+  "cc.overview.p1":
+    "On Wednesday, June 24, 2026, two massive back-to-back earthquakes (M7.2 and M7.5) struck northern Venezuela near Morón, Carabobo State, just 39 seconds apart — the most powerful to strike the country since 1900 (USGS). The casualty toll has risen sharply since yesterday: the Venezuelan government now reports at least 920 killed; injuries exceed 4,300 and thousands remain missing. Figures conflict across sources and remain provisional as search-and-rescue continues. A nationwide state of emergency remains in effect, and a M4.7 aftershock was recorded on June 26 (USGS).",
+  "cc.overview.p2":
+    "The primary focus in-country remains search and rescue, medical care and services, mental health services, and clean water and food distribution. International USAR teams are being prioritized for the first 48–72 hours of flights. Critical damage continues to be reported to hospitals, public services, and telecommunications networks across multiple states including Caracas, La Guaira, Miranda, Aragua, Carabobo, and Falcón.",
+  "cc.overview.sources": "Sources",
+  "cc.overview.close": "Close",
 
   // Relief Tools & Apps launcher (grouped outbound tools)
   "tools.title": "Relief Tools & Apps",
@@ -174,7 +184,7 @@ const en = {
   "donate.fallback":
     "The donation form could not be embedded here. Use the button below to donate on Caritas's official site.",
   "donate.note": "You'll complete your gift securely on Caritas's own site. The Hub never handles your payment.",
-  "donate.clicks.label": "donation links opened by visitors",
+  "donate.clicks.label": "donation links clicked",
 
   // Landing
   "landing.kicker": "Official relief coordination",
@@ -301,13 +311,22 @@ const es: Record<MessageId, string> = {
   "cc.stat.undetermined": "—",
   "cc.stat.missing.value": "+50,000",
   "cc.tile.news": "Noticias e información relevante",
-  "cc.tile.donate": "Donar",
+  "cc.tile.donate": "Donar Ahora",
   "cc.viewAll": "Ver todo",
   "cc.people.sub": "Reporta o busca personas desaparecidas y desplazadas",
   "cc.people2.sub": "Registro comunitario de personas reportadas como desaparecidas",
   "cc.resources.sub": "Organizaciones y servicios de ayuda validados",
   "cc.links.label": "Enlaces rápidos",
   "cc.donate.more": "Más canales verificados",
+
+  "cc.overview.open": "Resumen de la situación",
+  "cc.overview.title": "Resumen de la situación",
+  "cc.overview.p1":
+    "El miércoles 24 de junio de 2026, dos potentes terremotos consecutivos (M7.2 y M7.5) sacudieron el norte de Venezuela cerca de Morón, estado Carabobo, con apenas 39 segundos de diferencia — los más fuertes que han azotado al país desde 1900 (USGS). El número de víctimas ha aumentado considerablemente desde ayer: el gobierno venezolano reporta ahora al menos 920 fallecidos; los heridos superan los 4.300 y miles continúan desaparecidos. Las cifras varían según la fuente y son provisionales mientras continúan las labores de búsqueda y rescate. Sigue vigente un estado de emergencia nacional, y el 26 de junio se registró una réplica de M4.7 (USGS).",
+  "cc.overview.p2":
+    "La prioridad en el país sigue siendo la búsqueda y rescate, la atención y los servicios médicos, los servicios de salud mental y la distribución de agua potable y alimentos. Se está dando prioridad a los equipos internacionales USAR durante las primeras 48–72 horas de vuelos. Se siguen reportando daños críticos en hospitales, servicios públicos y redes de telecomunicaciones en varios estados, entre ellos Caracas, La Guaira, Miranda, Aragua, Carabobo y Falcón.",
+  "cc.overview.sources": "Fuentes",
+  "cc.overview.close": "Cerrar",
 
   // Lanzador de Herramientas y Apps de Ayuda (enlaces externos agrupados)
   "tools.title": "Herramientas y Apps de Ayuda",
@@ -416,7 +435,7 @@ const es: Record<MessageId, string> = {
   "donate.fallback":
     "No se pudo incrustar el formulario de donación aquí. Usa el botón de abajo para donar en el sitio oficial de Caritas.",
   "donate.note": "Completarás tu donación de forma segura en el sitio oficial de Caritas. El Centro nunca gestiona tu pago.",
-  "donate.clicks.label": "enlaces de donación abiertos por visitantes",
+  "donate.clicks.label": "enlaces de donación pulsados",
 
   "landing.kicker": "Coordinación oficial de ayuda",
   "landing.title": "Ayuda verificada para el terremoto de Venezuela 2026",

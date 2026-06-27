@@ -23,6 +23,7 @@ import { getDonations, getMeta, getNews } from "../api/store";
 import { DonatePanel } from "../components/DonatePanel";
 import { ExternalLink } from "../components/ExternalLink";
 import { SeismicConsole } from "../components/SeismicConsole";
+import { SituationOverview } from "../components/SituationOverview";
 import { ExternalIcon, PeopleIcon, MapIcon, HeartIcon, ClockIcon, ShieldCheckIcon, ChevronDownIcon, NewsIcon, ResourceIcon, ActivityIcon, DonateIcon } from "../components/icons";
 import { RELIEF_TOOLS, CARITAS_SITE_URL } from "../config";
 import type { ReliefToolGroup } from "../config";
@@ -65,12 +66,13 @@ export default function CommandCenter() {
             {t("cc.headline")}
           </h1>
           <p className="cc-strip__blurb">{t("cc.blurb")}</p>
+          <SituationOverview />
         </div>
         <div className="cc-strip__stats">
           <Stat value="7.5" label={t("cc.stat.magnitude")} accent />
           <Stat value="2" label={t("cc.stat.quakes")} />
           <Stat value="920" label={t("cc.stat.deaths")} />
-          <Stat value="3,360" label={t("cc.stat.injuries")} />
+          <Stat value="4,300+" label={t("cc.stat.injuries")} />
           <Stat value={t("cc.stat.missing.value")} label={t("cc.stat.missing")} />
         </div>
         <div className="cc-strip__updated">
@@ -99,10 +101,9 @@ export default function CommandCenter() {
           mobile={mobile}
           open={shows("donate")}
           onToggle={() => toggle("donate")}
+          accessory={<DonateClicksBadge />}
         >
           <div className="tile__scroll tile__scroll--donate">
-            {/* Shared community engagement: how many donation links have been opened. */}
-            <DonateClicksBadge />
             {/* Caritas — the launch channel, highlighted in its own card. */}
             <div className="donate-featured">
               <DonatePanel />
@@ -191,6 +192,7 @@ function TileShell({
   open,
   onToggle,
   bare = false,
+  accessory,
   children,
 }: {
   variant: SectionKey;
@@ -200,6 +202,8 @@ function TileShell({
   open: boolean;
   onToggle: () => void;
   bare?: boolean;
+  /** Optional element rendered next to the title in the tile header. */
+  accessory?: ReactNode;
   children: ReactNode;
 }) {
   const headId = `tile-${variant}-h`;
@@ -217,7 +221,7 @@ function TileShell({
     }
     return (
       <section className={`tile tile--${variant}`} aria-labelledby={headId}>
-        <TileHead id={headId} title={title} />
+        <TileHead id={headId} title={title} accessory={accessory} />
         {children}
       </section>
     );
@@ -235,6 +239,7 @@ function TileShell({
       >
         <span className="tile__appbtn-icon">{icon}</span>
         <span id={headId} className="tile__appbtn-title">{title}</span>
+        {accessory}
         <ChevronDownIcon size={18} />
       </button>
       {open && (
@@ -255,10 +260,11 @@ function Stat({ value, label, accent = false }: { value: string; label: string; 
   );
 }
 
-function TileHead({ id, title }: { id: string; title: string }) {
+function TileHead({ id, title, accessory }: { id: string; title: string; accessory?: ReactNode }) {
   return (
     <header className="tile__head">
       <h2 id={id} className="tile__title">{title}</h2>
+      {accessory}
     </header>
   );
 }
@@ -422,12 +428,13 @@ function DonateClicksBadge() {
   }, []);
 
   if (total == null || total <= 0) return null;
+  const num = total.toLocaleString(lang);
   return (
-    <div className="donate-clicks" role="note">
-      <HeartIcon size={13} />
-      <span className="donate-clicks__num">{total.toLocaleString(lang)}</span>
+    <span className="donate-clicks" role="note">
+      <HeartIcon size={12} />
+      <span className="donate-clicks__num">{num}</span>
       <span className="donate-clicks__label">{t("donate.clicks.label")}</span>
-    </div>
+    </span>
   );
 }
 
