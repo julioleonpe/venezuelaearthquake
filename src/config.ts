@@ -96,6 +96,7 @@ export const RELIEF_TOOLS: ReliefToolGroup[] = [
     titleKey: "tools.group.services",
     tools: [
       { url: "https://heroes.yummyrides.com/", labelKey: "tools.yummyheroes.label", subKey: "tools.yummyheroes.sub" },
+      { url: "https://interp-aid.lovable.app/", labelKey: "tools.interpaid.label", subKey: "tools.interpaid.sub" },
       { url: "https://dona.yummyrides.com/", labelKey: "tools.yummydona.label", subKey: "tools.yummydona.sub" },
     ],
   },
