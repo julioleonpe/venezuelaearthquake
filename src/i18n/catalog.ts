@@ -70,7 +70,7 @@ const en = {
   "tools.group.damage": "Report & view damage",
   "tools.group.services": "Transport & services",
   "tools.group.donate": "Donate",
-  "tools.group.organizations": "Relief organizations",
+  "tools.group.organizations": "Relief organizations map",
   "tools.peopleCount": "{n} registries",
   "tools.itemCount": "{n} apps",
   "tools.channelCount": "{n} channels",
@@ -104,8 +104,8 @@ const en = {
   "tools.directrelief.sub": "Emergency medical aid · 100% to this response",
   "tools.healing.label": "Healing Venezuela",
   "tools.healing.sub": "UK medical relief charity · via GlobalGiving",
-  "tools.stakeholders.label": "Relief organizations",
-  "tools.stakeholders.sub": "Who's responding, grouped by function",
+  "tools.stakeholders.label": "Relief organizations map",
+  "tools.stakeholders.sub": "",
 
   // Resource Directory — in progress (no verified entries published yet)
   "resources.soon.kicker": "In the works",
@@ -121,6 +121,9 @@ const en = {
     "A reference map of {n} organizations engaged in the 2026 Venezuela earthquake response, grouped by function — coordination, medical, food & shelter, children, search & rescue, and more.",
   "stake.disclaimer":
     "Informational only. This is a research reference, not an endorsement. Listing is not verification — confirm each organization independently before relying on it or donating. Status, links, and figures change as the response evolves.",
+  "stake.disclaimer.short":
+    "Informational reference — listing is not verification. Confirm each organization before relying on it or donating.",
+  "stake.legend.title": "Status legend",
   "stake.legend.hub": "Cited on this Hub",
   "stake.legend.cand": "Verified-looking, not yet curated",
   "stake.legend.verify": "Named in coverage; confirm first",
@@ -171,6 +174,7 @@ const en = {
   "donate.fallback":
     "The donation form could not be embedded here. Use the button below to donate on Caritas's official site.",
   "donate.note": "You'll complete your gift securely on Caritas's own site. The Hub never handles your payment.",
+  "donate.clicks.label": "donation links opened by visitors",
 
   // Landing
   "landing.kicker": "Official relief coordination",
@@ -311,7 +315,7 @@ const es: Record<MessageId, string> = {
   "tools.group.damage": "Reportar y ver daños",
   "tools.group.services": "Transporte y servicios",
   "tools.group.donate": "Donar",
-  "tools.group.organizations": "Organizaciones de ayuda",
+  "tools.group.organizations": "Mapa de organizaciones de ayuda",
   "tools.peopleCount": "{n} registros",
   "tools.itemCount": "{n} apps",
   "tools.channelCount": "{n} canales",
@@ -345,8 +349,8 @@ const es: Record<MessageId, string> = {
   "tools.directrelief.sub": "Ayuda médica de emergencia · 100% a esta respuesta",
   "tools.healing.label": "Healing Venezuela",
   "tools.healing.sub": "Organización médica del Reino Unido · vía GlobalGiving",
-  "tools.stakeholders.label": "Organizaciones de ayuda",
-  "tools.stakeholders.sub": "Quién responde, agrupado por función",
+  "tools.stakeholders.label": "Mapa de organizaciones de ayuda",
+  "tools.stakeholders.sub": "",
 
   // Directorio de Recursos — en construcción (aún sin entradas verificadas)
   "resources.soon.kicker": "En construcción",
@@ -362,6 +366,9 @@ const es: Record<MessageId, string> = {
     "Un mapa de referencia de {n} organizaciones que participan en la respuesta al terremoto de Venezuela de 2026, agrupadas por función: coordinación, salud, alimentos y refugio, niñez, búsqueda y rescate, y más.",
   "stake.disclaimer":
     "Solo informativo. Esta es una referencia de investigación, no un respaldo. Aparecer aquí no equivale a verificación: confirma cada organización de forma independiente antes de confiar en ella o donar. El estado, los enlaces y las cifras cambian a medida que evoluciona la respuesta.",
+  "stake.disclaimer.short":
+    "Referencia informativa: aparecer aquí no equivale a verificación. Confirma cada organización antes de confiar en ella o donar.",
+  "stake.legend.title": "Leyenda de estado",
   "stake.legend.hub": "Citada en este Hub",
   "stake.legend.cand": "Parece verificada, aún sin curar",
   "stake.legend.verify": "Mencionada en prensa; confirmar primero",
@@ -409,6 +416,7 @@ const es: Record<MessageId, string> = {
   "donate.fallback":
     "No se pudo incrustar el formulario de donación aquí. Usa el botón de abajo para donar en el sitio oficial de Caritas.",
   "donate.note": "Completarás tu donación de forma segura en el sitio oficial de Caritas. El Centro nunca gestiona tu pago.",
+  "donate.clicks.label": "enlaces de donación abiertos por visitantes",
 
   "landing.kicker": "Coordinación oficial de ayuda",
   "landing.title": "Ayuda verificada para el terremoto de Venezuela 2026",

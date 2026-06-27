@@ -29,14 +29,14 @@ export const publishedNews: NewsItem[] = [
     verificationStatus: "verified",
     contentLanguage: "en",
     createdAt: "2026-06-25T14:00:00-04:00",
-    updatedAt: "2026-06-26T09:45:00-04:00",
+    updatedAt: "2026-06-27T09:52:00-04:00",
     // Primary source: The New York Times live coverage. Kept first.
-    headline: "Live coverage: Death toll rises to 589 as rescuers search for quake survivors",
+    headline: "Live coverage: Rescuers race a narrowing window as quake death toll rises to 920",
     summary:
-      "The New York Times is tracking the aftermath of the two earthquakes — the stronger at magnitude 7.5 — with continuously updated reporting. Venezuela's government says the death toll has risen to 589 with nearly 3,000 injured, as international rescue teams arrive and hundreds remain missing or trapped under rubble.",
+      "The New York Times is tracking the aftermath of the two earthquakes — the stronger at magnitude 7.5 — with continuously updated reporting. Venezuela's government says the death toll has risen to 920 with about 3,360 injured and 172 still trapped, as international search-and-rescue teams from more than a dozen countries work through the latter part of the 72-hour window humanitarian groups consider critical for finding survivors. Roughly 1,400 buildings were damaged, including 13 hospitals, with the heaviest devastation in La Guaira state north of Caracas.",
     sourceAttribution: "The New York Times",
-    sourceLink: "https://www.nytimes.com/live/2026/06/25/world/venezuela-earthquake",
-    publishedAt: "2026-06-26T09:42:00-04:00",
+    sourceLink: "https://www.nytimes.com/live/2026/06/27/world/venezuela-earthquake",
+    publishedAt: "2026-06-27T09:52:00-04:00",
   },
   {
     id: "n-cnn-vis",

@@ -22,9 +22,11 @@ interface ExternalLinkProps {
   /** Visual treatment. "button" renders the primary action button styling. */
   variant?: "inline" | "button";
   className?: string;
+  /** Optional click hook (e.g. fire-and-forget engagement telemetry). */
+  onClick?: () => void;
 }
 
-export function ExternalLink({ href, children, variant = "inline", className }: ExternalLinkProps) {
+export function ExternalLink({ href, children, variant = "inline", className, onClick }: ExternalLinkProps) {
   const { t } = useI18n();
   const { label, unverified } = sourceHostLabel(href);
 
@@ -48,6 +50,7 @@ export function ExternalLink({ href, children, variant = "inline", className }: 
         target="_blank"
         rel="noopener noreferrer"
         className={`btn btn-primary ${className ?? ""}`}
+        onClick={onClick}
       >
         {children}
         <ExternalIcon size={16} />
@@ -65,6 +68,7 @@ export function ExternalLink({ href, children, variant = "inline", className }: 
         target="_blank"
         rel="noopener noreferrer"
         className="ext-link__text"
+        onClick={onClick}
       >
         {children}
         <span className="sr-only"> — {newTabHint}</span>

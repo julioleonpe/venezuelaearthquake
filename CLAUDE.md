@@ -12,11 +12,12 @@ live contract to a spec file that no longer exists.
 Key source layout (`src/`):
 
 - `domain/` — pure, framework-free trust logic (`core.ts`, `types.ts`). The heart of the Hub.
-- `api/` — in-browser read API over a published dataset: `store.ts` (reads `published.ts` and runs the
-  pure gate; no network call), `published.ts` (the verified-only dataset that ships in the bundle),
-  `seed.ts` (authoring data the published set is derived from).
+- `api/` (`src/api/`) — in-browser read API over a published dataset: `store.ts` (reads `published.ts`
+  and runs the pure gate; no network call), `published.ts` (the verified-only dataset that ships in the
+  bundle), `seed.ts` (authoring data the published set is derived from).
 - `lib/` — `usgs.ts` (live USGS seismic feed), `damage.ts` (live community damage-report feed),
-  `useSubsystem.ts`, `useMediaQuery.ts`, `datetime.ts`, `usePageTitle.ts`, `openExternal.ts`.
+  `donateClicks.ts` (client for the donation click-counter endpoint), `useSubsystem.ts`,
+  `useMediaQuery.ts`, `datetime.ts`, `usePageTitle.ts`, `openExternal.ts`.
 - `components/` — `AppShell` (console command bar), `SeismicConsole` + `SeismicMap` (live dual-layer
   feed + Leaflet map), `DonatePanel` (Caritas link-out card), `ExternalLink`, `LanguageToggle`,
   `RouteError`, `primitives`, `icons`.
@@ -25,11 +26,14 @@ Key source layout (`src/`):
 - `i18n/` — EN/ES string catalog (`catalog.ts`) + provider. `styles/` — `global.css` (the
   "Seismograph Console" design system) + `pages.css` (bento + launcher + console styles).
 
-The Hub ships at **venezuelaearthquake2026.com** as a **pure static SPA on Vercel — no backend**. Stack:
-React + TypeScript (Vite), React Router, Leaflet for the map. A `server/` directory exists (a zero-dep
-Node read service) but is **not used by the deployed static build**; production reads curated data from
-`published.ts` in the browser. The shared TS domain types/functions are written to be reusable on a
-backend should one return.
+The Hub ships at **venezuelaearthquake2026.com** on Vercel. Stack: React + TypeScript (Vite), React
+Router, Leaflet for the map. It is **static-first**: curated content (News / Donations / Resources) is
+read **in the browser** from `published.ts` (verified-only, no network call), so the core Hub renders
+with no backend. A **small set of Vercel serverless functions** lives in the root `api/` directory for
+the things that genuinely need a server: `api/[...path].ts` (a read API mirroring `src/api`, present but
+no longer called by the SPA) and `api/donate-clicks.ts` (the donation click counter, backed by Vercel
+KV). A root `server/` directory holds a zero-dep Node version of the read core used by local dev; the
+shared TS domain types/functions stay reusable across all of these.
 
 ## What the product is
 

@@ -1,7 +1,9 @@
 # Venezuela Earthquake Hub — Frontend
 
 A public, **bilingual (EN/ES)** earthquake-relief coordination Hub. Ships at **venezuelaearthquake2026.com**
-as a **pure static SPA on Vercel — no backend**.
+on Vercel — **static-first** (curated content renders in the browser with no backend), with a small set
+of Vercel serverless functions in `api/` for the few things that need a server (e.g. the donation
+click counter, backed by Vercel KV).
 
 The aesthetic is the **"Seismograph Console"** — an instrument-grade civic coordination utility,
 deliberately *not* an emotional campaign or a scam clone. Cool light-slate base, monospace data readings,
@@ -45,7 +47,7 @@ kept only as a reference / backend-reuse target.
 
 ## Architecture
 
-One static SPA over a shared, trust-critical domain:
+A static-first SPA over a shared, trust-critical domain, plus a few serverless functions:
 
 - **`src/` — React + TypeScript SPA (Vite).** Renders the bento command center.
 - **`src/api/` — in-browser read API.** `store.ts` reads the published dataset (`published.ts`) and runs
@@ -57,5 +59,10 @@ One static SPA over a shared, trust-critical domain:
 - **Live external layers** (`src/lib/usgs.ts`, `src/lib/damage.ts`) are third-party feeds fetched
   directly from the browser. They are **deliberately outside the curated gate** and rendered as
   clearly-attributed external layers — never laundered into curated records.
+- **`api/` (root) — Vercel serverless functions.** `api/[...path].ts` is a read API mirroring `src/api`
+  (present for parity; the SPA no longer calls it). `api/donate-clicks.ts` is a tiny counter of donation
+  links opened, backed by **Vercel KV** — kept entirely separate from the curated read path (engagement
+  telemetry, never curated content). It degrades to a hidden count when KV isn't configured (local dev /
+  previews), so the Hub never depends on it.
 
 See `CLAUDE.md` for the full set of architecture invariants.

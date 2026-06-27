@@ -1,33 +1,30 @@
 /**
- * StakeholderMap (/stakeholders) — an in-app reference of organizations engaged
- * in the response, grouped by function.
+ * StakeholderMap (/stakeholders) — the relief-response "player map".
  *
- * Like the Command Center, this is a SINGLE-VIEW surface: a fixed header (back
- * button, title, the "listing is not verification" notice, status legend) over
- * one internal scroll region for the grouped directory. The page itself never
- * scrolls the document — only the body region scrolls — so the back button and
- * disclaimer stay pinned. Below the bento breakpoint it relaxes to a normal stack.
+ * A TRUE single-view dashboard: a slim header over a fixed bento grid that fills
+ * the remaining viewport. Every functional category and every organization is
+ * visible at once — nothing scrolls. Each tile is a category; each row is one org
+ * (status dot + name, name links to the org's site in a new tab). The dot colour
+ * tells you at a glance which are strong contacts (Hub-cited = green); the org's
+ * role + host show on hover (title tooltip) so the grid stays dense.
  *
- * Unlike the curated subsystems it is NOT trust-gated content: it's an
- * informational index of third-party responders the Hub does not own. So it
- * shows each org's `status` (Hub-cited / candidate / verify-first) as a badge and
- * routes every outbound link through ExternalLink (host shown, opens new tab).
- *
- * Data comes from src/data/stakeholders.ts (the single source of truth). Chrome is
- * bilingual via i18n; org role blurbs carry their own EN/ES copy in the dataset.
+ * This is NOT trust-gated content: it's an informational index of third-party
+ * responders the Hub does not own, so it leads with a "listing is not
+ * verification" note and shows each org's `status`. Data is from
+ * src/data/stakeholders.ts (single source of truth); chrome is bilingual.
  */
 
 import { Link } from "react-router-dom";
-import { ExternalLink } from "../components/ExternalLink";
-import { AlertIcon, ArrowRightIcon } from "../components/icons";
+import { AlertIcon, ArrowRightIcon, ExternalIcon } from "../components/icons";
 import {
   STAKEHOLDER_COUNT,
   STAKEHOLDER_GROUPS,
+  type Stakeholder,
   type StakeholderStatus,
 } from "../data/stakeholders";
+import { sourceHostLabel } from "../domain/core";
 import type { MessageId } from "../i18n/catalog";
 import { useI18n } from "../i18n/I18nProvider";
-import { useMediaQuery } from "../lib/useMediaQuery";
 import { usePageHeadingFocus } from "../lib/usePageTitle";
 
 const STATUS_MSG: Record<StakeholderStatus, MessageId> = {
@@ -40,99 +37,108 @@ export default function StakeholderMap() {
   const { t, lang } = useI18n();
   const h1Ref = usePageHeadingFocus<HTMLHeadingElement>(t("stake.title"));
   const es = lang === "es";
-  const mobile = useMediaQuery("(max-width: 720px)");
 
   return (
-    <div className={`stake ${mobile ? "stake--mobile" : ""}`}>
-      {/* ── Fixed header: back · title · disclaimer · legend ──────────────── */}
+    <div className="stake">
+      {/* ── Slim header: back · title+count · legend · one-line note ──────── */}
       <header className="stake__head">
-        <div className="stake__head-top">
-          <Link to="/" className="stake__back-btn">
-            <span className="stake__back-arrow" aria-hidden="true">
-              <ArrowRightIcon size={15} />
-            </span>
-            {t("stake.back")}
-          </Link>
+        <Link to="/" className="stake__back-btn">
+          <span className="stake__back-arrow" aria-hidden="true">
+            <ArrowRightIcon size={15} />
+          </span>
+          {t("stake.back")}
+        </Link>
+
+        <div className="stake__titles">
+          <h1 id="stake-h1" ref={h1Ref} tabIndex={-1}>
+            {t("stake.title")}
+          </h1>
           <span className="stake__count-pill">
             {t("stake.count.many").replace("{n}", String(STAKEHOLDER_COUNT))}
           </span>
         </div>
 
-        <div className="stake__titles">
-          <p className="kicker">{t("stake.kicker")}</p>
-          <h1 id="stake-h1" ref={h1Ref} tabIndex={-1}>
-            {t("stake.title")}
-          </h1>
-        </div>
+        <p className="stake__note" role="note">
+          <AlertIcon size={13} aria-hidden="true" />
+          <span>{t("stake.disclaimer.short")}</span>
+        </p>
 
-        <div className="notice notice-warn stake__disclaimer" role="note">
-          <span className="notice__icon" aria-hidden="true">
-            <AlertIcon size={18} />
-          </span>
-          <span>{t("stake.disclaimer")}</span>
-        </div>
-
-        <div className="stake__legend">
-          <span className="stake__legend-item">
-            <StatusBadge status="hub" />
-            <span>{t("stake.legend.hub")}</span>
-          </span>
-          <span className="stake__legend-item">
-            <StatusBadge status="cand" />
-            <span>{t("stake.legend.cand")}</span>
-          </span>
-          <span className="stake__legend-item">
-            <StatusBadge status="verify" />
-            <span>{t("stake.legend.verify")}</span>
-          </span>
-        </div>
+        <ul className="stake__legend" aria-label={t("stake.legend.title")}>
+          <li><Dot status="hub" /> {t("stake.legend.hub")}</li>
+          <li><Dot status="cand" /> {t("stake.legend.cand")}</li>
+          <li><Dot status="verify" /> {t("stake.legend.verify")}</li>
+        </ul>
       </header>
 
-      {/* ── Single internal scroll region ────────────────────────────────── */}
-      <div className="stake__scroll">
+      {/* ── Fixed bento: all categories + orgs in one view, no scroll ────── */}
+      <div className="stake__map">
         {STAKEHOLDER_GROUPS.map((group, i) => (
-          <section className="stake__cat" key={group.key} aria-labelledby={`stake-${group.key}`}>
-            <header className="stake__cat-head">
-              <span className="stake__cat-num">{String(i + 1).padStart(2, "0")}</span>
-              <h2 className="stake__cat-title" id={`stake-${group.key}`}>
+          <section className="stake-tile" key={group.key} aria-labelledby={`stake-${group.key}`}>
+            <header className="stake-tile__head">
+              <span className="stake-tile__num">{String(i + 1).padStart(2, "0")}</span>
+              <h2 className="stake-tile__title" id={`stake-${group.key}`}>
                 {es ? group.titleEs : group.titleEn}
               </h2>
-              <span className="stake__cat-count">
-                {t(group.orgs.length === 1 ? "stake.count.one" : "stake.count.many").replace(
-                  "{n}",
-                  String(group.orgs.length),
-                )}
-              </span>
+              <span className="stake-tile__count">{group.orgs.length}</span>
             </header>
-
-            <div className="stake__grid">
+            <ul className="stake-tile__orgs">
               {group.orgs.map((org) => (
-                <article className="stake-org" key={org.name}>
-                  <div className="stake-org__top">
-                    <StatusBadge status={org.status} />
-                  </div>
-                  <h3 className="stake-org__name">{org.name}</h3>
-                  <p className="stake-org__role">{es ? org.roleEs : org.roleEn}</p>
-                  <div className="stake-org__foot">
-                    <ExternalLink href={org.url}>{t("stake.open")}</ExternalLink>
-                  </div>
-                </article>
+                <OrgRow key={org.name} org={org} es={es} />
               ))}
-            </div>
+            </ul>
           </section>
         ))}
-
-        <p className="stake__sources">{t("stake.sources")}</p>
       </div>
     </div>
   );
 }
 
-function StatusBadge({ status }: { status: StakeholderStatus }) {
+function OrgRow({ org, es }: { org: Stakeholder; es: boolean }) {
+  const { t } = useI18n();
+  const role = es ? org.roleEs : org.roleEn;
+  const host = org.url ? sourceHostLabel(org.url).label : "";
+  const tip = host ? `${role} · ${host}` : role;
+  const status = t(STATUS_MSG[org.status]);
+
+  // Each org is a compact row; the name links out (new tab). Role + host live in
+  // the tooltip so the grid stays dense enough to show everything at once.
+  const inner = (
+    <>
+      <Dot status={org.status} />
+      <span className="stake-org__name">{org.name}</span>
+      {org.url && <ExternalIcon size={11} aria-hidden="true" />}
+    </>
+  );
+
+  if (!org.url) {
+    return (
+      <li className="stake-org is-nolink" title={`${status} · ${role}`}>
+        {inner}
+      </li>
+    );
+  }
+  return (
+    <li className="stake-org">
+      <a
+        className="stake-org__link"
+        href={org.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        title={`${status} · ${tip}`}
+      >
+        {inner}
+      </a>
+    </li>
+  );
+}
+
+function Dot({ status }: { status: StakeholderStatus }) {
   const { t } = useI18n();
   return (
-    <span className={`badge stake-badge stake-badge--${status}`}>
-      {t(STATUS_MSG[status])}
-    </span>
+    <span
+      className={`stake-dot stake-dot--${status}`}
+      role="img"
+      aria-label={t(STATUS_MSG[status])}
+    />
   );
 }

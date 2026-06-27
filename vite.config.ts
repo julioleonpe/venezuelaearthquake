@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 
 // Route-level code-splitting is handled in the router via React.lazy, protecting
@@ -7,8 +7,43 @@ import react from "@vitejs/plugin-react";
 // SPA fetches verified-only data over HTTP in dev exactly as it will in prod.
 const API_PORT = process.env.API_PORT ?? "5181";
 
+/**
+ * Dev-only stand-in for the `api/donate-clicks.ts` Vercel function. Vite doesn't
+ * run the serverless functions in `api/`, and the local read server doesn't know
+ * this route — so without this the click counter would be invisible in dev. This
+ * keeps an in-memory tally (resets on restart) so the feature is fully exercisable
+ * locally. Its middleware runs before the `/api` proxy, so it wins for this exact
+ * path; in production the real KV-backed function handles it instead.
+ */
+function donateClicksDevPlugin(): Plugin {
+  // Matches the BASELINE the prod function self-seeds in KV (api/donate-clicks.ts),
+  // so dev shows the same starting number; real prod count lives in KV.
+  let total = 33;
+  return {
+    name: "donate-clicks-dev",
+    configureServer(server) {
+      server.middlewares.use("/api/donate-clicks", (req, res) => {
+        const send = () => {
+          res.setHeader("Content-Type", "application/json; charset=utf-8");
+          res.setHeader("Cache-Control", "no-store");
+          res.end(JSON.stringify({ total }));
+        };
+        if (req.method === "POST") {
+          req.on("data", () => {}); // drain + ignore body
+          req.on("end", () => {
+            total += 1;
+            send();
+          });
+          return;
+        }
+        send(); // GET
+      });
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), donateClicksDevPlugin()],
   server: {
     port: 5180,
     open: true,

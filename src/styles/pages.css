@@ -276,6 +276,26 @@
   gap: 18px;
   padding: 14px;
 }
+/* Shared community click count — a small, factual engagement readout. */
+.donate-clicks {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: -2px 2px -4px;
+  font-size: 0.74rem;
+  color: var(--ink-faint);
+}
+.donate-clicks svg {
+  align-self: center;
+  color: var(--accent);
+  flex: none;
+}
+.donate-clicks__num {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--ink);
+}
 /* Caritas — the launch channel, boxed and highlighted within the Donate tile. */
 .donate-featured {
   border: 1px solid var(--accent-line);
@@ -294,6 +314,25 @@
   flex-direction: column;
   gap: 12px;
 }
+/* Collapsed-by-default toggle so the featured Caritas card leads. */
+.donate-more__toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  cursor: pointer;
+  font: inherit;
+  color: var(--ink-soft);
+  transition: border-color 0.13s ease, background 0.13s ease;
+}
+.donate-more__toggle:hover {
+  border-color: var(--line-2);
+  background: var(--surface-3);
+}
 .donate-more__label {
   font-family: var(--font-mono);
   font-size: 0.66rem;
@@ -301,9 +340,28 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ink-faint);
-  padding: 0 2px 2px;
-  border-bottom: 1px solid var(--line);
-  margin-bottom: 2px;
+}
+.donate-more__count {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--ink-faint);
+  background: var(--surface-3);
+  border-radius: 999px;
+  padding: 1px 7px;
+}
+.donate-more__toggle > svg {
+  margin-left: auto;
+  color: var(--ink-faint);
+  transition: transform 0.18s ease;
+}
+.donate-more__toggle.is-open > svg {
+  transform: rotate(180deg);
+}
+.donate-more__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 .donate-row {
   display: flex;
@@ -360,12 +418,14 @@
   display: flex;
   flex-direction: column;
 }
-/* App icons sit in a responsive grid; a folder's expanded panel spans the full row. */
+/* App icons sit in a responsive grid; a folder's expanded panel spans the full row.
+   `stretch` makes every icon in a row share the tallest one's height — combined with
+   the fixed-height label below, all tiles read as uniform iPhone-style app icons. */
 .app-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
-  gap: 12px;
-  align-items: start;
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  gap: 10px;
+  align-items: stretch;
 }
 /* Each category renders as an app icon (anchor for single tools, button for folders). */
 .app-icon {
@@ -373,8 +433,8 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 7px;
-  padding: 14px 10px 12px;
+  gap: 6px;
+  padding: 11px 7px 9px;
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--surface);
@@ -398,14 +458,19 @@
 /* The rounded "app glyph" square — iOS app-tile feel. */
 .app-icon__glyph {
   position: relative;
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
   display: grid;
   place-items: center;
   background: var(--surface-2);
   border: 1px solid var(--line-2);
   color: var(--accent);
+  flex: none;
+}
+.app-icon__glyph svg {
+  width: 21px;
+  height: 21px;
 }
 .app-icon--people .app-icon__glyph {
   color: var(--vz-blue);
@@ -430,19 +495,27 @@
   line-height: 18px;
   border: 2px solid var(--surface);
 }
+/* Fixed 2-line label box so a 1-line label ("Donate") and a 2-line one
+   ("Report & view damage") occupy identical height → uniform app tiles. */
 .app-icon__label {
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.18;
   color: var(--ink);
+  height: calc(2 * 1.18em);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .app-icon__meta {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   color: var(--ink-faint);
+  margin-top: auto;
 }
 .app-icon__meta svg {
   flex: none;
@@ -1353,10 +1426,19 @@
   .cc-strip {
     grid-template-columns: 1fr;
     grid-template-areas: "lead" "stats" "updated";
-    gap: 10px;
+    gap: 8px;
   }
+  /* Stats compress into a single non-wrapping row — each box shrinks to share the
+     width evenly instead of breaking onto a second line. */
   .cc-strip__stats {
     justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+  .cc-strip__stats .cc-stat {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 7px 4px;
   }
   .console {
     grid-template-columns: 1fr;
@@ -1371,28 +1453,106 @@
     grid-template-columns: 1fr;
   }
 
+  /* Reclaim top space: the floating language toggle is compact (EN/ES) on phones,
+     so it needs far less of a safe-area than the desktop nav. Shrink the reserved
+     band and pull the toggle tight to the top edge. */
+  .floating-nav {
+    top: 8px;
+  }
+  .lang-toggle button {
+    padding: 5px 11px;
+    font-size: 0.72rem;
+  }
+
   /* ── Mobile accordion: the whole console fits one screen ─────────────────
      Each tile collapses to its "app button" header; the open section flexes to
      fill the remaining height and scrolls internally. No page scroll. */
   .cc--mobile {
+    --bar-h: 44px;
     height: calc(100dvh - var(--bar-h));
     min-height: 0;
     overflow: hidden;
-    gap: 10px;
+    gap: 8px;
   }
   /* Keep the status strip tight so sections get the room. */
   .cc--mobile .cc-strip__blurb {
     display: none;
   }
+  .cc--mobile .cc-strip__lead h1 {
+    font-size: 1.18rem;
+    line-height: 1.18;
+  }
+  /* Five compact stat boxes share one row — value/label scaled down to fit. */
   .cc--mobile .cc-stat {
-    padding: 7px 12px;
-    min-width: 64px;
+    padding: 6px 3px;
+    min-width: 0;
+  }
+  .cc--mobile .cc-stat__value {
+    font-size: 0.92rem;
+  }
+  .cc--mobile .cc-stat__label {
+    font-size: 0.46rem;
+    letter-spacing: 0.02em;
+    margin-top: 2px;
+  }
+  /* "Content last updated" reduced to a quiet one-line readout. */
+  .cc--mobile .last-updated {
+    font-size: 0.62rem;
+    gap: 6px;
+    padding: 3px 9px;
+  }
+
+  /* --- Compact Caritas card (mobile only) -------------------------------
+     Tighten the featured card so its Donate button fits without an internal
+     scroll: less padding, smaller type, a clamped description, and slimmer
+     amount/CTA buttons. */
+  .cc--mobile .tile__scroll--donate {
+    gap: 12px;
+    padding: 10px;
+  }
+  .cc--mobile .donate-featured .donate-panel {
+    padding: 12px 13px 13px;
+  }
+  .cc--mobile .donate-panel__head {
+    margin-bottom: 6px;
+  }
+  .cc--mobile .donate-panel__org {
+    font-size: 0.94rem;
+  }
+  .cc--mobile .donate-panel__affil {
+    font-size: 0.7rem;
+    margin-bottom: 7px;
+  }
+  .cc--mobile .donate-panel__desc {
+    font-size: 0.8rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .cc--mobile .donate-amounts {
+    gap: 6px;
+    margin: 9px 0 4px;
+  }
+  .cc--mobile .donate-amount {
+    padding: 8px 4px;
+  }
+  .cc--mobile .donate-amount__value {
+    font-size: 0.98rem;
+  }
+  .cc--mobile .donate-panel__cta {
+    margin-top: 9px;
+    padding: 9px 14px;
+  }
+  .cc--mobile .donate-panel__note {
+    margin-top: 6px;
+    font-size: 0.66rem;
   }
   .cc--mobile .cc-grid {
     display: flex;
     flex-direction: column;
     grid-template: none;
-    gap: 10px;
+    gap: 7px;
     flex: 1;
     min-height: 0;
   }
@@ -1400,18 +1560,25 @@
   .cc--mobile .tile--collapsible {
     flex: none;
     min-height: 0;
+    /* In the mobile flex column, align-self governs the CROSS (horizontal) axis.
+       .tile--tools sets `align-self: start` for the DESKTOP grid (vertical
+       size-to-content); reset it here or the Tools tile shrink-wraps narrower
+       than its siblings. Also drop the desktop max-height cap. */
+    align-self: stretch;
+    max-height: none;
   }
   .cc--mobile .tile--collapsible.is-open {
     flex: 1;
     min-height: 0;
   }
-  /* The app-button header (icon + title + chevron). */
+  /* The app-button header (icon + title + chevron) — compact so collapsed tiles
+     take minimal height and the open section gets the room. */
   .tile__appbtn {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 9px;
     width: 100%;
-    padding: 15px 16px;
+    padding: 9px 12px;
     background: var(--surface);
     border: 0;
     cursor: pointer;
@@ -1422,9 +1589,9 @@
   .tile__appbtn-icon {
     display: grid;
     place-items: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 11px;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
     background: var(--surface-2);
     border: 1px solid var(--line-2);
     color: var(--accent);
@@ -1433,10 +1600,14 @@
   .tile--donate .tile__appbtn-icon {
     color: var(--vz-red);
   }
+  .tile__appbtn-icon svg {
+    width: 16px;
+    height: 16px;
+  }
   .tile__appbtn-title {
     flex: 1;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.88rem;
     letter-spacing: -0.01em;
   }
   .tile__appbtn > svg {
@@ -1496,54 +1667,41 @@
 }
 
 /* =============================================================================
-   STAKEHOLDER MAP (/stakeholders) — relief-organization reference index.
-   SINGLE-VIEW like the Command Center: a fixed header (back · title · notice ·
-   legend) over one internal scroll region. The document never scrolls; only
-   .stake__scroll does — so the back button and disclaimer stay pinned. Reuses
-   .notice and .badge. Below 720px it relaxes to a normal document stack.
+   STAKEHOLDER "PLAYER MAP" (/stakeholders) — true single-view dashboard.
+   A slim header over a fixed bento grid that fills the rest of the viewport.
+   EVERYTHING is visible at once — the page never scrolls (overflow: hidden).
+   Each tile = a category; each row = one org (status dot + name, links out).
+   Role + host live in the row's tooltip so the grid stays dense. Below 720px it
+   relaxes into a normal scrolling stack.
    ========================================================================== */
 .stake {
   height: calc(100vh - var(--bar-h));
   margin-top: var(--bar-h);
-  max-width: 1860px;
+  max-width: 1920px;
   margin-inline: auto;
-  padding: clamp(10px, 1.2vw, 16px) clamp(16px, 1.8vw, 26px) clamp(16px, 1.6vw, 24px);
+  padding: clamp(8px, 1vw, 14px) clamp(14px, 1.6vw, 24px) clamp(10px, 1.2vw, 18px);
   display: flex;
   flex-direction: column;
-  gap: clamp(10px, 1.2vw, 16px);
+  gap: clamp(8px, 1vw, 12px);
   min-height: 0;
+  overflow: hidden;
 }
 
-/* --- Fixed header -------------------------------------------------------- */
+/* --- Slim single-row header ---------------------------------------------- */
 .stake__head {
   flex: none;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.stake__head-top {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 10px 16px;
+  flex-wrap: wrap;
 }
-.stake__titles .kicker {
-  margin: 0 0 2px;
-}
-.stake__titles h1 {
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
-  letter-spacing: -0.02em;
-  margin: 0;
-  outline: none;
-}
-
-/* Back-to-command-center button (primary affordance, pinned top-left). */
 .stake__back-btn {
   display: inline-flex;
   align-items: center;
   gap: 7px;
+  flex: none;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   text-decoration: none;
@@ -1551,7 +1709,7 @@
   background: var(--surface);
   border: 1px solid var(--line-2);
   border-radius: 999px;
-  padding: 7px 14px 7px 11px;
+  padding: 6px 13px 6px 10px;
   box-shadow: var(--shadow-sm);
   transition: color 0.12s, border-color 0.12s, background 0.12s;
 }
@@ -1563,169 +1721,203 @@
 .stake__back-arrow {
   display: inline-flex;
 }
-/* The glyph is a right-arrow; flip it so it points home (left). */
 .stake__back-arrow svg {
-  transform: scaleX(-1);
+  transform: scaleX(-1); /* right-arrow glyph flipped to point home */
+}
+.stake__titles {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  min-width: 0;
+}
+.stake__titles h1 {
+  font-size: clamp(1.05rem, 1.6vw, 1.4rem);
+  letter-spacing: -0.02em;
+  margin: 0;
+  outline: none;
 }
 .stake__count-pill {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
   color: var(--ink-faint);
   white-space: nowrap;
 }
-
-.stake__disclaimer {
+.stake__note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin: 0;
+  font-size: 0.74rem;
+  color: var(--warn-fg);
+  min-width: 0;
+}
+.stake__note svg {
+  flex: none;
+}
+.stake__note span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .stake__legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 18px;
-  font-size: 0.82rem;
+  gap: 4px 13px;
+  margin: 0 0 0 auto;
+  padding: 0;
+  list-style: none;
+  font-size: 0.72rem;
   color: var(--ink-faint);
 }
-.stake__legend-item {
+.stake__legend li {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
 }
 
-/* --- Single internal scroll region --------------------------------------- */
-.stake__scroll {
+/* --- Status dot ---------------------------------------------------------- */
+.stake-dot {
+  display: inline-block;
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(24, 34, 46, 0.18);
+}
+.stake-dot--hub { background: var(--verified); }
+.stake-dot--cand { background: var(--vz-blue); }
+.stake-dot--verify { background: var(--accent); }
+
+/* --- Fixed bento: fills remaining viewport, no scroll -------------------- */
+.stake__map {
   flex: 1;
   min-height: 0;
-  overflow-y: auto;
-  padding: 4px 2px 8px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--line-2) transparent;
-}
-.stake__scroll::-webkit-scrollbar {
-  width: 8px;
-}
-.stake__scroll::-webkit-scrollbar-thumb {
-  background: var(--line-2);
-  border-radius: 999px;
-}
-
-/* Status badges — reuse the .badge base; map status → semantic palette. */
-.stake-badge {
-  font-family: var(--font-mono);
-  font-size: 0.64rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  padding: 2px 8px;
-}
-.stake-badge--hub {
-  color: var(--verified-fg);
-  background: var(--verified-bg);
-  border-color: var(--verified-line);
-}
-.stake-badge--cand {
-  color: var(--info-fg);
-  background: var(--info-bg);
-  border-color: var(--info-line);
-}
-.stake-badge--verify {
-  color: var(--warn-fg);
-  background: var(--warn-bg);
-  border-color: var(--warn-line);
-}
-
-.stake__cat {
-  margin-top: 26px;
-}
-.stake__cat:first-child {
-  margin-top: 4px;
-}
-.stake__cat-head {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  border-bottom: 1px solid var(--line-2);
-  padding-bottom: 8px;
-}
-.stake__cat-num {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--accent-deep);
-}
-.stake__cat-title {
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin: 0;
-}
-.stake__cat-count {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--ink-dim);
-  margin-left: auto;
-}
-
-.stake__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 12px;
-  margin-top: 14px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 1fr;
+  gap: clamp(7px, 0.8vw, 11px);
+  overflow: hidden;
 }
-.stake-org {
+.stake-tile {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  padding: 14px 15px;
+  min-height: 0;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
+  overflow: hidden;
 }
-.stake-org__top {
+.stake-tile__head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  gap: 7px;
+  padding: 6px 9px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-2);
+  flex: none;
 }
-.stake-org__name {
-  font-size: 0.98rem;
+.stake-tile__num {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
   font-weight: 600;
-  line-height: 1.25;
+  color: var(--accent-deep);
+}
+.stake-tile__title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.15;
   margin: 0;
   color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.stake-org__role {
-  font-size: 0.84rem;
-  color: var(--ink-soft);
+.stake-tile__count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--ink-dim);
+  background: var(--bg-2);
+  border-radius: 999px;
+  padding: 0 6px;
+  flex: none;
+}
+.stake-tile__orgs {
+  list-style: none;
   margin: 0;
-}
-.stake-org__foot {
-  margin-top: auto;
-  padding-top: 4px;
-}
-
-.stake__sources {
-  margin-top: 32px;
-  padding-top: 16px;
-  border-top: 1px solid var(--line-2);
-  font-size: 0.8rem;
-  color: var(--ink-faint);
-  max-width: 80ch;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 0;
+  flex: 1;
 }
 
-/* --- Mobile / narrow: relax the fixed shell into a normal document stack --- */
+/* --- Org row (links out; role + host in tooltip) ------------------------- */
+.stake-org {
+  min-width: 0;
+}
+.stake-org__link,
+.stake-org.is-nolink {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 6px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: var(--ink);
+}
+.stake-org__link {
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.stake-org__link:hover {
+  background: var(--surface-3);
+}
+.stake-org.is-nolink {
+  color: var(--ink-soft);
+}
+.stake-org__name {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.stake-org__link svg {
+  flex: none;
+  color: var(--ink-dim);
+}
+.stake-org__link:hover svg {
+  color: var(--accent-deep);
+}
+
+/* --- Responsive: 4 → 3 → 2 cols; then a normal scrolling stack ----------- */
+@media (max-width: 1320px) {
+  .stake__map { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 1000px) {
+  .stake__map { grid-template-columns: repeat(2, 1fr); }
+}
 @media (max-width: 720px) {
-  .stake--mobile {
+  .stake {
     height: auto;
     min-height: 0;
     display: block;
-    padding-bottom: 32px;
+    overflow: visible;
+    padding-bottom: 28px;
   }
-  .stake--mobile .stake__scroll {
-    overflow-y: visible;
-    flex: none;
+  .stake__legend { margin-left: 0; width: 100%; }
+  .stake__note span { white-space: normal; }
+  .stake__map {
+    display: block;
+    grid-auto-rows: auto;
+    overflow: visible;
   }
-  .stake--mobile .stake__grid {
-    grid-template-columns: 1fr;
-  }
+  .stake-tile { margin-bottom: 9px; }
 }

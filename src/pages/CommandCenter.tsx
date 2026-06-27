@@ -17,7 +17,7 @@
  * (and on mobile) the grid relaxes into a natural vertical stack.
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getDonations, getMeta, getNews } from "../api/store";
 import { DonatePanel } from "../components/DonatePanel";
@@ -31,6 +31,7 @@ import type { DonationChannel, NewsItem } from "../domain/types";
 import type { MessageId } from "../i18n/catalog";
 import { useI18n } from "../i18n/I18nProvider";
 import { formatDateTime, formatDateTimeTz } from "../lib/datetime";
+import { fetchDonateClicks, recordDonateClick } from "../lib/donateClicks";
 import { useMediaQuery } from "../lib/useMediaQuery";
 import { openExternal } from "../lib/openExternal";
 import { useSubsystem } from "../lib/useSubsystem";
@@ -68,8 +69,8 @@ export default function CommandCenter() {
         <div className="cc-strip__stats">
           <Stat value="7.5" label={t("cc.stat.magnitude")} accent />
           <Stat value="2" label={t("cc.stat.quakes")} />
-          <Stat value="589" label={t("cc.stat.deaths")} />
-          <Stat value="2,980" label={t("cc.stat.injuries")} />
+          <Stat value="920" label={t("cc.stat.deaths")} />
+          <Stat value="3,360" label={t("cc.stat.injuries")} />
           <Stat value={t("cc.stat.missing.value")} label={t("cc.stat.missing")} />
         </div>
         <div className="cc-strip__updated">
@@ -100,23 +101,20 @@ export default function CommandCenter() {
           onToggle={() => toggle("donate")}
         >
           <div className="tile__scroll tile__scroll--donate">
+            {/* Shared community engagement: how many donation links have been opened. */}
+            <DonateClicksBadge />
             {/* Caritas — the launch channel, highlighted in its own card. */}
             <div className="donate-featured">
               <DonatePanel />
             </div>
-            {donations.status === "ready" && (() => {
-              // Caritas is already featured above; list the remaining verified channels.
-              const others = donations.data.filter((c) => c.destinationLink !== CARITAS_SITE_URL);
-              if (others.length === 0) return null;
-              return (
-                <div className="donate-more">
-                  <div className="donate-more__label">{t("cc.donate.more")}</div>
-                  {others.map((c) => (
-                    <DonationRow key={c.id} channel={c} lang={lang} />
-                  ))}
-                </div>
-              );
-            })()}
+            {donations.status === "ready" && (
+              // Caritas is already featured above; the remaining verified channels
+              // stay collapsed behind a toggle so Caritas leads without scrolling.
+              <DonateMore
+                channels={donations.data.filter((c) => c.destinationLink !== CARITAS_SITE_URL)}
+                lang={lang}
+              />
+            )}
           </div>
         </TileShell>
 
@@ -322,11 +320,13 @@ function ToolApp({
         <Link
           className={`app-icon app-icon--${group.key}`}
           to={tool.url}
-          title={`${title} — ${t(tool.subKey as MessageId)}`}
+          title={t(tool.subKey as MessageId) ? `${title} — ${t(tool.subKey as MessageId)}` : title}
         >
           <span className="app-icon__glyph"><Icon size={24} /></span>
           <span className="app-icon__label">{title}</span>
-          <span className="app-icon__meta">{t(tool.subKey as MessageId)}</span>
+          {t(tool.subKey as MessageId) && (
+            <span className="app-icon__meta">{t(tool.subKey as MessageId)}</span>
+          )}
         </Link>
       );
     }
@@ -400,6 +400,71 @@ function ToolApp({
   );
 }
 
+/**
+ * DonateClicksBadge — shows the shared, community-wide count of donation links
+ * opened from the Hub. Reads `/api/donate-clicks` on mount; if the counter store
+ * isn't configured (local dev, preview without KV) the total is null and the badge
+ * renders nothing. It's a best-effort engagement signal — never a financial figure
+ * (the Hub still never handles funds).
+ */
+function DonateClicksBadge() {
+  const { t, lang } = useI18n();
+  const [total, setTotal] = useState<number | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchDonateClicks().then((n) => {
+      if (!cancelled) setTotal(n);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (total == null || total <= 0) return null;
+  return (
+    <div className="donate-clicks" role="note">
+      <HeartIcon size={13} />
+      <span className="donate-clicks__num">{total.toLocaleString(lang)}</span>
+      <span className="donate-clicks__label">{t("donate.clicks.label")}</span>
+    </div>
+  );
+}
+
+/**
+ * DonateMore — the "other verified channels" list, collapsed behind a toggle so
+ * the featured Caritas card is the default focus. Expanding reveals the rest.
+ */
+function DonateMore({ channels, lang }: { channels: DonationChannel[]; lang: "en" | "es" }) {
+  const { t } = useI18n();
+  const [open, setOpen] = useState(false);
+  if (channels.length === 0) return null;
+
+  const panelId = "donate-more-panel";
+  return (
+    <div className="donate-more">
+      <button
+        type="button"
+        className={`donate-more__toggle ${open ? "is-open" : ""}`}
+        aria-expanded={open}
+        aria-controls={panelId}
+        onClick={() => setOpen((v) => !v)}
+      >
+        <span className="donate-more__label">{t("cc.donate.more")}</span>
+        <span className="donate-more__count">{channels.length}</span>
+        <ChevronDownIcon size={16} />
+      </button>
+      {open && (
+        <div id={panelId} className="donate-more__list">
+          {channels.map((c) => (
+            <DonationRow key={c.id} channel={c} lang={lang} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function DonationRow({ channel, lang }: { channel: DonationChannel; lang: "en" | "es" }) {
   const { t } = useI18n();
   const showLang = needsLanguageIndicator(channel.contentLanguage, lang);
@@ -424,7 +489,11 @@ function DonationRow({ channel, lang }: { channel: DonationChannel; lang: "en" |
       </div>
       <div className="donate-row__foot">
         {showLang && <span className="news-row__lang">{channel.contentLanguage.toUpperCase()}</span>}
-        <ExternalLink href={channel.destinationLink} variant="button">
+        <ExternalLink
+          href={channel.destinationLink}
+          variant="button"
+          onClick={() => recordDonateClick(channel.id)}
+        >
           {t("donations.give")}
         </ExternalLink>
       </div>

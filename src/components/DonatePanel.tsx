@@ -21,6 +21,7 @@ import {
 } from "../config";
 import { sourceHostLabel } from "../domain/core";
 import { useI18n } from "../i18n/I18nProvider";
+import { recordDonateClick } from "../lib/donateClicks";
 import { ExternalIcon, HeartIcon, ShieldCheckIcon } from "./icons";
 
 const SUGGESTED = [50, 100, 250] as const;
@@ -71,7 +72,10 @@ function CaritasCard({ host }: { host: string }) {
             href={amountUrl(amt)}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => track("donate_click", { surface: "suggested_amount", amount: amt })}
+            onClick={() => {
+              recordDonateClick("caritas");
+              track("donate_click", { surface: "suggested_amount", amount: amt });
+            }}
           >
             <span className="donate-amount__value">${amt}</span>
             <span className="sr-only"> — {host}, {t("ext.opensNewTab")}</span>
@@ -84,7 +88,10 @@ function CaritasCard({ host }: { host: string }) {
         href={CARITAS_SITE_URL}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => track("donate_click", { surface: "cta" })}
+        onClick={() => {
+          recordDonateClick("caritas");
+          track("donate_click", { surface: "cta" });
+        }}
       >
         <HeartIcon size={16} />
         {t("donate.cta")}
@@ -145,7 +152,10 @@ function CaritasEmbed() {
         href={CARITAS_SITE_URL}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => track("donate_click", { surface: blocked ? "embed_fallback" : "embed_linkout" })}
+        onClick={() => {
+          recordDonateClick("caritas");
+          track("donate_click", { surface: blocked ? "embed_fallback" : "embed_linkout" });
+        }}
       >
         {t("donate.openOfficial")}
         <ExternalIcon size={15} />
