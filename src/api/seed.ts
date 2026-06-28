@@ -143,7 +143,7 @@ export const seedDonations: DonationChannel[] = [
     recipientOrganization: "International Federation of Red Cross (IFRC)",
     description:
       "Supports the Venezuelan Red Cross with emergency health, water, and sanitation response. Funds the deployment of trained volunteers and relief supplies.",
-    destinationLink: "https://www.ifrc.org/emergencies",
+    destinationLink: "https://donate.redcrossredcrescent.org/~share?cid=1139&lang=en_EN",
     affiliationLabel: "Global Red Cross and Red Crescent network",
   },
   {

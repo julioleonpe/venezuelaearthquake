@@ -29,14 +29,14 @@ export const publishedNews: NewsItem[] = [
     verificationStatus: "verified",
     contentLanguage: "en",
     createdAt: "2026-06-25T14:00:00-04:00",
-    updatedAt: "2026-06-27T09:52:00-04:00",
+    updatedAt: "2026-06-27T22:32:00-04:00",
     // Primary source: The New York Times live coverage. Kept first.
-    headline: "Live coverage: Rescuers race a narrowing window as quake death toll rises to 920",
+    headline: "Live coverage: Chaotic rush to help victims delays some rescues as toll passes 1,400",
     summary:
-      "The New York Times is tracking the aftermath of the two earthquakes — the stronger at magnitude 7.5 — with continuously updated reporting. Venezuela's government says the death toll has risen to 920 with about 3,360 injured and 172 still trapped, as international search-and-rescue teams from more than a dozen countries work through the latter part of the 72-hour window humanitarian groups consider critical for finding survivors. Roughly 1,400 buildings were damaged, including 13 hospitals, with the heaviest devastation in La Guaira state north of Caracas.",
+      "The New York Times is tracking the aftermath of the two earthquakes — the stronger at magnitude 7.5 — with continuously updated reporting. Venezuela's National Assembly says the death toll has risen to 1,430, with more than 3,200 injured and over 3,000 left homeless. A surge of civilian volunteers carrying aid clogged the single highway into La Guaira, slowing ambulances and rescue crews, prompting authorities to militarize the state and restrict access. The U.N. estimates roughly 125 buildings collapsed and expects the toll to climb. The U.S. has taken a leading coordinating role, repairing a Caracas airport runway and deploying the U.S.S. Fort Lauderdale.",
     sourceAttribution: "The New York Times",
     sourceLink: "https://www.nytimes.com/live/2026/06/27/world/venezuela-earthquake",
-    publishedAt: "2026-06-27T09:52:00-04:00",
+    publishedAt: "2026-06-27T22:32:00-04:00",
   },
   {
     id: "n-cnn-vis",
@@ -150,28 +150,19 @@ export const publishedDonations: DonationChannel[] = [
     affiliationLabel: "International aid agency of the Catholic Church",
   },
   {
-    id: "d2",
+    id: "d8",
     verificationStatus: "verified",
     contentLanguage: "en",
-    createdAt: "2026-06-24T11:30:00-04:00",
-    updatedAt: "2026-06-24T11:30:00-04:00",
-    recipientOrganization: "International Federation of Red Cross (IFRC)",
+    createdAt: "2026-06-26T11:00:00-04:00",
+    updatedAt: "2026-06-26T11:00:00-04:00",
+    // World Central Kitchen — event-specific campaign donate page confirmed live
+    // (multi-currency; Charity Navigator 4-star / Candid Platinum). Funds processed
+    // on WCK's own platform — the Hub only links out.
+    recipientOrganization: "World Central Kitchen — Venezuela Earthquake Relief",
     description:
-      "Supports the Venezuelan Red Cross with emergency health, water, and sanitation response. Funds the deployment of trained volunteers and relief supplies.",
-    destinationLink: "https://www.ifrc.org/emergencies",
-    affiliationLabel: "Global Red Cross and Red Crescent network",
-  },
-  {
-    id: "d3",
-    verificationStatus: "verified",
-    contentLanguage: "es",
-    createdAt: "2026-06-24T12:45:00-04:00",
-    updatedAt: "2026-06-24T12:45:00-04:00",
-    recipientOrganization: "UNICEF — Niñez en Emergencia",
-    description:
-      "Atención a la infancia afectada: nutrición, agua segura, espacios protegidos y apoyo psicosocial para niñas y niños desplazados por el terremoto.",
-    destinationLink: "https://www.unicef.org/emergencies",
-    affiliationLabel: "Fondo de las Naciones Unidas para la Infancia",
+      "Funds fresh meals for families and first responders affected by the earthquakes, served through WCK's Relief Team and longtime local partners. Donations are processed on World Central Kitchen's own platform.",
+    destinationLink: "https://donate.wck.org/campaign/815521/donate",
+    affiliationLabel: "Disaster-relief nonprofit founded by chef José Andrés (501(c)(3))",
   },
   {
     id: "d10",
@@ -186,21 +177,6 @@ export const publishedDonations: DonationChannel[] = [
       "Mobilizing an emergency response in the hardest-hit areas: distribution of essential relief items and emergency medical supplies to frontline workers, building on the IRC's health and protection work in Venezuela since 2021. Donations are processed on the IRC's own site.",
     destinationLink: "https://www.rescue.org/press-release/venezuela-irc-launches-emergency-response-twin-earthquakes",
     affiliationLabel: "International humanitarian NGO",
-  },
-  {
-    id: "d8",
-    verificationStatus: "verified",
-    contentLanguage: "en",
-    createdAt: "2026-06-26T11:00:00-04:00",
-    updatedAt: "2026-06-26T11:00:00-04:00",
-    // World Central Kitchen — event-specific campaign donate page confirmed live
-    // (multi-currency; Charity Navigator 4-star / Candid Platinum). Funds processed
-    // on WCK's own platform — the Hub only links out.
-    recipientOrganization: "World Central Kitchen — Venezuela Earthquake Relief",
-    description:
-      "Funds fresh meals for families and first responders affected by the earthquakes, served through WCK's Relief Team and longtime local partners. Donations are processed on World Central Kitchen's own platform.",
-    destinationLink: "https://donate.wck.org/campaign/815521/donate",
-    affiliationLabel: "Disaster-relief nonprofit founded by chef José Andrés (501(c)(3))",
   },
   {
     id: "d9",
@@ -245,6 +221,30 @@ export const publishedDonations: DonationChannel[] = [
       "Portal de donaciones de Yummy para la emergencia, con Pago Móvil, tarjeta internacional y ACH. Yummy iguala el 25% de lo recaudado hasta $100.000. Los fondos se procesan en la propia plataforma de Yummy.",
     destinationLink: "https://dona.yummyrides.com/",
     affiliationLabel: "Super-app venezolana (Yummy Rides)",
+  },
+  {
+    id: "d3",
+    verificationStatus: "verified",
+    contentLanguage: "es",
+    createdAt: "2026-06-24T12:45:00-04:00",
+    updatedAt: "2026-06-24T12:45:00-04:00",
+    recipientOrganization: "UNICEF — Niñez en Emergencia",
+    description:
+      "Atención a la infancia afectada: nutrición, agua segura, espacios protegidos y apoyo psicosocial para niñas y niños desplazados por el terremoto.",
+    destinationLink: "https://www.unicef.org/emergencies",
+    affiliationLabel: "Fondo de las Naciones Unidas para la Infancia",
+  },
+  {
+    id: "d2",
+    verificationStatus: "verified",
+    contentLanguage: "en",
+    createdAt: "2026-06-24T11:30:00-04:00",
+    updatedAt: "2026-06-24T11:30:00-04:00",
+    recipientOrganization: "International Federation of Red Cross (IFRC)",
+    description:
+      "Supports the Venezuelan Red Cross with emergency health, water, and sanitation response. Funds the deployment of trained volunteers and relief supplies.",
+    destinationLink: "https://donate.redcrossredcrescent.org/~share?cid=1139&lang=en_EN",
+    affiliationLabel: "Global Red Cross and Red Crescent network",
   },
 ];
 

@@ -10,6 +10,7 @@
 import { Outlet } from "react-router-dom";
 import { useI18n } from "../i18n/I18nProvider";
 import { LanguageToggle } from "./LanguageToggle";
+import { LastUpdatedBadge } from "./LastUpdatedBadge";
 
 export function AppShell() {
   const { t } = useI18n();
@@ -23,9 +24,12 @@ export function AppShell() {
       {/* Tricolor instrument marker at the very top edge (no chrome bar). */}
       <div className="topline" aria-hidden="true" />
 
-      {/* Floating language toggle — the only persistent control. */}
+      {/* Floating chrome — Language_Toggle (left) and the last-updated badge (right). */}
       <div className="floating-nav">
         <LanguageToggle />
+      </div>
+      <div className="floating-nav floating-nav--right">
+        <LastUpdatedBadge />
       </div>
 
       <main id="main" tabIndex={-1} className="app__main">

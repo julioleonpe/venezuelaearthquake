@@ -263,6 +263,11 @@ h4 {
   align-items: center;
   gap: 8px;
 }
+/* Right-anchored chrome (last-updated badge), level with the Language_Toggle. */
+.floating-nav--right {
+  left: auto;
+  right: clamp(16px, 1.8vw, 26px);
+}
 
 /* Pulsing live indicator */
 .live-dot {

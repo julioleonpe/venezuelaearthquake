@@ -3,7 +3,8 @@
  * only route (no drill-down pages). One desktop viewport, no page scroll: a fixed
  * bento grid where each tile owns an independent data source and degrades on its
  * own. Tiles:
- *  - Status strip: what happened + key stats + content-last-updated (Req 1.7).
+ *  - Status strip: what happened + key stats (content-last-updated lives in the
+ *    shell's floating nav, top-right, Req 1.7).
  *  - News: verified News_Items, newest first — internal scroll.
  *  - Relief Tools & Apps: outbound launcher (people finders, damage tools,
  *    services) sourced from RELIEF_TOOLS; multi-tool groups expand inline.
@@ -19,19 +20,19 @@
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getDonations, getMeta, getNews } from "../api/store";
+import { getDonations, getNews } from "../api/store";
 import { DonatePanel } from "../components/DonatePanel";
 import { ExternalLink } from "../components/ExternalLink";
 import { SeismicConsole } from "../components/SeismicConsole";
 import { SituationOverview } from "../components/SituationOverview";
-import { ExternalIcon, PeopleIcon, MapIcon, HeartIcon, ClockIcon, ShieldCheckIcon, ChevronDownIcon, NewsIcon, ResourceIcon, ActivityIcon, DonateIcon } from "../components/icons";
-import { RELIEF_TOOLS, CARITAS_SITE_URL } from "../config";
-import type { ReliefToolGroup } from "../config";
+import { ExternalIcon, PeopleIcon, MapIcon, HeartIcon, ShieldCheckIcon, ChevronDownIcon, NewsIcon, ResourceIcon, ActivityIcon, DonateIcon, InboxIcon } from "../components/icons";
+import { RELIEF_TOOLS, CARITAS_SITE_URL, NEW_TOOL_WINDOW_DAYS } from "../config";
+import type { ReliefTool, ReliefToolGroup } from "../config";
 import { needsLanguageIndicator, sourceHostLabel } from "../domain/core";
 import type { DonationChannel, NewsItem } from "../domain/types";
 import type { MessageId } from "../i18n/catalog";
 import { useI18n } from "../i18n/I18nProvider";
-import { formatDateTime, formatDateTimeTz } from "../lib/datetime";
+import { formatDateTime, isWithinDays } from "../lib/datetime";
 import { fetchDonateClicks, recordDonateClick } from "../lib/donateClicks";
 import { useMediaQuery } from "../lib/useMediaQuery";
 import { openExternal } from "../lib/openExternal";
@@ -46,7 +47,6 @@ export default function CommandCenter() {
   const h1Ref = usePageHeadingFocus<HTMLHeadingElement>(t("brand.name"));
   const news = useSubsystem(() => getNews(), []);
   const donations = useSubsystem(() => getDonations(), []);
-  const meta = useSubsystem(() => getMeta(), []);
 
   // Mobile-only accordion: below the bento breakpoint each tile collapses behind an
   // "app button" header and only the open section's body mounts. Donate is the one
@@ -59,7 +59,7 @@ export default function CommandCenter() {
 
   return (
     <div className={`cc ${mobile ? "cc--mobile" : ""}`}>
-      {/* ── Status strip: headline + stat + last-updated ──────────────────── */}
+      {/* ── Status strip: headline + stats (last-updated lives in the shell nav) ─ */}
       <section className="cc-strip" aria-labelledby="cc-h1">
         <div className="cc-strip__lead">
           <h1 id="cc-h1" ref={h1Ref} tabIndex={-1}>
@@ -71,22 +71,9 @@ export default function CommandCenter() {
         <div className="cc-strip__stats">
           <Stat value="7.5" label={t("cc.stat.magnitude")} accent />
           <Stat value="2" label={t("cc.stat.quakes")} />
-          <Stat value="920" label={t("cc.stat.deaths")} />
-          <Stat value="4,300+" label={t("cc.stat.injuries")} />
+          <Stat value="1,430" label={t("cc.stat.deaths")} />
+          <Stat value="3,200+" label={t("cc.stat.injuries")} />
           <Stat value={t("cc.stat.missing.value")} label={t("cc.stat.missing")} />
-        </div>
-        <div className="cc-strip__updated">
-          {meta.status === "ready" ? (
-            <span className="last-updated">
-              <span className="badge-dot" aria-hidden="true" />
-              {t("landing.lastUpdated")}:{" "}
-              <time dateTime={meta.data.lastUpdated}>{formatDateTimeTz(meta.data.lastUpdated, lang)}</time>
-            </span>
-          ) : (
-            <span className="last-updated" aria-busy="true">
-              <ClockIcon size={13} /> {t("loading.label")}
-            </span>
-          )}
         </div>
       </section>
 
@@ -273,6 +260,7 @@ const GROUP_ICON: Record<ReliefToolGroup["key"], typeof PeopleIcon> = {
   people: PeopleIcon,
   damage: MapIcon,
   services: HeartIcon,
+  coordination: InboxIcon,
   donate: DonateIcon,
   organizations: ResourceIcon,
 };
@@ -300,6 +288,24 @@ function ToolsLauncher() {
       </div>
     </div>
   );
+}
+
+/**
+ * Transient "newly added" badge. Shows only while a tool's `addedAt` is within
+ * NEW_TOOL_WINDOW_DAYS of now, then drops automatically (no manual cleanup). The
+ * current time is read once per render via `new Date()` — presentation-only, so
+ * it stays out of the pure domain layer.
+ */
+function NewBadge({ tool }: { tool: ReliefTool }) {
+  const { t } = useI18n();
+  if (!isWithinDays(tool.addedAt, NEW_TOOL_WINDOW_DAYS, new Date())) return null;
+  return <span className="tool-new">{t("tools.newBadge")}</span>;
+}
+
+/** Any tool in the group still inside its "newly added" window? */
+function groupHasNew(group: ReliefToolGroup): boolean {
+  const now = new Date();
+  return group.tools.some((tool) => isWithinDays(tool.addedAt, NEW_TOOL_WINDOW_DAYS, now));
 }
 
 function ToolApp({
@@ -349,6 +355,7 @@ function ToolApp({
         <span className="app-icon__glyph"><Icon size={24} /></span>
         <span className="app-icon__label">{title}</span>
         <span className="app-icon__meta"><ExternalIcon size={11} /> {host}</span>
+        <NewBadge tool={tool} />
       </a>
     );
   }
@@ -367,6 +374,7 @@ function ToolApp({
         <span className="app-icon__glyph">
           <Icon size={24} />
           <span className="app-icon__badge">{group.tools.length}</span>
+          {groupHasNew(group) && <span className="app-icon__newdot" title={t("tools.newBadge")} />}
         </span>
         <span className="app-icon__label">{title}</span>
         <span className="app-icon__meta">
@@ -391,6 +399,7 @@ function ToolApp({
                     <span className="tool-row__body">
                       <span className="tool-row__label">
                         {t(tool.labelKey as MessageId)} <ExternalIcon size={12} />
+                        <NewBadge tool={tool} />
                       </span>
                       <span className="tool-row__sub">{t(tool.subKey as MessageId)}</span>
                     </span>

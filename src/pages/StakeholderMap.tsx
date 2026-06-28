@@ -22,9 +22,11 @@ import {
   type Stakeholder,
   type StakeholderStatus,
 } from "../data/stakeholders";
+import { NEW_TOOL_WINDOW_DAYS } from "../config";
 import { sourceHostLabel } from "../domain/core";
 import type { MessageId } from "../i18n/catalog";
 import { useI18n } from "../i18n/I18nProvider";
+import { isWithinDays } from "../lib/datetime";
 import { usePageHeadingFocus } from "../lib/usePageTitle";
 
 const STATUS_MSG: Record<StakeholderStatus, MessageId> = {
@@ -99,6 +101,8 @@ function OrgRow({ org, es }: { org: Stakeholder; es: boolean }) {
   const host = org.url ? sourceHostLabel(org.url).label : "";
   const tip = host ? `${role} · ${host}` : role;
   const status = t(STATUS_MSG[org.status]);
+  const isNew = isWithinDays(org.addedAt, NEW_TOOL_WINDOW_DAYS, new Date());
+  const newBadge = isNew ? <span className="stake-org__new">{t("tools.newBadge")}</span> : null;
 
   // Each org is a compact row; the name links out (new tab). Role + host live in
   // the tooltip so the grid stays dense enough to show everything at once.
@@ -110,10 +114,84 @@ function OrgRow({ org, es }: { org: Stakeholder; es: boolean }) {
     </>
   );
 
+  // Phone-only responder (e.g. firefighters): the number is the actionable bit,
+  // so render it always-visible as a tap-to-call tel: link rather than hiding it
+  // in the tooltip.
+  if (org.phones?.length) {
+    return (
+      <li className="stake-org is-phone" title={`${status} · ${role}`}>
+        <div className="stake-org__head">
+          <Dot status={org.status} />
+          <span className="stake-org__name">{org.name}</span>
+          {newBadge}
+        </div>
+        <div className="stake-org__phones">
+          {org.phones.map((phone) => (
+            <a key={phone} className="stake-org__phone" href={`tel:${phone.replace(/[^\d+]/g, "")}`}>
+              {phone}
+            </a>
+          ))}
+        </div>
+      </li>
+    );
+  }
+
+  // WhatsApp-reachable support: show the number always-visible as a tap-to-chat
+  // wa.me link (opens the conversation, not the dialer) — right for message-first
+  // and international lines.
+  if (org.whatsapp?.length) {
+    return (
+      <li className="stake-org is-phone" title={`${status} · ${role}`}>
+        <div className="stake-org__head">
+          <Dot status={org.status} />
+          <span className="stake-org__name">{org.name}</span>
+          {newBadge}
+        </div>
+        <div className="stake-org__phones">
+          {org.whatsapp.map((wa) => (
+            <a
+              key={wa}
+              className="stake-org__phone is-wa"
+              href={`https://wa.me/${wa.replace(/[^\d]/g, "")}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              WhatsApp {wa}
+            </a>
+          ))}
+        </div>
+      </li>
+    );
+  }
+
+  // Physical location (e.g. donation drop-off center): the address is the
+  // actionable bit, so show it always-visible as a tap-to-navigate Google Maps
+  // search link rather than hiding it in the tooltip.
+  if (org.address) {
+    return (
+      <li className="stake-org is-addr" title={`${status} · ${role}`}>
+        <div className="stake-org__head">
+          <Dot status={org.status} />
+          <span className="stake-org__name">{org.name}</span>
+          {newBadge}
+        </div>
+        <a
+          className="stake-org__addr"
+          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(org.address)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {org.address}
+        </a>
+      </li>
+    );
+  }
+
   if (!org.url) {
     return (
       <li className="stake-org is-nolink" title={`${status} · ${role}`}>
         {inner}
+        {newBadge}
       </li>
     );
   }
@@ -128,6 +206,7 @@ function OrgRow({ org, es }: { org: Stakeholder; es: boolean }) {
       >
         {inner}
       </a>
+      {newBadge}
     </li>
   );
 }

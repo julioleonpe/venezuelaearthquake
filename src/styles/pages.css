@@ -14,10 +14,10 @@
   margin-top: var(--bar-h);
   max-width: 1860px;
   margin-inline: auto;
-  padding: clamp(10px, 1.2vw, 16px) clamp(16px, 1.8vw, 26px) clamp(16px, 1.6vw, 24px);
+  padding: clamp(8px, 0.9vw, 12px) clamp(16px, 1.8vw, 26px) clamp(16px, 1.6vw, 24px);
   display: flex;
   flex-direction: column;
-  gap: clamp(16px, 1.9vw, 24px);
+  gap: clamp(12px, 1.4vw, 18px);
   min-height: 0;
 }
 
@@ -25,9 +25,9 @@
 .cc-strip {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) auto;
-  grid-template-areas: "lead stats" "updated stats";
+  grid-template-areas: "lead stats";
   align-items: center;
-  gap: 4px 28px;
+  gap: 2px 28px;
   flex: none;
 }
 .cc-strip__lead {
@@ -35,32 +35,29 @@
   min-width: 0;
 }
 .cc-strip__lead h1 {
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  font-size: clamp(1.15rem, 1.7vw, 1.5rem);
   letter-spacing: -0.02em;
+  line-height: 1.15;
   outline: none;
 }
 .cc-strip__blurb {
-  margin-top: 4px;
+  margin-top: 3px;
   color: var(--ink-soft);
-  font-size: clamp(0.82rem, 1vw, 0.93rem);
+  font-size: clamp(0.8rem, 0.95vw, 0.88rem);
+  line-height: 1.4;
   max-width: 82ch;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.cc-strip__updated {
-  grid-area: updated;
-  align-self: start;
-}
-
 /* "Situation overview" trigger — opens the briefing modal from the status strip. */
 .overview-trigger {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 8px;
-  padding: 5px 11px;
+  margin-top: 6px;
+  padding: 4px 10px;
   border-radius: 999px;
   border: 1px solid var(--accent-line);
   background: var(--accent-tint);
@@ -175,12 +172,12 @@
 }
 .cc-stat {
   text-align: center;
-  padding: 11px 20px;
+  padding: 7px 15px;
   border-radius: var(--radius);
   background: var(--surface);
   border: 1px solid var(--line);
   box-shadow: var(--shadow-sm);
-  min-width: 86px;
+  min-width: 74px;
 }
 .cc-stat--accent {
   border-color: var(--accent-line);
@@ -190,7 +187,7 @@
   display: block;
   font-family: var(--font-mono);
   font-weight: 600;
-  font-size: clamp(1.2rem, 1.8vw, 1.6rem);
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
   line-height: 1;
   color: var(--ink);
 }
@@ -199,8 +196,8 @@
 }
 .cc-stat__label {
   display: block;
-  margin-top: 4px;
-  font-size: 0.62rem;
+  margin-top: 3px;
+  font-size: 0.6rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--ink-faint);
@@ -554,6 +551,7 @@
 }
 /* Each category renders as an app icon (anchor for single tools, button for folders). */
 .app-icon {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -619,6 +617,42 @@
   font-weight: 700;
   line-height: 18px;
   border: 2px solid var(--surface);
+}
+/* "New inside" dot on a collapsed folder glyph — signals a freshly added tool
+   lives in this folder without expanding it. Sits opposite the count badge. */
+.app-icon__newdot {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  background: var(--vz-red);
+  border: 2px solid var(--surface);
+}
+/* Transient "newly added" pill — shown for NEW_TOOL_WINDOW_DAYS, then drops. */
+.tool-new {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--vz-red);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+/* On a single-tool icon the pill rides the top-right corner; on a folder row it
+   flows inline after the label (handled by .tool-row__label's flex gap). */
+.app-icon .tool-new {
+  position: absolute;
+  top: 7px;
+  right: 7px;
 }
 /* Fixed 2-line label box so a 1-line label ("Donate") and a 2-line one
    ("Report & view damage") occupy identical height → uniform app tiles. */
@@ -1550,7 +1584,7 @@
 @media (max-width: 720px) {
   .cc-strip {
     grid-template-columns: 1fr;
-    grid-template-areas: "lead" "stats" "updated";
+    grid-template-areas: "lead" "stats";
     gap: 8px;
   }
   /* Stats compress into a single non-wrapping row — each box shrinks to share the
@@ -1620,8 +1654,8 @@
     letter-spacing: 0.02em;
     margin-top: 2px;
   }
-  /* "Content last updated" reduced to a quiet one-line readout. */
-  .cc--mobile .last-updated {
+  /* "Content last updated" reduced to a quiet one-line readout in the top-right. */
+  .floating-nav--right .last-updated {
     font-size: 0.62rem;
     gap: 6px;
     padding: 3px 9px;
@@ -2020,6 +2054,71 @@
 }
 .stake-org__link:hover svg {
   color: var(--accent-deep);
+}
+/* Phone-only responder (firefighters): name row + always-visible tap-to-call
+   numbers underneath. The number is the actionable bit, so it's never hidden. */
+.stake-org.is-phone,
+.stake-org.is-addr {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 3px 6px;
+}
+/* Tap-to-navigate address for a physical drop-off center. Wraps (unlike the
+   single-line org name) since addresses are long; the whole line is the link. */
+.stake-org__addr {
+  padding-left: 15px;
+  font-size: 0.72rem;
+  line-height: 1.25;
+  color: var(--accent-deep);
+  text-decoration: none;
+}
+.stake-org__addr:hover {
+  text-decoration: underline;
+}
+.stake-org__head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+.stake-org__phones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  padding-left: 15px;
+}
+.stake-org__phone {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--accent-deep);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.stake-org__phone:hover {
+  text-decoration: underline;
+}
+/* WhatsApp contact — tinted the WhatsApp green so it reads as "message", not call. */
+.stake-org__phone.is-wa {
+  color: #1da851;
+  white-space: normal;
+}
+/* Transient "newly added" pill on a stakeholder row — same red as the launcher,
+   auto-expires after NEW_TOOL_WINDOW_DAYS. */
+.stake-org__new {
+  flex: none;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--vz-red);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1.6;
+  white-space: nowrap;
 }
 
 /* --- Responsive: 4 → 3 → 2 cols; then a normal scrolling stack ----------- */

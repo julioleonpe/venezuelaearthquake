@@ -28,6 +28,23 @@ export interface Stakeholder {
   status: StakeholderStatus;
   roleEn: string;
   roleEs: string;
+  /** Phone contacts (e.g. emergency lines) shown as tap-to-call `tel:` links.
+   *  Used for responders that publish a number rather than a website; rendered
+   *  always-visible (not in the tooltip) since the number is the actionable bit. */
+  phones?: string[];
+  /** WhatsApp contact numbers, shown always-visible as tap-to-chat `wa.me` links
+   *  (opens the WhatsApp conversation, NOT the phone dialer). Used for support
+   *  lines reachable by message rather than call — esp. international numbers a
+   *  caller would message, not phone. */
+  whatsapp?: string[];
+  /** Physical address (e.g. a donation drop-off center). Shown always-visible as
+   *  a tap-to-navigate link (Google Maps search) since the address is the
+   *  actionable bit. Language-neutral; any descriptor (incl. hours) goes in the
+   *  bilingual role text to keep the localization-is-presentation invariant. */
+  address?: string;
+  /** ISO-8601 timestamp of when this org was added — drives the transient
+   *  "newly added" badge, which auto-expires (see NEW_TOOL_WINDOW_DAYS). */
+  addedAt?: string;
 }
 
 export interface StakeholderGroup {
@@ -121,6 +138,24 @@ export const STAKEHOLDER_GROUPS: StakeholderGroup[] = [
         roleEn: "UK medical relief charity; trauma kits, treatment, potable water (via GlobalGiving).",
         roleEs: "Organización médica del Reino Unido; kits de trauma, tratamiento, agua potable (vía GlobalGiving).",
       },
+      {
+        name: "PsicoLínea (UCAB)",
+        url: null,
+        status: "hub",
+        roleEn: "Free, confidential psychological help line (UCAB Psychology / PsicoData): psychological first aid & crisis intervention. Thursdays 8am–5pm.",
+        roleEs: "Línea de ayuda psicológica gratuita y confidencial (Psicología UCAB / PsicoData): primeros auxilios psicológicos e intervención en crisis. Jueves de 8am a 5pm.",
+        phones: ["0414-1217882", "0424-1723981"],
+        addedAt: "2026-06-27T12:00:00-04:00",
+      },
+      {
+        name: "Psicólogos por Venezuela",
+        url: null,
+        status: "verify",
+        roleEn: "Network of 600+ psychologists, psychiatrists & mental-health professionals offering free, immediate psychological support to Venezuelans in and outside the country. Reach by WhatsApp.",
+        roleEs: "Red de más de 600 psicólogos, psiquiatras y profesionales de salud mental que ofrecen acompañamiento psicológico gratuito e inmediato a venezolanos dentro y fuera del país. Atención por WhatsApp.",
+        whatsapp: ["+52 55 3320 0457"],
+        addedAt: "2026-06-27T12:00:00-04:00",
+      },
     ],
   },
   {
@@ -141,6 +176,74 @@ export const STAKEHOLDER_GROUPS: StakeholderGroup[] = [
         status: "cand",
         roleEn: "Relief org (founded post-2010 Haiti) responding.",
         roleEs: "Organización de ayuda (fundada tras Haití 2010) respondiendo.",
+      },
+    ],
+  },
+  {
+    key: "firefighters",
+    titleEn: "Firefighters (affected areas)",
+    titleEs: "Bomberos (áreas afectadas)",
+    orgs: [
+      {
+        name: "Bomberos de Chacao",
+        url: null,
+        status: "verify",
+        roleEn: "Fire & rescue service — Chacao, Caracas.",
+        roleEs: "Servicio de bomberos y rescate — Chacao, Caracas.",
+        phones: ["0212-2653261"],
+        addedAt: "2026-06-27T12:00:00-04:00",
+      },
+      {
+        name: "Bomberos de La Guaira",
+        url: null,
+        status: "verify",
+        roleEn: "Fire & rescue service — La Guaira state.",
+        roleEs: "Servicio de bomberos y rescate — estado La Guaira.",
+        phones: ["0212-3327620", "0212-3310445"],
+        addedAt: "2026-06-27T12:00:00-04:00",
+      },
+      {
+        name: "Bomberos Metropolitanos",
+        url: null,
+        status: "verify",
+        roleEn: "Metropolitan fire department — Caracas.",
+        roleEs: "Cuerpo de bomberos metropolitano — Caracas.",
+        phones: ["0212-5454545"],
+        addedAt: "2026-06-27T12:00:00-04:00",
+      },
+      {
+        name: "Bomberos del estado Miranda",
+        url: null,
+        status: "verify",
+        roleEn: "Fire & rescue service — Miranda state.",
+        roleEs: "Servicio de bomberos y rescate — estado Miranda.",
+        phones: ["0212-2356967"],
+        addedAt: "2026-06-27T12:00:00-04:00",
+      },
+      {
+        name: "Bomberos de Plaza Venezuela",
+        url: null,
+        status: "verify",
+        roleEn: "Fire & rescue service — Plaza Venezuela, Caracas.",
+        roleEs: "Servicio de bomberos y rescate — Plaza Venezuela, Caracas.",
+        phones: ["0212-7936457"],
+        addedAt: "2026-06-27T12:00:00-04:00",
+      },
+    ],
+  },
+  {
+    key: "engineers",
+    titleEn: "Engineers & structural safety",
+    titleEs: "Ingenieros y seguridad estructural",
+    orgs: [
+      {
+        name: "Ingenieros UCV (Madrid)",
+        url: null,
+        status: "verify",
+        roleEn: "Venezuelan engineers in Madrid (UCV alumni) running free remote (telematic) inspections and reports to confirm whether a home is safe and habitable. Reach by WhatsApp.",
+        roleEs: "Ingenieros venezolanos en Madrid (egresados UCV) que realizan inspecciones telemáticas e informes gratuitos para confirmar si una vivienda es segura y habitable. Atención por WhatsApp.",
+        whatsapp: ["+34 672 917 856"],
+        addedAt: "2026-06-27T12:00:00-04:00",
       },
     ],
   },
@@ -302,6 +405,66 @@ export const STAKEHOLDER_GROUPS: StakeholderGroup[] = [
         status: "cand",
         roleEn: "Channels donations to vetted local organizations.",
         roleEs: "Canaliza donaciones a organizaciones locales verificadas.",
+      },
+    ],
+  },
+  {
+    key: "acopio-caracas",
+    titleEn: "Drop-off centers — Caracas",
+    titleEs: "Centros de acopio — Caracas",
+    orgs: [
+      {
+        name: "G3 Logística — Caracas",
+        url: null,
+        status: "verify",
+        roleEn: "Donation drop-off center. Mon–Fri 9:00 AM–12:00 PM & 2:00–3:30 PM.",
+        roleEs: "Centro de acopio de donaciones. Lun–Vie 9:00 AM–12:00 PM y 2:00–3:30 PM.",
+        address:
+          "Av. Principal de Los Cortijos de Lourdes, Edificio Maploca, Los Cortijos de Lourdes, Caracas",
+        addedAt: "2026-06-27T12:00:00-04:00",
+      },
+      {
+        name: "Cáritas Venezuela — Sede Montalbán",
+        url: null,
+        status: "hub",
+        roleEn: "Donation drop-off — Venezuelan Bishops' Conference HQ, ~200m from UCAB, facing Urb. Juan Pablo II.",
+        roleEs: "Centro de acopio — sede de la Conferencia Episcopal Venezolana, a ~200m de la UCAB, frente a la Urb. Juan Pablo II.",
+        address: "Av. Teherán, Montalbán, Caracas",
+        addedAt: "2026-06-27T12:00:00-04:00",
+      },
+    ],
+  },
+  {
+    key: "acopio-valencia",
+    titleEn: "Drop-off centers — Valencia",
+    titleEs: "Centros de acopio — Valencia",
+    orgs: [
+      {
+        name: "G3 Logística — Valencia",
+        url: null,
+        status: "verify",
+        roleEn: "Donation drop-off center. Mon–Fri 9:00 AM–12:00 PM & 2:00–3:30 PM.",
+        roleEs: "Centro de acopio de donaciones. Lun–Vie 9:00 AM–12:00 PM y 2:00–3:30 PM.",
+        address:
+          "Calle La Pedrera, Fundo Los Marines, Lote S/N, Zona Industrial San Diego, Edo. Carabobo",
+        addedAt: "2026-06-27T12:00:00-04:00",
+      },
+    ],
+  },
+  {
+    key: "acopio-barquisimeto",
+    titleEn: "Drop-off centers — Barquisimeto",
+    titleEs: "Centros de acopio — Barquisimeto",
+    orgs: [
+      {
+        name: "G3 Logística — Barquisimeto",
+        url: null,
+        status: "verify",
+        roleEn: "Donation drop-off center. Mon–Fri 9:00 AM–12:00 PM & 2:00–3:30 PM.",
+        roleEs: "Centro de acopio de donaciones. Lun–Vie 9:00 AM–12:00 PM y 2:00–3:30 PM.",
+        address:
+          "Zona Industrial II, Av. Principal con Calle 6, Locales 110-111-112, Municipio Iribarren, Barquisimeto, Edo. Lara",
+        addedAt: "2026-06-27T12:00:00-04:00",
       },
     ],
   },

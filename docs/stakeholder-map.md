@@ -44,7 +44,8 @@
 | **International Medical Corps** | Assistance teams deployed; humanitarian/medical aid. | 🆕 Candidate | internationalmedicalcorps.org |
 | **Healing Venezuela** | UK-based; free quality medical assistance in Venezuela. | 🆕 Candidate | healingvenezuela.org |
 | **Grupo Venemergencia** | Leading Venezuelan medical-assistance platform; physical + psychological help. | ⚠️ Verify | IG: venemergencia |
-| **PsicoLínea** (UCAB School of Psychology) | Free psychological first-aid line (0414-121 7882 / 0424-172 3981). | ⚠️ Verify | IG: psicodatavzla |
+| **PsicoLínea** (UCAB School of Psychology) | Free psychological first-aid line (0414-121 7882 / 0424-172 3981). Thu 8am–5pm. | ✅ In Hub | IG: psicodatavzla |
+| **Psicólogos por Venezuela** | Network of 600+ mental-health professionals; free, immediate support in/outside the country (WhatsApp +52 55 3320 0457). | ⚠️ Verify | WhatsApp |
 
 ## 4. Search & Rescue
 
@@ -52,6 +53,37 @@
 |---|---|---|---|
 | **Bomberos Unidos Sin Fronteras (BUSF)** | Spanish S&R team deployed (funded via Direct Relief). | ⚠️ Verify | busf.org |
 | **CORE** (Community Organized Relief Effort) | Relief org (founded post-2010 Haiti); responding. | 🆕 Candidate | coreresponse.org |
+
+## 4b. Firefighters (Affected Areas)
+
+Emergency phone lines for fire & rescue services in affected areas (no website; tap-to-call in the Hub). Transcribed from a shared graphic — confirm before relying on them.
+
+| Org | Role | Status | Phone |
+|---|---|---|---|
+| **Bomberos de Chacao** | Fire & rescue — Chacao, Caracas. | ⚠️ Verify | 0212-2653261 |
+| **Bomberos de La Guaira** | Fire & rescue — La Guaira state. | ⚠️ Verify | 0212-3327620 / 0212-3310445 |
+| **Bomberos Metropolitanos** | Metropolitan fire department — Caracas. | ⚠️ Verify | 0212-5454545 |
+| **Bomberos del estado Miranda** | Fire & rescue — Miranda state. | ⚠️ Verify | 0212-2356967 |
+| **Bomberos de Plaza Venezuela** | Fire & rescue — Plaza Venezuela, Caracas. | ⚠️ Verify | 0212-7936457 |
+
+## 4c. Drop-off Centers (Centros de Acopio)
+
+Physical donation drop-off locations (address + hours; tap-to-navigate in the Hub, grouped by city). G3 Logística hours: Mon–Fri 9:00 AM–12:00 PM & 2:00–3:30 PM. Transcribed from a shared graphic — confirm before relying on them.
+
+| City | Operator | Address | Status |
+|---|---|---|---|
+| **Caracas** | G3 Logística | Av. Principal de Los Cortijos de Lourdes, Edif. Maploca, Los Cortijos de Lourdes | ⚠️ Verify |
+| **Caracas** | Cáritas Venezuela (Sede Montalbán) | Av. Teherán, ~200m de la UCAB, frente a Urb. Juan Pablo II, Montalbán | ✅ In Hub |
+| **Valencia** | G3 Logística | Calle La Pedrera, Fundo Los Marines, Lote S/N, Zona Industrial San Diego, Edo. Carabobo | ⚠️ Verify |
+| **Barquisimeto** | G3 Logística | Zona Industrial II, Av. Principal con Calle 6, Locales 110-111-112, Mun. Iribarren, Edo. Lara | ⚠️ Verify |
+
+## 4d. Engineers & Structural Safety
+
+Volunteer engineers assessing whether buildings/homes are safe and habitable. Transcribed from shared posts — confirm before relying on them.
+
+| Org | Role | Status | Contact |
+|---|---|---|---|
+| **Ingenieros UCV (Madrid)** | Venezuelan engineers in Madrid (UCV alumni); free remote (telematic) inspections + reports on home safety/habitability. | ⚠️ Verify | WhatsApp +34 672 917 856 |
 
 ## 5. Food, Water & Shelter
 

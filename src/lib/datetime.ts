@@ -42,3 +42,18 @@ export function formatDateTimeTz(iso: string, locale: Locale): string {
 export function isoForTimeAttr(iso: string): string {
   return iso;
 }
+
+/**
+ * True if `iso` is within `windowDays` of `now` — used to show the transient
+ * "newly added" badge on relief tools, which then drops automatically once the
+ * window passes (no manual cleanup). `now` is injected so the rule stays pure
+ * and testable; callers pass `new Date()` at render time. A missing/invalid
+ * `iso` is never "new". A future timestamp is treated as new (badge shows).
+ */
+export function isWithinDays(iso: string | undefined, windowDays: number, now: Date): boolean {
+  if (!iso) return false;
+  const t = new Date(iso).getTime();
+  if (Number.isNaN(t)) return false;
+  const ageMs = now.getTime() - t;
+  return ageMs < windowDays * 24 * 60 * 60 * 1000;
+}
