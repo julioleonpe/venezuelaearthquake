@@ -21,6 +21,23 @@ import { catalog, type Locale, type MessageId } from "./catalog";
 
 const STORAGE_KEY = "vzhub.lang";
 
+/**
+ * Hosts that default to Spanish. The Hub ships on two domains: the English-first
+ * venezuelaearthquake2026.com (international audience) and the Spanish-first
+ * venezuelaterremoto.com (affected Venezuelans). Only the *default* differs — a
+ * visitor's explicit Language_Toggle choice always wins and is stored per-origin
+ * in localStorage, so the two domains never share or override each other's state.
+ */
+const ES_DEFAULT_HOSTS = new Set([
+  "venezuelaterremoto.com",
+  "www.venezuelaterremoto.com",
+]);
+
+function defaultLangForHost(): Locale {
+  if (typeof window === "undefined") return "en";
+  return ES_DEFAULT_HOSTS.has(window.location.hostname) ? "es" : "en";
+}
+
 interface I18nContextValue {
   lang: Locale;
   setLang: (lang: Locale) => void;
@@ -32,7 +49,11 @@ const I18nContext = createContext<I18nContextValue | null>(null);
 function initialLang(): Locale {
   if (typeof window === "undefined") return "en";
   const stored = window.localStorage.getItem(STORAGE_KEY);
-  return stored === "es" ? "es" : "en"; // English default (Req 10.3)
+  // A visitor's explicit Language_Toggle choice always wins (Req 10.4). With no
+  // stored choice, the default follows the domain (Req 10.3): English-first on
+  // venezuelaearthquake2026.com, Spanish-first on venezuelaterremoto.com.
+  if (stored === "es" || stored === "en") return stored;
+  return defaultLangForHost();
 }
 
 export function I18nProvider({ children }: { children: ReactNode }) {
