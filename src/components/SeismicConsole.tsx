@@ -50,7 +50,7 @@ export function SeismicConsole() {
     fetchRegionalQuakes({ days: 30, limit: 60 })
       .then((data) => !cancelled && setSeismic({ status: "ready", data }))
       .catch(() => !cancelled && setSeismic({ status: "error" }));
-    fetchDamageReports({ limit: 600 })
+    fetchDamageReports({ limit: 1500 })
       .then((data) => !cancelled && setDamage({ status: "ready", data }))
       .catch(() => !cancelled && setDamage({ status: "error" }));
     return () => {

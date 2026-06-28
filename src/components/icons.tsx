@@ -66,6 +66,16 @@ export const HeartIcon = (p: IconProps) => (
   </svg>
 );
 
+export const PawIcon = (p: IconProps) => (
+  <svg {...base(p)}>
+    <circle cx="6" cy="10" r="1.6" />
+    <circle cx="10" cy="6.5" r="1.6" />
+    <circle cx="14" cy="6.5" r="1.6" />
+    <circle cx="18" cy="10" r="1.6" />
+    <path d="M8.5 15.5c1-2 2-3 3.5-3s2.5 1 3.5 3c.9 1.7.4 3.6-1.4 4-1 .2-2 .2-2.1.2s-1.1 0-2.1-.2c-1.8-.4-2.3-2.3-1.4-4z" />
+  </svg>
+);
+
 export const ShieldCheckIcon = (p: IconProps) => (
   <svg {...base(p)}>
     <path d="M12 3 5 6v5c0 4.2 2.9 7.6 7 9 4.1-1.4 7-4.8 7-9V6z" />

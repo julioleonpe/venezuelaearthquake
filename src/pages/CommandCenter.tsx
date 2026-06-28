@@ -25,7 +25,7 @@ import { DonatePanel } from "../components/DonatePanel";
 import { ExternalLink } from "../components/ExternalLink";
 import { SeismicConsole } from "../components/SeismicConsole";
 import { SituationOverview } from "../components/SituationOverview";
-import { ExternalIcon, PeopleIcon, MapIcon, HeartIcon, ShieldCheckIcon, ChevronDownIcon, NewsIcon, ResourceIcon, ActivityIcon, DonateIcon, InboxIcon } from "../components/icons";
+import { ExternalIcon, PeopleIcon, MapIcon, HeartIcon, ShieldCheckIcon, ChevronDownIcon, NewsIcon, ResourceIcon, ActivityIcon, DonateIcon, InboxIcon, PawIcon } from "../components/icons";
 import { RELIEF_TOOLS, CARITAS_SITE_URL, NEW_TOOL_WINDOW_DAYS } from "../config";
 import type { ReliefTool, ReliefToolGroup } from "../config";
 import { needsLanguageIndicator, sourceHostLabel } from "../domain/core";
@@ -261,7 +261,7 @@ const GROUP_ICON: Record<ReliefToolGroup["key"], typeof PeopleIcon> = {
   damage: MapIcon,
   services: HeartIcon,
   coordination: InboxIcon,
-  donate: DonateIcon,
+  pets: PawIcon,
   organizations: ResourceIcon,
 };
 
@@ -379,11 +379,7 @@ function ToolApp({
         <span className="app-icon__label">{title}</span>
         <span className="app-icon__meta">
           {t(
-            group.key === "people"
-              ? "tools.peopleCount"
-              : group.key === "donate"
-                ? "tools.channelCount"
-                : "tools.itemCount",
+            group.key === "people" ? "tools.peopleCount" : "tools.itemCount",
           ).replace("{n}", String(group.tools.length))}
         </span>
       </button>

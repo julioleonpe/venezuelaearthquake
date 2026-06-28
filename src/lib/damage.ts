@@ -62,7 +62,9 @@ const VALID_LEVELS: ReadonlySet<string> = new Set(["parcial", "severo", "total"]
 function buildUrl(limit: number): string {
   const params = new URLSearchParams({
     select: "id,name,address,city,zone,lat,lng,damage_level,general_source,main_photo_url,last_updated_at,updated_at",
-    // Only rows we can actually place on the map (≈143 of the reports have no coords).
+    // Only rows we can actually place on the map (a portion of reports have no
+    // coords yet). As of 2026-06 the source holds ~665 mappable rows and growing,
+    // so the default limit is set well above that (see fetchDamageReports).
     lat: "not.is.null",
     lng: "not.is.null",
     order: "last_updated_at.desc",
@@ -76,7 +78,7 @@ function buildUrl(limit: number): string {
  * upstream can't stall the panel. Returns freshest-first, mappable rows only.
  */
 export async function fetchDamageReports(
-  { limit = 600, timeoutMs = 8000 }: { limit?: number; timeoutMs?: number } = {},
+  { limit = 1500, timeoutMs = 8000 }: { limit?: number; timeoutMs?: number } = {},
 ): Promise<DamageReport[]> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);

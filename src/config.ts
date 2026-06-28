@@ -74,7 +74,7 @@ export interface ReliefTool {
 /** How long (in days) a tool wears the "newly added" badge after its `addedAt`. */
 export const NEW_TOOL_WINDOW_DAYS = 2;
 export interface ReliefToolGroup {
-  key: "people" | "damage" | "services" | "coordination" | "donate" | "organizations";
+  key: "people" | "damage" | "services" | "coordination" | "pets" | "organizations";
   titleKey: string;
   tools: ReliefTool[];
 }
@@ -135,6 +135,15 @@ export const RELIEF_TOOLS: ReliefToolGroup[] = [
       // (no accounts). The shared link's `fbclid` Facebook click-id is dropped — an
       // ephemeral tracking token, not part of the canonical URL.
       { url: "https://vzlayuda.com/", labelKey: "tools.vzlayuda.label", subKey: "tools.vzlayuda.sub", addedAt: "2026-06-27T12:00:00-04:00" },
+      // Network of volunteer psychologists (inside & outside Venezuela) offering
+      // free emotional-support sessions to people living through the earthquake,
+      // whether nearby or at a distance. Direct mental-health care a person
+      // receives now — sits alongside the other direct services.
+      { url: "https://escuchactiva.com/", labelKey: "tools.escuchactiva.label", subKey: "tools.escuchactiva.sub", addedAt: "2026-06-27T12:00:00-04:00" },
+      // Free medical teleconsultations for Caracas-quake victims, staffed by
+      // Venezuelan doctors around the world. Direct clinical care delivered now
+      // (remote), sibling to the volunteer-psychologist support above.
+      { url: "https://www.medicosporvenezuela.org/", labelKey: "tools.medicosvzla.label", subKey: "tools.medicosvzla.sub", addedAt: "2026-06-27T12:00:00-04:00" },
     ],
   },
   {
@@ -175,19 +184,19 @@ export const RELIEF_TOOLS: ReliefToolGroup[] = [
     ],
   },
   {
-    // Mirrors the verified Donate channels — intentionally duplicated here so the
-    // launcher is a complete index of where to give as well as which tools exist.
-    key: "donate",
-    titleKey: "tools.group.donate",
+    // Animals — their own domain, kept out of the people-finders and direct
+    // services so a pet emergency is never misfiled as a person or a ride. Even
+    // the meta-directories we link to treat pets as a separate category.
+    key: "pets",
+    titleKey: "tools.group.pets",
     tools: [
-      { url: "https://donate.caritas.org/venezuela/", labelKey: "tools.caritas.label", subKey: "tools.caritas.sub" },
-      { url: "https://donate.redcrossredcrescent.org/~share?cid=1139&lang=en_EN", labelKey: "tools.ifrc.label", subKey: "tools.ifrc.sub" },
-      { url: "https://www.unicef.org/emergencies", labelKey: "tools.unicef.label", subKey: "tools.unicef.sub" },
-      { url: "https://www.rescue.org/press-release/venezuela-irc-launches-emergency-response-twin-earthquakes", labelKey: "tools.irc.label", subKey: "tools.irc.sub" },
-      { url: "https://donate.wck.org/campaign/815521/donate", labelKey: "tools.wck.label", subKey: "tools.wck.sub" },
-      { url: "https://www.directrelief.org/2026/06/venezuela-earthquake-caracas-damage/", labelKey: "tools.directrelief.label", subKey: "tools.directrelief.sub" },
-      { url: "https://www.globalgiving.org/projects/emergency-appeal-earthquake-in-venezuela/", labelKey: "tools.healing.label", subKey: "tools.healing.sub" },
-      { url: "https://dona.yummyrides.com/", labelKey: "tools.yummydona.label", subKey: "tools.yummydona.sub" },
+      // Pet-emergency platform: report lost pets, locate veterinary help, and
+      // organize drop-off centers for animals affected by the earthquake.
+      { url: "https://huellasasalvo.org/", labelKey: "tools.huellas.label", subKey: "tools.huellas.sub", addedAt: "2026-06-27T12:00:00-04:00" },
+      // Second post-quake animal-response platform: report a lost pet, flag one
+      // you found, or help with shelters/supplies; also a "see nearby needs"
+      // donation view. Sibling to Huellas a Salvo (listed first).
+      { url: "https://patitasasalvovenezuela.org/", labelKey: "tools.patitas.label", subKey: "tools.patitas.sub", addedAt: "2026-06-27T12:00:00-04:00" },
     ],
   },
   {
