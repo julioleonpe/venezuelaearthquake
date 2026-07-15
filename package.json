@@ -5,11 +5,13 @@
   "type": "module",
   "description": "Public, bilingual earthquake-relief coordination Hub — frontend SPA (ships at venezuelaearthquake2026.com).",
   "scripts": {
-    "dev": "vite",
+    "dev": "node scripts/dev.mjs",
+    "dev:web": "vite",
+    "dev:server": "node --watch server/server.ts",
+    "server": "node server/server.ts",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit",
-    "relief:refresh": "node scripts/fetch-relief-points.mjs"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

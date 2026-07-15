@@ -170,12 +170,11 @@ const en = {
     "Compiled from public sources (June 2026), including AP, Reuters, IFRC, PAHO/WHO, IRC, World Central Kitchen, Direct Relief, and donation guides. Casualty and magnitude figures vary by source and date.",
   "stake.back": "Back to the command center",
 
-  // Relief map — collection centers & shelters (community-reported, daily snapshot)
+  // Relief map — collection centers & shelters (live, community-reported)
   "relief.title": "Collection Centers & Shelters",
   "relief.source": "acopios-refugios.vercel.app",
   "relief.attribution": "Community-reported · via acopios-refugios.vercel.app — report a point",
-  "relief.snapshot": "Updated",
-  "relief.unavailable": "Relief-point data is temporarily unavailable.",
+  "relief.unavailable": "Live relief-point data is temporarily unavailable.",
   "relief.empty": "No relief points are currently available.",
   "relief.mapHint": "Collection centers & shelters · community-sourced",
   "relief.filter.all": "All",
@@ -200,6 +199,7 @@ const en = {
   "donate.fallback":
     "The donation form could not be embedded here. Use the button below to donate on GiveDirectly's official site.",
   "donate.note": "You'll complete your gift securely on GiveDirectly's own site. The Hub never handles your payment. U.S. donations are tax-deductible.",
+  "donate.clicks.label": "donation links clicked",
 
   // Footer
   "footer.managedBy": "Independently managed —",
@@ -446,8 +446,7 @@ const es: Record<MessageId, string> = {
   "relief.title": "Acopios y Refugios",
   "relief.source": "acopios-refugios.vercel.app",
   "relief.attribution": "Reportado por la comunidad · vía acopios-refugios.vercel.app — reporta un punto",
-  "relief.snapshot": "Actualizado",
-  "relief.unavailable": "Los datos de puntos de ayuda no están disponibles temporalmente.",
+  "relief.unavailable": "Los datos de puntos de ayuda en vivo no están disponibles temporalmente.",
   "relief.empty": "No hay puntos de ayuda disponibles en este momento.",
   "relief.mapHint": "Acopios y refugios · fuente comunitaria",
   "relief.filter.all": "Todos",
@@ -471,6 +470,7 @@ const es: Record<MessageId, string> = {
   "donate.fallback":
     "No se pudo incrustar el formulario de donación aquí. Usa el botón de abajo para donar en el sitio oficial de GiveDirectly.",
   "donate.note": "Completarás tu donación de forma segura en el sitio oficial de GiveDirectly. El Centro nunca gestiona tu pago. Las donaciones en EE. UU. son deducibles de impuestos.",
+  "donate.clicks.label": "enlaces de donación pulsados",
 
   "footer.managedBy": "Gestionado de forma independiente —",
   "footer.contact": "contactar al curador del sitio",

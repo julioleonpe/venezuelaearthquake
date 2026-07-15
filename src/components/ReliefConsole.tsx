@@ -17,14 +17,7 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { ACOPIOS_MAP_URL } from "../config";
 import { useI18n } from "../i18n/I18nProvider";
-import {
-  fetchReliefPoints,
-  tallyRelief,
-  RELIEF_SNAPSHOT_AT,
-  type ReliefPoint,
-  type ReliefTally,
-} from "../lib/acopios";
-import { formatDateTime } from "../lib/datetime";
+import { fetchReliefPoints, tallyRelief, type ReliefPoint, type ReliefTally } from "../lib/acopios";
 import { ExternalIcon } from "./icons";
 import type { ReliefFilter } from "./ReliefMap";
 
@@ -42,7 +35,7 @@ type Loadable<T> =
 const FILTERS: ReliefFilter[] = ["all", "acopio", "refugio"];
 
 export function ReliefConsole() {
-  const { t, lang } = useI18n();
+  const { t } = useI18n();
   const [filter, setFilter] = useState<ReliefFilter>("all");
   const [state, setState] = useState<Loadable<ReliefPoint[]>>({ status: "loading" });
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -69,7 +62,10 @@ export function ReliefConsole() {
       {/* Live points feed */}
       <div className="console__feed">
         <header className="console__feed-head">
-          <span className="console__feed-title">{t("relief.title")}</span>
+          <span className="console__feed-title">
+            <span className="live-dot" aria-hidden="true" />
+            {t("relief.title")}
+          </span>
           <a
             className="console__feed-src console__feed-src--link"
             href={ACOPIOS_MAP_URL}
@@ -79,12 +75,6 @@ export function ReliefConsole() {
             {t("relief.source")} <ExternalIcon size={10} />
           </a>
         </header>
-
-        {/* Snapshot freshness — this is a daily bundled snapshot, not a live feed,
-            so we state when it was pulled rather than implying real-time data. */}
-        <p className="console__feed-snapshot">
-          {t("relief.snapshot")} {formatDateTime(RELIEF_SNAPSHOT_AT, lang)}
-        </p>
 
         {/* Type filter (segmented control) */}
         <div className="console__layers" role="tablist" aria-label={t("relief.filter.aria")}>

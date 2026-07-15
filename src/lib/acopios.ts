@@ -1,20 +1,18 @@
 /**
- * Collection-center & shelter layer — acopios-refugios.vercel.app
+ * Live collection-center & shelter feed — acopios-refugios.vercel.app
  * ("Venezuela Resiste"), a community-run crisis map of earthquake-relief points.
  *
- * This is a STATIC SNAPSHOT, not a live feed. A daily script
- * (scripts/fetch-relief-points.mjs, `npm run relief:refresh`) pulls the upstream
- * server-side and writes src/data/relief-points.json, which ships in the bundle.
- * We moved off a live fetch on purpose: the upstream (a Google Apps Script Web App)
- * 302-redirects cross-origin, tripping the browser's CORS check on a direct fetch,
- * and the serverless proxy that worked around that kept failing on Vercel
- * ("live relief-point data is temporarily unavailable"). A bundled snapshot renders
- * instantly and can never be "unavailable" — at the cost of being at most a day
- * stale, which is fine for a moderated registry that changes slowly.
+ * Sibling of the old `usgs.ts` / `damage.ts` live layers: reads the point registry
+ * and normalizes each row into a small, presentation-ready shape. Network/parse
+ * failures surface as a rejected promise so the console can degrade gracefully
+ * (the rest of the command center keeps rendering).
  *
- * `normalizeReliefRows` still applies the moderation gate and shapes each row, so
- * the trust logic lives in one pure, tested place regardless of where the rows came
- * from.
+ * The upstream is the source site's own Google Apps Script Web App, but we read it
+ * through our OWN same-origin proxy (`/api/relief-points`, see api/relief-points.ts
+ * + the Vite dev plugin) rather than directly: the Apps Script endpoint 302-
+ * redirects to script.googleusercontent.com, and that cross-origin redirect trips
+ * the browser's CORS check on a direct fetch. A server-to-server proxy has no CORS,
+ * so this works identically in local dev and production.
  *
  * Trust note: these are COMMUNITY-REPORTED points. Collection centers (acopios)
  * publish instantly with a "sin verificar" (unverified) stamp; shelters (refugios)
@@ -25,10 +23,8 @@
  * to the source site so they can report new points there.
  */
 
-import snapshot from "../data/relief-points.json";
-
-/** When the bundled snapshot was pulled from the source (ISO-8601). */
-export const RELIEF_SNAPSHOT_AT: string = snapshot.generatedAt;
+/** Same-origin proxy that fronts the community feed (see api/relief-points.ts). */
+const RELIEF_POINTS_ENDPOINT = "/api/relief-points";
 
 /** Point type as authored by the source registry. */
 export type ReliefPointType = "acopio" | "refugio";
@@ -65,16 +61,20 @@ interface SourceRow {
   direccion: string | null;
   lat: number | string | null;
   lng: number | string | null;
-  contacto: string | null;
-  necesidades: string | null;
-  capacidad: string | null;
+  // Free-text fields are authored in a Google Sheet, so an all-digit cell (e.g. a
+  // phone number in `contacto`) arrives as a JSON number, not a string. Type these
+  // as scalars and let `clean()` coerce — never assume `.trim()` is safe.
+  contacto: string | number | null;
+  necesidades: string | number | null;
+  capacidad: string | number | null;
   estado_moderacion: string | null;
 }
 
 const VALID_TYPES: ReadonlySet<string> = new Set(["acopio", "refugio"]);
 
-function clean(s: string | null | undefined): string | null {
-  const v = (s ?? "").trim();
+function clean(s: string | number | null | undefined): string | null {
+  // Coerce first: the source can hand us a number for any free-text field.
+  const v = String(s ?? "").trim();
   return v.length ? v : null;
 }
 
@@ -131,14 +131,23 @@ export function normalizeReliefRows(rows: SourceRow[]): ReliefPoint[] {
 }
 
 /**
- * Returns mappable, moderation-visible relief points from the bundled snapshot.
- * No network — the data ships in the bundle — so this can never be "unavailable".
- * Kept async (Promise-returning) so `ReliefConsole`'s loading contract is
- * unchanged; refresh the underlying data with `npm run relief:refresh`.
+ * Fetches the live relief points from our same-origin proxy. Aborts after
+ * `timeoutMs` so a hung upstream can't stall the panel. Returns mappable,
+ * moderation-visible points only.
  */
-export function fetchReliefPoints(): Promise<ReliefPoint[]> {
-  const rows = Array.isArray(snapshot.rows) ? (snapshot.rows as SourceRow[]) : [];
-  return Promise.resolve(normalizeReliefRows(rows));
+export async function fetchReliefPoints(
+  { timeoutMs = 8000 }: { timeoutMs?: number } = {},
+): Promise<ReliefPoint[]> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const res = await fetch(RELIEF_POINTS_ENDPOINT, { signal: controller.signal });
+    if (!res.ok) throw new Error(`Relief feed responded ${res.status}`);
+    const rows = (await res.json()) as SourceRow[];
+    return normalizeReliefRows(Array.isArray(rows) ? rows : []);
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 /** Tally of points by type — drives the layer-toggle counts and legend. */
