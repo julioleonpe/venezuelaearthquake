@@ -17,7 +17,9 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { ACOPIOS_MAP_URL } from "../config";
 import { useI18n } from "../i18n/I18nProvider";
+import type { MessageId } from "../i18n/catalog";
 import { fetchReliefPoints, tallyRelief, type ReliefPoint, type ReliefTally } from "../lib/acopios";
+import { NEED_CATEGORIES, type NeedCategory } from "../lib/reliefNeeds";
 import { ExternalIcon } from "./icons";
 import type { ReliefFilter } from "./ReliefMap";
 
@@ -37,6 +39,7 @@ const FILTERS: ReliefFilter[] = ["all", "acopio", "refugio"];
 export function ReliefConsole() {
   const { t } = useI18n();
   const [filter, setFilter] = useState<ReliefFilter>("all");
+  const [needs, setNeeds] = useState<ReadonlySet<NeedCategory>>(() => new Set());
   const [state, setState] = useState<Loadable<ReliefPoint[]>>({ status: "loading" });
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -56,6 +59,19 @@ export function ReliefConsole() {
     () => (filter === "all" ? points : points.filter((p) => p.type === filter)),
     [filter, points],
   );
+
+  // Need chips only make sense where acopios are on screen (they carry needs).
+  const showNeedChips = filter !== "refugio" && (tally?.acopio ?? 0) > 0;
+  const toggleNeed = (cat: NeedCategory) =>
+    setNeeds((prev) => {
+      const next = new Set(prev);
+      next.has(cat) ? next.delete(cat) : next.add(cat);
+      return next;
+    });
+  // A point is highlighted when no chips are active (everything bright) or when it
+  // collects at least one selected need (OR semantics — "show me food OR water").
+  const highlights = (p: ReliefPoint): boolean =>
+    needs.size === 0 || p.needsCategories.some((c) => needs.has(c));
 
   return (
     <div className="console">
@@ -86,12 +102,19 @@ export function ReliefConsole() {
           ))}
         </div>
 
+        {/* Need-category chips — highlight acopios by what they're collecting. */}
+        {showNeedChips && tally && (
+          <NeedChips tally={tally} active={needs} onToggle={toggleNeed} onClear={() => setNeeds(new Set())} />
+        )}
+
         <div className="console__feed-body" role="list" aria-label={t("relief.title")}>
           <ReliefFeed
             state={state}
             shown={shown}
             selectedId={selectedId}
             onSelect={setSelectedId}
+            highlights={highlights}
+            dimmed={needs.size > 0}
             emptyMsg={t("relief.empty")}
             errorMsg={t("relief.unavailable")}
             loadingMsg={t("loading.label")}
@@ -114,6 +137,7 @@ export function ReliefConsole() {
               points={points}
               selectedId={selectedId}
               onSelect={setSelectedId}
+              activeNeeds={needs}
             />
           ) : (
             <div className="console__map-fallback" aria-hidden="true">
@@ -182,6 +206,8 @@ function ReliefFeed({
   shown,
   selectedId,
   onSelect,
+  highlights,
+  dimmed,
   emptyMsg,
   errorMsg,
   loadingMsg,
@@ -190,6 +216,8 @@ function ReliefFeed({
   shown: ReliefPoint[];
   selectedId: string | null;
   onSelect: (id: string) => void;
+  highlights: (p: ReliefPoint) => boolean;
+  dimmed: boolean;
   emptyMsg: string;
   errorMsg: string;
   loadingMsg: string;
@@ -209,24 +237,50 @@ function ReliefFeed({
     );
   }
   if (shown.length === 0) return <div className="console__msg">{emptyMsg}</div>;
+  // With chips active, matches sort to the top so the highlighted set reads first.
+  const ordered = dimmed
+    ? [...shown].sort((a, b) => Number(highlights(b)) - Number(highlights(a)))
+    : shown;
   return (
     <>
-      {shown.map((p) => (
-        <ReliefRow key={p.id} p={p} selected={p.id === selectedId} onSelect={() => onSelect(p.id)} />
+      {ordered.map((p) => (
+        <ReliefRow
+          key={p.id}
+          p={p}
+          selected={p.id === selectedId}
+          onSelect={() => onSelect(p.id)}
+          dim={dimmed && !highlights(p)}
+        />
       ))}
     </>
   );
 }
 
-function ReliefRow({ p, selected, onSelect }: { p: ReliefPoint; selected: boolean; onSelect: () => void }) {
+function ReliefRow({
+  p,
+  selected,
+  onSelect,
+  dim,
+}: {
+  p: ReliefPoint;
+  selected: boolean;
+  onSelect: () => void;
+  dim: boolean;
+}) {
   const { t } = useI18n();
-  const where = [p.state, p.address].filter(Boolean).join(", ");
-  const detail = p.type === "acopio" ? p.needs : p.capacity;
+  // Row meta stays compact: state (and country for international points, which the
+  // source already encodes in `estado`, e.g. "Madrid, España"). The full street
+  // address lives in the map popup on click, not the list.
+  const where = p.state;
+  // Acopios: needs text is summarized by the category tags below and shown in full
+  // in the map popup on click, so the row meta stays compact (location only).
+  // Refugios: keep capacity, which has no tag equivalent.
+  const detail = p.type === "refugio" ? p.capacity : null;
   return (
     <button
       type="button"
       role="listitem"
-      className={`quake-row relief-row relief-row--${p.type} ${selected ? "is-selected" : ""}`}
+      className={`quake-row relief-row relief-row--${p.type} ${selected ? "is-selected" : ""} ${dim ? "is-dimmed" : ""}`}
       onClick={onSelect}
       aria-pressed={selected}
     >
@@ -234,6 +288,15 @@ function ReliefRow({ p, selected, onSelect }: { p: ReliefPoint; selected: boolea
       <span className="quake-row__body">
         <span className="quake-row__place">{p.name}</span>
         <span className="quake-row__meta">{[where, detail].filter(Boolean).join(" · ") || "—"}</span>
+        {p.needsCategories.length > 0 && (
+          <span className="relief-row__cats" aria-hidden="true">
+            {p.needsCategories.map((c) => (
+              <span key={c} className={`relief-cat-tag relief-cat-tag--${c}`}>
+                {t(CAT_LABEL[c])}
+              </span>
+            ))}
+          </span>
+        )}
       </span>
       <span className="relief-row__tags">
         <span className={`relief-row__badge relief-badge--${p.type}`}>{t(TYPE_LABEL[p.type])}</span>
@@ -249,6 +312,62 @@ const TYPE_LABEL: Record<ReliefPoint["type"], "relief.type.acopio" | "relief.typ
   acopio: "relief.type.acopio",
   refugio: "relief.type.refugio",
 };
+
+/** Category key → catalog message id, so chips/tags are bilingual by construction. */
+const CAT_LABEL: Record<NeedCategory, MessageId> = {
+  food: "relief.cat.food",
+  water: "relief.cat.water",
+  medical: "relief.cat.medical",
+  hygiene: "relief.cat.hygiene",
+  clothing: "relief.cat.clothing",
+  bedding: "relief.cat.bedding",
+  power: "relief.cat.power",
+  pets: "relief.cat.pets",
+  tools: "relief.cat.tools",
+};
+
+/* ── Need-category chips ──────────────────────────────────────────────────── */
+
+function NeedChips({
+  tally,
+  active,
+  onToggle,
+  onClear,
+}: {
+  tally: ReliefTally;
+  active: ReadonlySet<NeedCategory>;
+  onToggle: (cat: NeedCategory) => void;
+  onClear: () => void;
+}) {
+  const { t } = useI18n();
+  // Only offer categories that actually occur in the current data.
+  const present = NEED_CATEGORIES.filter((c) => tally.categories[c] > 0);
+  if (present.length === 0) return null;
+  return (
+    <div className="relief-needs" role="group" aria-label={t("relief.needs.aria")}>
+      <span className="relief-needs__label">{t("relief.needs.label")}</span>
+      <div className="relief-needs__chips">
+        {present.map((c) => (
+          <button
+            key={c}
+            type="button"
+            className={`relief-chip relief-chip--${c} ${active.has(c) ? "is-active" : ""}`}
+            aria-pressed={active.has(c)}
+            onClick={() => onToggle(c)}
+          >
+            {t(CAT_LABEL[c])}
+            <span className="relief-chip__count">{tally.categories[c]}</span>
+          </button>
+        ))}
+        {active.size > 0 && (
+          <button type="button" className="relief-chip relief-chip--clear" onClick={onClear}>
+            {t("relief.needs.clear")}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
 
 /* ── Legend ───────────────────────────────────────────────────────────────── */
 

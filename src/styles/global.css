@@ -889,6 +889,12 @@ h4 {
   border-width: 2px;
   box-shadow: none;
 }
+/* Dimmed when a need-filter is active and this point matches none of it. Marker
+   opacity is also lowered in JS; this desaturates so highlighted points pop. */
+.relief-marker--dim {
+  filter: saturate(0.3);
+  box-shadow: none;
+}
 .relief-popup .relief-popup__badge {
   display: inline-block;
   margin-left: 6px;

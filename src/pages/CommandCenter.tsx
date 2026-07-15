@@ -450,7 +450,10 @@ function DonateClicksBadge() {
  */
 function DonateMore({ channels, lang }: { channels: DonationChannel[]; lang: "en" | "es" }) {
   const { t } = useI18n();
-  const [open, setOpen] = useState(false);
+  // Desktop has the room, so the additional channels start expanded there; on
+  // mobile they stay collapsed to keep the featured card the default focus.
+  const desktop = useMediaQuery("(min-width: 721px)");
+  const [open, setOpen] = useState(desktop);
   if (channels.length === 0) return null;
 
   const panelId = "donate-more-panel";

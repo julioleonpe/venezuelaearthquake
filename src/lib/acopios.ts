@@ -23,6 +23,8 @@
  * to the source site so they can report new points there.
  */
 
+import { categorizeNeeds, NEED_CATEGORIES, type NeedCategory } from "./reliefNeeds";
+
 /** Same-origin proxy that fronts the community feed (see api/relief-points.ts). */
 const RELIEF_POINTS_ENDPOINT = "/api/relief-points";
 
@@ -45,6 +47,11 @@ export interface ReliefPoint {
   contact: string | null;
   /** Acopios: what the center is receiving (agua, medicinas, …). */
   needs: string | null;
+  /**
+   * Stable need categories derived from `needs` (see lib/reliefNeeds.ts). Drives
+   * the category filter and bilingual tags; empty for refugios and untagged text.
+   */
+  needsCategories: NeedCategory[];
   /** Refugios: approximate capacity (e.g. "40 personas"). */
   capacity: string | null;
   /**
@@ -111,6 +118,7 @@ export function normalizeReliefRows(rows: SourceRow[]): ReliefPoint[] {
       if (!VALID_TYPES.has(type) || lat == null || lng == null) return null;
       const mod = (r.estado_moderacion ?? "").trim().toLowerCase();
       if (!moderationOk(type as ReliefPointType, mod)) return null;
+      const needs = clean(r.necesidades);
       return {
         // The source rows are anonymous; a stable-per-load index + coords key
         // is enough for React keys and marker/selection bookkeeping.
@@ -122,7 +130,9 @@ export function normalizeReliefRows(rows: SourceRow[]): ReliefPoint[] {
         latitude: lat,
         longitude: lng,
         contact: clean(r.contacto),
-        needs: clean(r.necesidades),
+        needs,
+        // Only acopios advertise needs; categorize now so the filter/tags are pure.
+        needsCategories: type === "acopio" ? categorizeNeeds(needs) : [],
         capacity: clean(r.capacidad),
         verified: mod === "aprobado",
       };
@@ -156,13 +166,19 @@ export interface ReliefTally {
   refugio: number;
   unverified: number;
   all: number;
+  /** How many acopios fall in each need category — drives the chip counts. */
+  categories: Record<NeedCategory, number>;
 }
 
 export function tallyRelief(points: ReliefPoint[]): ReliefTally {
-  const t = { acopio: 0, refugio: 0, unverified: 0, all: points.length };
+  const categories = Object.fromEntries(
+    NEED_CATEGORIES.map((c) => [c, 0]),
+  ) as Record<NeedCategory, number>;
+  const t: ReliefTally = { acopio: 0, refugio: 0, unverified: 0, all: points.length, categories };
   for (const p of points) {
     t[p.type] += 1;
     if (!p.verified) t.unverified += 1;
+    for (const c of p.needsCategories) categories[c] += 1;
   }
   return t;
 }
