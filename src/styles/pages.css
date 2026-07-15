@@ -867,6 +867,14 @@
   color: var(--accent-deep);
   text-decoration: underline;
 }
+.console__feed-snapshot {
+  flex: none;
+  margin: 0;
+  padding: 0 16px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  color: var(--ink-faint);
+}
 .console__feed-body {
   flex: 1;
   min-height: 0;

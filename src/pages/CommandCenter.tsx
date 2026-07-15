@@ -18,7 +18,7 @@
  * (and on mobile) the grid relaxes into a natural vertical stack.
  */
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { getDonations, getNews } from "../api/store";
 import { DonatePanel } from "../components/DonatePanel";
@@ -33,7 +33,7 @@ import type { DonationChannel, NewsItem } from "../domain/types";
 import type { MessageId } from "../i18n/catalog";
 import { useI18n } from "../i18n/I18nProvider";
 import { formatDateTime, isWithinDays } from "../lib/datetime";
-import { fetchDonateClicks, recordDonateClick } from "../lib/donateClicks";
+import { track } from "@vercel/analytics";
 import { useMediaQuery } from "../lib/useMediaQuery";
 import { openExternal } from "../lib/openExternal";
 import { useSubsystem } from "../lib/useSubsystem";
@@ -88,7 +88,6 @@ export default function CommandCenter() {
           mobile={mobile}
           open={shows("donate")}
           onToggle={() => toggle("donate")}
-          accessory={<DonateClicksBadge />}
         >
           <div className="tile__scroll tile__scroll--donate">
             {/* GiveDirectly — the featured channel, highlighted in its own card. */}
@@ -413,38 +412,6 @@ function ToolApp({
 }
 
 /**
- * DonateClicksBadge — shows the shared, community-wide count of donation links
- * opened from the Hub. Reads `/api/donate-clicks` on mount; if the counter store
- * isn't configured (local dev, preview without KV) the total is null and the badge
- * renders nothing. It's a best-effort engagement signal — never a financial figure
- * (the Hub still never handles funds).
- */
-function DonateClicksBadge() {
-  const { t, lang } = useI18n();
-  const [total, setTotal] = useState<number | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetchDonateClicks().then((n) => {
-      if (!cancelled) setTotal(n);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  if (total == null || total <= 0) return null;
-  const num = total.toLocaleString(lang);
-  return (
-    <span className="donate-clicks" role="note">
-      <HeartIcon size={12} />
-      <span className="donate-clicks__num">{num}</span>
-      <span className="donate-clicks__label">{t("donate.clicks.label")}</span>
-    </span>
-  );
-}
-
-/**
  * DonateMore — the "other verified channels" list, collapsed behind a toggle so
  * the featured Caritas card is the default focus. Expanding reveals the rest.
  */
@@ -505,7 +472,7 @@ function DonationRow({ channel, lang }: { channel: DonationChannel; lang: "en" |
         <ExternalLink
           href={channel.destinationLink}
           variant="button"
-          onClick={() => recordDonateClick(channel.id)}
+          onClick={() => track("donate_click", { surface: "more_channel", channel: channel.id })}
         >
           {t("donations.give")}
         </ExternalLink>

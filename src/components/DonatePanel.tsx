@@ -21,7 +21,6 @@ import {
 } from "../config";
 import { sourceHostLabel } from "../domain/core";
 import { useI18n } from "../i18n/I18nProvider";
-import { recordDonateClick } from "../lib/donateClicks";
 import { ExternalIcon, HeartIcon, ShieldCheckIcon } from "./icons";
 
 const SUGGESTED = [100, 500, 1000] as const;
@@ -74,10 +73,7 @@ function FeaturedCard({ host }: { host: string }) {
             href={amountUrl(amt)}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => {
-              recordDonateClick("givedirectly");
-              track("donate_click", { surface: "suggested_amount", amount: amt });
-            }}
+            onClick={() => track("donate_click", { surface: "suggested_amount", amount: amt })}
           >
             <span className="donate-amount__value">${amt}</span>
             <span className="sr-only"> — {host}, {t("ext.opensNewTab")}</span>
@@ -90,10 +86,7 @@ function FeaturedCard({ host }: { host: string }) {
         href={FEATURED_DONATE_URL}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => {
-          recordDonateClick("givedirectly");
-          track("donate_click", { surface: "cta" });
-        }}
+        onClick={() => track("donate_click", { surface: "cta" })}
       >
         <HeartIcon size={16} />
         {t("donate.cta")}
@@ -154,10 +147,7 @@ function FeaturedEmbed() {
         href={FEATURED_DONATE_URL}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => {
-          recordDonateClick("givedirectly");
-          track("donate_click", { surface: blocked ? "embed_fallback" : "embed_linkout" });
-        }}
+        onClick={() => track("donate_click", { surface: blocked ? "embed_fallback" : "embed_linkout" })}
       >
         {t("donate.openOfficial")}
         <ExternalIcon size={15} />
