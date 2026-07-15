@@ -15,11 +15,11 @@ Key source layout (`src/`):
 - `api/` (`src/api/`) — in-browser read API over a published dataset: `store.ts` (reads `published.ts`
   and runs the pure gate; no network call), `published.ts` (the verified-only dataset that ships in the
   bundle), `seed.ts` (authoring data the published set is derived from).
-- `lib/` — `usgs.ts` (live USGS seismic feed), `damage.ts` (live community damage-report feed),
+- `lib/` — `acopios.ts` (live collection-center & shelter feed from acopios-refugios.vercel.app),
   `donateClicks.ts` (client for the donation click-counter endpoint), `useSubsystem.ts`,
   `useMediaQuery.ts`, `datetime.ts`, `usePageTitle.ts`, `openExternal.ts`.
-- `components/` — `AppShell` (console command bar), `SeismicConsole` + `SeismicMap` (live dual-layer
-  feed + Leaflet map), `DonatePanel` (Caritas link-out card), `ExternalLink`, `LanguageToggle`,
+- `components/` — `AppShell` (console command bar), `ReliefConsole` + `ReliefMap` (live relief-point
+  feed + Leaflet map), `DonatePanel` (featured GiveDirectly link-out card), `ExternalLink`, `LanguageToggle`,
   `RouteError`, `primitives`, `icons`.
 - `pages/` — `CommandCenter` only (the bento home, `/`). There are **no drill-down routes** — the Hub
   is a single self-contained view (see `router.tsx`); any unknown path falls back to the Command Center.
@@ -31,18 +31,21 @@ Router, Leaflet for the map. It is **static-first**: curated content (News / Don
 read **in the browser** from `published.ts` (verified-only, no network call), so the core Hub renders
 with no backend. A **small set of Vercel serverless functions** lives in the root `api/` directory for
 the things that genuinely need a server: `api/[...path].ts` (a read API mirroring `src/api`, present but
-no longer called by the SPA) and `api/donate-clicks.ts` (the donation click counter, backed by Vercel
-KV). A root `server/` directory holds a zero-dep Node version of the read core used by local dev; the
-shared TS domain types/functions stay reusable across all of these.
+no longer called by the SPA), `api/donate-clicks.ts` (the donation click counter, backed by Vercel KV),
+and `api/relief-points.ts` (a same-origin read proxy for the live acopios/refugios feed — the upstream
+Google Apps Script 302-redirects cross-origin, which trips the browser's CORS check on a direct fetch, so
+we proxy it server-side; a matching Vite dev plugin serves the same route locally). A root `server/`
+directory holds a zero-dep Node version of the read core used by local dev; the shared TS domain
+types/functions stay reusable across all of these.
 
 ## What the product is
 
 A public, **bilingual (English + Spanish)** earthquake-relief coordination Hub. It presents curated,
 verified content (News, Donation channels, and relief Resources) in a **single command-center view**,
-alongside **live data layers** (USGS seismicity + community damage reports) and a launcher of **outbound
-links** to external relief tools — most importantly several **People Finders** (separate, pre-existing
-missing-persons systems the Hub does not build). Trust and accuracy are first-class: no *curated* record
-reaches a Visitor unless an Administrator has marked it `verified`.
+alongside a **live relief map** (community-reported collection centers + shelters) and a launcher of
+**outbound links** to external relief tools — most importantly several **People Finders** (separate,
+pre-existing missing-persons systems the Hub does not build). Trust and accuracy are first-class: no
+*curated* record reaches a Visitor unless an Administrator has marked it `verified`.
 
 The audience is two-fold: largely **international** visitors who come to **be informed** and to
 **donate**, and **Venezuelans** directly affected who need relief info and the People Finders. Interface
@@ -57,25 +60,26 @@ The Hub is a **single-view bento "command center"** — an instrument-grade emer
 - **Bento command center on `/`.** The home route (`CommandCenter.tsx`) fits **one desktop viewport with
   no page scroll**: a status strip (what happened + key stats + last-updated) over a bento grid. Tiles:
   **News** (verified feed, internal scroll), **Relief Tools & Apps** (the outbound launcher), the
-  **Seismic console** centerpiece, and **Donate** (Caritas + other verified channels). Each tile owns its
+  **Relief map** centerpiece, and **Donate** (GiveDirectly + other verified channels). Each tile owns its
   own data source and degrades independently. Below ~1080px the grid relaxes into a natural vertical
   stack; the command bar locks to one viewport only on the home route.
 - **Everything lives in one view.** There are no `/news`, `/donate`, or `/resources` drill-down pages
   anymore — depth that used to live on sub-pages now lives inside the tiles (internal scroll, the tools
   launcher's expandable folders, etc.). External tools open in a new tab.
-- **Live seismic monitoring is the centerpiece, now a dual-layer map.** `SeismicConsole` shows a live
-  feed list (left, the accessible source of truth) beside a **Leaflet** map (right), with a segmented
-  **layer toggle**:
-  - **Seismic** — live **USGS** FDSN regional feed (`lib/usgs.ts`); epicenters as circle markers on an
-    **amber→red magnitude** scale.
-  - **Damage** — live **community-reported** damaged buildings pulled from terremotovenezuela.com's public
-    Supabase feed (`lib/damage.ts`); square markers on a **distinct cool ramp** (blue→violet→magenta) so
-    damage level is never misread as a magnitude, with a legend and an always-on provenance line.
-  The two sources fetch and degrade **independently**; a failure marks only its own layer unavailable.
-- **Donate is a branded link-out card (embed OFF by default).** `DonatePanel.tsx` renders Caritas's
-  Venezuela appeal as a trustworthy link-out card (recipient identity, affiliation, suggested amounts that
-  deep-link to Caritas, prominent donate button). Funds are processed entirely on Caritas's own
-  infrastructure. An iframe-embed code path exists behind `CARITAS_EMBED_ENABLED` (off) for any future
+- **The live relief map is the centerpiece.** `ReliefConsole` shows a live feed list (left, the
+  accessible source of truth) beside a **Leaflet** map (right), with a segmented **type filter**
+  (**All / Acopios / Refugios**). Points are pulled live from acopios-refugios.vercel.app via a
+  same-origin proxy (`lib/acopios.ts` → `/api/relief-points`, to sidestep the upstream's cross-origin
+  redirect / CORS), a community-run map of donation **collection centers (acopios)** and **shelters
+  (refugios)**: acopios render as amber squares, refugios as teal circles, so a center is never misread
+  as a shelter. The data is COMMUNITY-REPORTED — acopios may be "sin verificar" (unverified) at the
+  source; those points are flagged as such on the map and in the feed and never presented as vetted. An
+  always-on provenance line attributes the source and refers people there to report new points. The
+  feed fetches and degrades **independently** of the rest of the command center.
+- **Donate is a branded link-out card (embed OFF by default).** `DonatePanel.tsx` renders GiveDirectly's
+  Venezuela earthquakes appeal as a trustworthy link-out card (recipient identity, affiliation, suggested
+  amounts that deep-link to GiveDirectly, prominent donate button). Funds are processed entirely on
+  GiveDirectly's own infrastructure. An iframe-embed code path exists behind `FEATURED_EMBED_ENABLED` (off) for any future
   recipient that supplies an officially embeddable form, with this card as the guaranteed fallback.
 - **Tone is practical, factual, results-oriented** — no sob-story or manipulative urgency.
 - **Bilingual, English-first.** Persistent Language_Toggle (EN/ES) in the command bar; switching
@@ -98,13 +102,14 @@ invariants — honor these and the rest follow:
 - **Verified-only data ships; nothing else.** `published.ts` contains ONLY verified records, so
   `pending`/`rejected` records are never put in the bundle. (The published set is the static-host
   equivalent of the old server's server-side enforcement.)
-- **Live external layers are NOT curated content.** The USGS seismic feed and the community damage feed
-  are third-party live data the Hub neither owns nor verifies. They are **deliberately kept out of the
-  visibility gate** and rendered as clearly-attributed external layers (the damage layer always shows
-  "community-reported · unverified · via terremotovenezuela.com"). Never launder live external data into
-  the curated record types or through the gate. The damage feed also intentionally **drops** sensitive
-  missing-persons fields (`trapped_names`, `casualties_notes`) — that domain belongs to the external
-  People Finders.
+- **Live external layers are NOT curated content.** The relief-point feed (collection centers +
+  shelters) is third-party live data the Hub neither owns nor verifies. It is **deliberately kept out of
+  the visibility gate** and rendered as a clearly-attributed external layer (an always-on provenance line
+  shows "community-reported · via acopios-refugios.vercel.app"). The source's own moderation state is
+  preserved: acopios flagged `por_verificar` are shown marked "sin verificar", refugios only once
+  `aprobado`. Never launder live external data into the curated record types or through the gate. The
+  feed also carries only public fields — the reporter's name and verification notes the source keeps
+  private are never fetched.
 - **Pure, framework-free domain functions.** The error-prone logic — case-insensitive substring
   search, descending-by-timestamp sort, field validation, donation completeness, source-host
   labeling — lives in pure functions in `src/domain/core.ts`. These are the primary
@@ -120,7 +125,7 @@ invariants — honor these and the rest follow:
 - **Donations: the Hub never handles funds.** The Hub **never collects, processes, holds, or proxies**
   donations — money always moves on the recipient's own infrastructure. The Donate tile is a branded
   link-out card and **always** links to the recipient's official site. It **may** embed a recipient's own
-  donation widget (behind `CARITAS_EMBED_ENABLED`, currently off) with the link-out card as the guaranteed
+  donation widget (behind `FEATURED_EMBED_ENABLED`, currently off) with the link-out card as the guaranteed
   fallback. Donation channels missing recipient name, description, or destination link are not shown.
 - **Audit every mutation.** Each create/edit/delete/verify on a curated record appends an
   `AuditEntry` (actor + action + record type/id + timestamp) (Req 6.5).
@@ -140,10 +145,9 @@ Caritas → Catholic Church aid agency, Req 3.9). Full interfaces live in `src/d
 validation constraints (keyword 1–100 chars after trim; donation completeness) in `src/domain/core.ts` —
 treat those as the source of truth.
 
-Live-layer shapes are separate and live outside the domain: `Quake` (`lib/usgs.ts`) and `DamageReport`
-(`lib/damage.ts`). The outbound launcher's catalog of external tools lives in `RELIEF_TOOLS`
-(`src/config.ts`), grouped people / damage / services; ordering within a group is meaningful (most
-authoritative first).
+Live-layer shapes are separate and live outside the domain: `ReliefPoint` (`lib/acopios.ts`). The
+outbound launcher's catalog of external tools lives in `RELIEF_TOOLS` (`src/config.ts`), grouped people /
+damage / services; ordering within a group is meaningful (most authoritative first).
 
 ## Conventions
 

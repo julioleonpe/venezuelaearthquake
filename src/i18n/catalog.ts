@@ -46,7 +46,7 @@ const en = {
   // Command center (bento home)
   "cc.headline": "2026 Venezuela Earthquake — Information Hub",
   "cc.blurb":
-    "Two earthquakes struck northern Venezuela, the stronger at magnitude 7.5. This console brings together live seismic monitoring, verified news, vetted donation channels, and tools to find people and resources.",
+    "Two earthquakes struck northern Venezuela, the stronger at magnitude 7.5. This console brings together a live map of relief points, verified news, vetted donation channels, and tools to find people and resources.",
   "cc.stat.magnitude": "Peak magnitude",
   "cc.stat.quakes": "Earthquakes",
   "cc.stat.deaths": "Reported deaths",
@@ -68,9 +68,9 @@ const en = {
   "cc.overview.open": "Situation overview",
   "cc.overview.title": "Situation Overview",
   "cc.overview.p1":
-    "On Wednesday, June 24, 2026, two massive back-to-back earthquakes (M7.2 and M7.5) struck northern Venezuela near Morón, Carabobo State, just 39 seconds apart — the most powerful to strike the country since 1900 (USGS). The casualty toll has climbed steadily: as of Saturday, June 27, the National Assembly reports at least 1,430 killed, more than 3,200 injured, and over 3,000 left homeless, with tens of thousands reported missing. The United Nations estimates roughly 125 buildings collapsed and expects the final toll to rise well above official figures. Numbers conflict across sources and remain provisional as search-and-rescue continues. More than 430 aftershocks have been recorded since Wednesday, including a M4.8 off the coast on June 27 (USGS).",
+    "On Wednesday, June 24, 2026, two massive back-to-back earthquakes (M7.2 and M7.5) struck northern Venezuela in the Veroes area of Yaracuy State, just 39 seconds apart — the most powerful to strike the country since 1900 (USGS). The casualty toll has climbed steadily: as of Tuesday, July 14, the government reports at least 4,734 killed and more than 16,740 injured, with over 16,300 left homeless and another 28,300 in homes deemed uninhabitable. Tens of thousands remain missing — unofficial tracking sites list figures ranging from roughly 18,000 to nearly 30,000, and the UN cited more than 50,000 in the immediate aftermath. USGS PAGER modeling warns the true death toll could ultimately exceed 10,000. Numbers conflict across sources and remain provisional. More than 1,100 aftershocks have been recorded, the largest a M4.8 on June 27 (Funvisis / USGS).",
   "cc.overview.p2":
-    "The state of La Guaira — the hardest-hit region — has been militarized, with access along its single highway now restricted to authorized personnel after convoys of civilian volunteers clogged the route and delayed ambulances and rescue crews. The in-country focus remains search and rescue, medical care, clean water and food distribution; survivors continue to sleep outdoors amid reports of looting. International USAR teams are arriving, and the United States has taken a leading coordinating role — earmarking $150 million in aid, repairing a runway at Caracas's Simón Bolívar International Airport, and deploying the U.S.S. Fort Lauderdale for medical support. Critical damage continues to be reported to hospitals, public services, and telecommunications networks across Caracas, La Guaira, Miranda, Aragua, Carabobo, and Falcón.",
+    "The state of La Guaira — the hardest-hit region, where officials report roughly 80% of buildings collapsed — was militarized, with access restricted to authorized personnel after convoys of civilian volunteers clogged its single highway and delayed ambulances and rescue crews. By early July most search-and-rescue operations had wound down and efforts shifted to recovering the dead; overwhelmed morgues sent bodies to a makeshift mortuary at the La Guaira port. The UN Office for Disaster Risk Reduction estimates about US$37 billion in direct damage, with satellite analysis suggesting roughly 590,000 buildings damaged nationwide. Rescuers and medical teams from more than 30 countries deployed; the United States earmarked $150 million in aid and sent FEMA search-and-rescue teams. Aid workers now warn of disease risk from poor sanitation and scarce clean water across Caracas, La Guaira, Miranda, Aragua, Carabobo, and Falcón.",
   "cc.overview.sources": "Sources",
   "cc.overview.close": "Close",
 
@@ -170,44 +170,40 @@ const en = {
     "Compiled from public sources (June 2026), including AP, Reuters, IFRC, PAHO/WHO, IRC, World Central Kitchen, Direct Relief, and donation guides. Casualty and magnitude figures vary by source and date.",
   "stake.back": "Back to the command center",
 
-  // Seismic console
-  "seismic.title": "Live seismic updates",
-  "seismic.source": "USGS feed",
-  "seismic.unavailable": "Live seismic data is temporarily unavailable.",
-  "seismic.empty": "No recent earthquakes recorded in the region.",
-  "seismic.mapHint": "Epicenters · last 30 days",
-
-  // Seismic console — layer toggle + community damage layer
-  "console.layer.seismic": "Seismic",
-  "console.layer.damage": "Damage",
-  "console.layer.aria": "Choose map layer",
-  "damage.title": "Community damage reports",
-  "damage.source": "terremotovenezuela.com",
-  "damage.attribution": "Community-reported · unverified · via terremotovenezuela.com",
-  "damage.unavailable": "Community damage reports are temporarily unavailable.",
-  "damage.empty": "No mapped damage reports are currently available.",
-  "damage.mapHint": "Reported damage · community-sourced",
-  "damage.level.total": "Total",
-  "damage.level.severo": "Severe",
-  "damage.level.parcial": "Partial",
-  "damage.reportCount": "reports",
-  "damage.openReport": "View on source site",
-  "subsystem.damage": "Community damage reports",
+  // Relief map — collection centers & shelters (live, community-reported)
+  "relief.title": "Collection Centers & Shelters",
+  "relief.source": "acopios-refugios.vercel.app",
+  "relief.attribution": "Community-reported · via acopios-refugios.vercel.app — report a point",
+  "relief.unavailable": "Live relief-point data is temporarily unavailable.",
+  "relief.empty": "No relief points are currently available.",
+  "relief.mapHint": "Collection centers & shelters · community-sourced",
+  "relief.filter.all": "All",
+  "relief.filter.acopio": "Acopios",
+  "relief.filter.refugio": "Refugios",
+  "relief.filter.aria": "Filter relief points by type",
+  "relief.type.acopio": "Collection center",
+  "relief.type.refugio": "Shelter",
+  "relief.unverified": "Unverified",
+  "subsystem.relief": "Collection centers & shelters",
 
   // Donate panel (Caritas link-out card)
   "donate.verified": "Verified channel",
-  "donate.recipient": "Caritas — Emergency Response Appeal",
-  "donate.affiliation": "International aid agency of the Catholic Church",
+  "donate.recipient": "GiveDirectly — Venezuela Earthquakes",
+  "donate.affiliation": "U.S. cash-transfer nonprofit · 501(c)(3) · tax-deductible",
   "donate.description":
-    "Funds food, clean water, shelter, and medical aid for communities affected by the earthquake, through Caritas's emergency response.",
+    "Sends cash relief directly to earthquake survivors — about $340 per person, roughly three months of basic needs for a family of four — with recipients deciding how to spend it. The highest-need communities are identified using damage and poverty data. Every $1 in cash multiplies into about $2.60 in local economic activity (Egger et al., Econometrica 2022).",
   "donate.amountsLabel": "Suggested donation amounts",
-  "donate.cta": "Donate via Caritas",
+  "donate.cta": "Donate via GiveDirectly",
   "donate.openOfficial": "Open official site",
-  "donate.frameTitle": "Caritas donation form",
+  "donate.frameTitle": "GiveDirectly donation form",
   "donate.fallback":
-    "The donation form could not be embedded here. Use the button below to donate on Caritas's official site.",
-  "donate.note": "You'll complete your gift securely on Caritas's own site. The Hub never handles your payment.",
+    "The donation form could not be embedded here. Use the button below to donate on GiveDirectly's official site.",
+  "donate.note": "You'll complete your gift securely on GiveDirectly's own site. The Hub never handles your payment. U.S. donations are tax-deductible.",
   "donate.clicks.label": "donation links clicked",
+
+  // Footer
+  "footer.managedBy": "Independently managed —",
+  "footer.contact": "Contact site curator",
 
   // Landing
   "landing.kicker": "Official relief coordination",
@@ -324,7 +320,7 @@ const es: Record<MessageId, string> = {
 
   "cc.headline": "Terremoto de Venezuela 2026 — Centro de Información",
   "cc.blurb":
-    "Dos terremotos sacudieron el norte de Venezuela; el más fuerte de magnitud 7.5. Esta consola reúne monitoreo sísmico en vivo, noticias verificadas, canales de donación validados y herramientas para encontrar personas y recursos.",
+    "Dos terremotos sacudieron el norte de Venezuela; el más fuerte de magnitud 7.5. Esta consola reúne un mapa en vivo de puntos de ayuda, noticias verificadas, canales de donación validados y herramientas para encontrar personas y recursos.",
   "cc.stat.magnitude": "Magnitud máxima",
   "cc.stat.quakes": "Terremotos",
   "cc.stat.deaths": "Fallecidos reportados",
@@ -345,9 +341,9 @@ const es: Record<MessageId, string> = {
   "cc.overview.open": "Resumen de la situación",
   "cc.overview.title": "Resumen de la situación",
   "cc.overview.p1":
-    "El miércoles 24 de junio de 2026, dos potentes terremotos consecutivos (M7.2 y M7.5) sacudieron el norte de Venezuela cerca de Morón, estado Carabobo, con apenas 39 segundos de diferencia — los más fuertes que han azotado al país desde 1900 (USGS). El número de víctimas ha aumentado de forma sostenida: hasta el sábado 27 de junio, la Asamblea Nacional reporta al menos 1.430 fallecidos, más de 3.200 heridos y más de 3.000 personas sin hogar, con decenas de miles reportadas como desaparecidas. La ONU estima unos 125 edificios derrumbados y prevé que la cifra final supere ampliamente los datos oficiales. Las cifras varían según la fuente y son provisionales mientras continúan las labores de búsqueda y rescate. Se han registrado más de 430 réplicas desde el miércoles, incluida una de M4.8 frente a la costa el 27 de junio (USGS).",
+    "El miércoles 24 de junio de 2026, dos potentes terremotos consecutivos (M7.2 y M7.5) sacudieron el norte de Venezuela en la zona de Veroes, estado Yaracuy, con apenas 39 segundos de diferencia — los más fuertes que han azotado al país desde 1900 (USGS). El número de víctimas ha aumentado de forma sostenida: hasta el martes 14 de julio, el gobierno reporta al menos 4.734 fallecidos y más de 16.740 heridos, con más de 16.300 personas sin hogar y otras 28.300 en viviendas declaradas inhabitables. Decenas de miles siguen desaparecidas — los sitios de rastreo no oficiales manejan cifras que van de unas 18.000 a casi 30.000, y la ONU citó más de 50.000 en los primeros días. El sistema PAGER del USGS advierte que la cifra real de fallecidos podría superar los 10.000. Las cifras varían según la fuente y son provisionales. Se han registrado más de 1.100 réplicas, la mayor de M4.8 el 27 de junio (Funvisis / USGS).",
   "cc.overview.p2":
-    "El estado de La Guaira — la región más afectada — ha sido militarizado, y el acceso por su única autopista está ahora restringido al personal autorizado, luego de que caravanas de voluntarios civiles congestionaran la vía y retrasaran ambulancias y equipos de rescate. La prioridad en el país sigue siendo la búsqueda y rescate, la atención médica y la distribución de agua potable y alimentos; los sobrevivientes continúan durmiendo a la intemperie en medio de reportes de saqueos. Los equipos internacionales USAR están llegando, y Estados Unidos ha asumido un papel coordinador principal — destinando 150 millones de dólares en ayuda, reparando una pista del Aeropuerto Internacional Simón Bolívar de Caracas y desplegando el U.S.S. Fort Lauderdale para apoyo médico. Se siguen reportando daños críticos en hospitales, servicios públicos y redes de telecomunicaciones en Caracas, La Guaira, Miranda, Aragua, Carabobo y Falcón.",
+    "El estado de La Guaira — la región más afectada, donde las autoridades reportan que alrededor del 80% de los edificios colapsó — fue militarizado, con el acceso restringido al personal autorizado luego de que caravanas de voluntarios civiles congestionaran su única autopista y retrasaran ambulancias y equipos de rescate. Para principios de julio, la mayoría de las labores de búsqueda y rescate habían concluido y los esfuerzos se enfocaron en recuperar a los fallecidos; las morgues desbordadas trasladaron cuerpos a una morgue improvisada en el puerto de La Guaira. La Oficina de la ONU para la Reducción del Riesgo de Desastres estima unos 37.000 millones de dólares en daños directos, y el análisis satelital sugiere que unos 590.000 edificios resultaron dañados en todo el país. Desplegaron rescatistas y equipos médicos de más de 30 países; Estados Unidos destinó 150 millones de dólares en ayuda y envió equipos de búsqueda y rescate de FEMA. Los trabajadores humanitarios ahora advierten del riesgo de enfermedades por la falta de saneamiento y agua potable en Caracas, La Guaira, Miranda, Aragua, Carabobo y Falcón.",
   "cc.overview.sources": "Fuentes",
   "cc.overview.close": "Cerrar",
 
@@ -447,41 +443,37 @@ const es: Record<MessageId, string> = {
     "Compilado de fuentes públicas (junio de 2026), incluyendo AP, Reuters, IFRC, OPS/OMS, IRC, World Central Kitchen, Direct Relief y guías de donación. Las cifras de víctimas y magnitud varían según la fuente y la fecha.",
   "stake.back": "Volver al centro de comando",
 
-  "seismic.title": "Actualizaciones sísmicas en vivo",
-  "seismic.source": "Datos de USGS",
-  "seismic.unavailable": "Los datos sísmicos en vivo no están disponibles temporalmente.",
-  "seismic.empty": "No se registraron sismos recientes en la región.",
-  "seismic.mapHint": "Epicentros · últimos 30 días",
-
-  "console.layer.seismic": "Sismos",
-  "console.layer.damage": "Daños",
-  "console.layer.aria": "Elegir capa del mapa",
-  "damage.title": "Reportes de daños de la comunidad",
-  "damage.source": "terremotovenezuela.com",
-  "damage.attribution": "Reportado por la comunidad · sin verificar · vía terremotovenezuela.com",
-  "damage.unavailable": "Los reportes de daños de la comunidad no están disponibles temporalmente.",
-  "damage.empty": "No hay reportes de daños mapeados disponibles en este momento.",
-  "damage.mapHint": "Daños reportados · fuente comunitaria",
-  "damage.level.total": "Total",
-  "damage.level.severo": "Severo",
-  "damage.level.parcial": "Parcial",
-  "damage.reportCount": "reportes",
-  "damage.openReport": "Ver en el sitio de origen",
-  "subsystem.damage": "Reportes de daños de la comunidad",
+  "relief.title": "Acopios y Refugios",
+  "relief.source": "acopios-refugios.vercel.app",
+  "relief.attribution": "Reportado por la comunidad · vía acopios-refugios.vercel.app — reporta un punto",
+  "relief.unavailable": "Los datos de puntos de ayuda en vivo no están disponibles temporalmente.",
+  "relief.empty": "No hay puntos de ayuda disponibles en este momento.",
+  "relief.mapHint": "Acopios y refugios · fuente comunitaria",
+  "relief.filter.all": "Todos",
+  "relief.filter.acopio": "Acopios",
+  "relief.filter.refugio": "Refugios",
+  "relief.filter.aria": "Filtrar puntos de ayuda por tipo",
+  "relief.type.acopio": "Centro de acopio",
+  "relief.type.refugio": "Refugio",
+  "relief.unverified": "Sin verificar",
+  "subsystem.relief": "Acopios y refugios",
 
   "donate.verified": "Canal verificado",
-  "donate.recipient": "Caritas — Llamado de Respuesta a Emergencias",
-  "donate.affiliation": "Agencia internacional de ayuda de la Iglesia Católica",
+  "donate.recipient": "GiveDirectly — Terremotos de Venezuela",
+  "donate.affiliation": "ONG estadounidense de transferencias de efectivo · 501(c)(3) · deducible de impuestos",
   "donate.description":
-    "Financia alimentos, agua potable, refugio y atención médica para las comunidades afectadas por el terremoto, mediante la respuesta de emergencia de Caritas.",
+    "Envía ayuda en efectivo directamente a los sobrevivientes del terremoto — unos $340 por persona, cerca de tres meses de necesidades básicas para una familia de cuatro — y cada quien decide cómo usarlo. Las comunidades de mayor necesidad se identifican con datos de daños y pobreza. Cada $1 en efectivo se multiplica a unos $2.60 de actividad económica local (Egger et al., Econometrica 2022).",
   "donate.amountsLabel": "Montos de donación sugeridos",
-  "donate.cta": "Donar con Caritas",
+  "donate.cta": "Donar con GiveDirectly",
   "donate.openOfficial": "Abrir sitio oficial",
-  "donate.frameTitle": "Formulario de donación de Caritas",
+  "donate.frameTitle": "Formulario de donación de GiveDirectly",
   "donate.fallback":
-    "No se pudo incrustar el formulario de donación aquí. Usa el botón de abajo para donar en el sitio oficial de Caritas.",
-  "donate.note": "Completarás tu donación de forma segura en el sitio oficial de Caritas. El Centro nunca gestiona tu pago.",
+    "No se pudo incrustar el formulario de donación aquí. Usa el botón de abajo para donar en el sitio oficial de GiveDirectly.",
+  "donate.note": "Completarás tu donación de forma segura en el sitio oficial de GiveDirectly. El Centro nunca gestiona tu pago. Las donaciones en EE. UU. son deducibles de impuestos.",
   "donate.clicks.label": "enlaces de donación pulsados",
+
+  "footer.managedBy": "Gestionado de forma independiente —",
+  "footer.contact": "contactar al curador del sitio",
 
   "landing.kicker": "Coordinación oficial de ayuda",
   "landing.title": "Ayuda verificada para el terremoto de Venezuela 2026",

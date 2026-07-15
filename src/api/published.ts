@@ -25,18 +25,57 @@ import type { DonationChannel, NewsItem, ResourceEntry } from "../domain/types";
 
 export const publishedNews: NewsItem[] = [
   {
-    id: "n0",
+    id: "n-reuters-toll",
     verificationStatus: "verified",
     contentLanguage: "en",
-    createdAt: "2026-06-25T14:00:00-04:00",
-    updatedAt: "2026-06-27T22:32:00-04:00",
-    // Primary source: The New York Times live coverage. Kept first.
-    headline: "Live coverage: Chaotic rush to help victims delays some rescues as toll passes 1,400",
+    createdAt: "2026-07-14T12:00:00-04:00",
+    updatedAt: "2026-07-14T12:00:00-04:00",
+    // Latest official toll. Kept first (newest by publishedAt).
+    headline: "Death toll from Venezuela quakes rises to 4,734, government says",
     summary:
-      "The New York Times is tracking the aftermath of the two earthquakes — the stronger at magnitude 7.5 — with continuously updated reporting. Venezuela's National Assembly says the death toll has risen to 1,430, with more than 3,200 injured and over 3,000 left homeless. A surge of civilian volunteers carrying aid clogged the single highway into La Guaira, slowing ambulances and rescue crews, prompting authorities to militarize the state and restrict access. The U.N. estimates roughly 125 buildings collapsed and expects the toll to climb. The U.S. has taken a leading coordinating role, repairing a Caracas airport runway and deploying the U.S.S. Fort Lauderdale.",
+      "Reuters reports the government has raised the confirmed death toll from the June 24 twin earthquakes to 4,734, with more than 16,740 injured. Tens of thousands remain missing three weeks on. More than 16,300 people lost their homes and another 28,300 are in dwellings deemed uninhabitable. Most search-and-rescue operations have ended and efforts have shifted to recovering and identifying the dead.",
+    sourceAttribution: "Reuters",
+    sourceLink: "https://www.reuters.com/world/americas/",
+    publishedAt: "2026-07-14T12:00:00-04:00",
+  },
+  {
+    id: "n-nyt-hidden",
+    verificationStatus: "verified",
+    contentLanguage: "en",
+    createdAt: "2026-06-30T09:00:00-04:00",
+    updatedAt: "2026-06-30T09:00:00-04:00",
+    headline: "The hidden dead: the true toll in Venezuela is buried under rubble",
+    summary:
+      "The New York Times reports the official count is likely a substantial undercount and could take weeks to resolve. Engineers and disaster experts expect the toll to rise sharply as bodies are recovered; tens of thousands remain missing on unofficial tracking sites, and USGS PAGER modeling warns the final figure could exceed 10,000.",
     sourceAttribution: "The New York Times",
-    sourceLink: "https://www.nytimes.com/live/2026/06/27/world/venezuela-earthquake",
-    publishedAt: "2026-06-27T22:32:00-04:00",
+    sourceLink: "https://www.nytimes.com/2026/06/30/world/americas/venezuela-earthquake-death-toll.html",
+    publishedAt: "2026-06-30T09:00:00-04:00",
+  },
+  {
+    id: "n-un-damage",
+    verificationStatus: "verified",
+    contentLanguage: "en",
+    createdAt: "2026-07-02T12:00:00-04:00",
+    updatedAt: "2026-07-02T12:00:00-04:00",
+    headline: "UN estimates US$37 billion in direct earthquake damage in Venezuela",
+    summary:
+      "The UN Office for Disaster Risk Reduction estimates the twin quakes caused roughly US$37 billion in direct damage — about US$24 billion to buildings and US$13 billion to water, telecom, roads, energy and other infrastructure. Satellite analysis suggests some 590,000 buildings were damaged nationwide; in the worst-hit La Guaira, officials report about 80% of buildings collapsed.",
+    sourceAttribution: "El Nacional",
+    sourceLink: "https://www.elnacional.com/venezuela/",
+    publishedAt: "2026-07-02T12:00:00-04:00",
+  },
+  {
+    id: "n-ap-florida",
+    verificationStatus: "verified",
+    contentLanguage: "en",
+    createdAt: "2026-07-08T10:00:00-04:00",
+    updatedAt: "2026-07-08T10:00:00-04:00",
+    headline: "Earthquake aid keeps flowing from Florida to Venezuela as volunteers unite",
+    summary:
+      "The Associated Press reports on the Venezuelan diaspora in Florida mobilizing to send relief supplies home, with volunteers organizing collection drives and shipments as recovery efforts continue on the ground.",
+    sourceAttribution: "Associated Press",
+    sourceLink: "https://apnews.com/article/venezuela-earthquakes-la-guaira-gem-diaspora-ad479a3dee41aea9e10ea1c6ef85fffc",
+    publishedAt: "2026-07-08T10:00:00-04:00",
   },
   {
     id: "n-cnn-vis",
@@ -137,6 +176,22 @@ export const publishedNews: NewsItem[] = [
 ];
 
 export const publishedDonations: DonationChannel[] = [
+  {
+    id: "d0",
+    verificationStatus: "verified",
+    contentLanguage: "en",
+    createdAt: "2026-07-15T09:00:00-04:00",
+    updatedAt: "2026-07-15T09:00:00-04:00",
+    // GiveDirectly — event-specific Venezuela earthquake campaign. 501(c)(3),
+    // EIN 27-1661997; US donations tax-deductible. Delivers unconditional cash
+    // transfers (~$340/person) directly to the highest-need survivors, targeted
+    // via damage + poverty data. Funds processed on GiveDirectly's own site.
+    recipientOrganization: "GiveDirectly — Venezuela Earthquakes",
+    description:
+      "Sends cash relief directly to earthquake survivors — about $340 per person, roughly three months of basic needs for a family of four — with recipients deciding how to spend it on food, shelter, or medical bills. The highest-need communities are identified using damage and poverty data. U.S. donations are tax-deductible; funds are processed on GiveDirectly's own site.",
+    destinationLink: "https://www.givedirectly.org/venezuela-earthquakes",
+    affiliationLabel: "U.S. cash-transfer nonprofit (501(c)(3), EIN 27-1661997)",
+  },
   {
     id: "d1",
     verificationStatus: "verified",

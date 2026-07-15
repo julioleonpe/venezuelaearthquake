@@ -35,6 +35,17 @@ export function AppShell() {
       <main id="main" tabIndex={-1} className="app__main">
         <Outlet />
       </main>
+
+      {/* Minimal footer — attribution + contact (link-out to the curator's profile). */}
+      <footer className="app__footer">
+        <a
+          href="https://www.linkedin.com/in/julioleonpe"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {t("footer.contact")}
+        </a>
+      </footer>
     </div>
   );
 }

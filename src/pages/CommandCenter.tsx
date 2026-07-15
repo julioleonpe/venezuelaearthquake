@@ -8,8 +8,8 @@
  *  - News: verified News_Items, newest first — internal scroll.
  *  - Relief Tools & Apps: outbound launcher (people finders, damage tools,
  *    services) sourced from RELIEF_TOOLS; multi-tool groups expand inline.
- *  - Seismic console: live dual-layer map (USGS seismicity + community damage),
- *    the centerpiece.
+ *  - Relief map: live community map of collection centers (acopios) & shelters
+ *    (refugios), filterable by type — the centerpiece.
  *  - Donate: Caritas link-out card + other verified channels (funds handled on the
  *    recipient's own site).
  *
@@ -23,10 +23,10 @@ import { Link } from "react-router-dom";
 import { getDonations, getNews } from "../api/store";
 import { DonatePanel } from "../components/DonatePanel";
 import { ExternalLink } from "../components/ExternalLink";
-import { SeismicConsole } from "../components/SeismicConsole";
+import { ReliefConsole } from "../components/ReliefConsole";
 import { SituationOverview } from "../components/SituationOverview";
-import { ExternalIcon, PeopleIcon, MapIcon, HeartIcon, ShieldCheckIcon, ChevronDownIcon, NewsIcon, ResourceIcon, ActivityIcon, DonateIcon, InboxIcon, PawIcon } from "../components/icons";
-import { RELIEF_TOOLS, CARITAS_SITE_URL, NEW_TOOL_WINDOW_DAYS } from "../config";
+import { ExternalIcon, PeopleIcon, MapIcon, HeartIcon, ShieldCheckIcon, ChevronDownIcon, NewsIcon, ResourceIcon, DonateIcon, InboxIcon, PawIcon } from "../components/icons";
+import { RELIEF_TOOLS, FEATURED_DONATE_URL, NEW_TOOL_WINDOW_DAYS } from "../config";
 import type { ReliefTool, ReliefToolGroup } from "../config";
 import { needsLanguageIndicator, sourceHostLabel } from "../domain/core";
 import type { DonationChannel, NewsItem } from "../domain/types";
@@ -40,7 +40,7 @@ import { useSubsystem } from "../lib/useSubsystem";
 import { usePageHeadingFocus } from "../lib/usePageTitle";
 import type { ReactNode } from "react";
 
-type SectionKey = "news" | "tools" | "seismic" | "donate";
+type SectionKey = "news" | "tools" | "relief" | "donate";
 
 export default function CommandCenter() {
   const { t, lang } = useI18n();
@@ -71,8 +71,8 @@ export default function CommandCenter() {
         <div className="cc-strip__stats">
           <Stat value="7.5" label={t("cc.stat.magnitude")} accent />
           <Stat value="2" label={t("cc.stat.quakes")} />
-          <Stat value="1,430" label={t("cc.stat.deaths")} />
-          <Stat value="3,200+" label={t("cc.stat.injuries")} />
+          <Stat value="4,734" label={t("cc.stat.deaths")} />
+          <Stat value="16,740" label={t("cc.stat.injuries")} />
           <Stat value={t("cc.stat.missing.value")} label={t("cc.stat.missing")} />
         </div>
       </section>
@@ -91,15 +91,16 @@ export default function CommandCenter() {
           accessory={<DonateClicksBadge />}
         >
           <div className="tile__scroll tile__scroll--donate">
-            {/* Caritas — the launch channel, highlighted in its own card. */}
+            {/* GiveDirectly — the featured channel, highlighted in its own card. */}
             <div className="donate-featured">
               <DonatePanel />
             </div>
             {donations.status === "ready" && (
-              // Caritas is already featured above; the remaining verified channels
-              // stay collapsed behind a toggle so Caritas leads without scrolling.
+              // GiveDirectly is already featured above; the remaining verified
+              // channels (Caritas next) stay collapsed behind a toggle so the
+              // featured channel leads without scrolling.
               <DonateMore
-                channels={donations.data.filter((c) => c.destinationLink !== CARITAS_SITE_URL)}
+                channels={donations.data.filter((c) => c.destinationLink !== FEATURED_DONATE_URL)}
                 lang={lang}
               />
             )}
@@ -144,18 +145,18 @@ export default function CommandCenter() {
           </div>
         </TileShell>
 
-        {/* Seismic console — wide centerpiece. On mobile, mounts only when expanded
-            (so the Leaflet map isn't fetched until the user opens it). */}
+        {/* Relief map — wide centerpiece (collection centers & shelters). On mobile,
+            mounts only when expanded (so Leaflet isn't fetched until opened). */}
         <TileShell
-          variant="seismic"
-          icon={<ActivityIcon size={20} />}
-          title={t("seismic.title")}
+          variant="relief"
+          icon={<MapIcon size={20} />}
+          title={t("relief.title")}
           mobile={mobile}
-          open={shows("seismic")}
-          onToggle={() => toggle("seismic")}
+          open={shows("relief")}
+          onToggle={() => toggle("relief")}
           bare
         >
-          <SeismicConsole />
+          <ReliefConsole />
         </TileShell>
       </div>
     </div>

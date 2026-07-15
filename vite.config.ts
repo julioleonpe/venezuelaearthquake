@@ -42,8 +42,40 @@ function donateClicksDevPlugin(): Plugin {
   };
 }
 
+/**
+ * Dev-only stand-in for the `api/relief-points.ts` Vercel function. Vite doesn't
+ * run the serverless functions in `api/`, and the local read server doesn't know
+ * this route — so without this the relief map would report "unavailable" in dev.
+ * It fetches the same upstream server-side (Node has no CORS) and re-serves it,
+ * exactly as the prod function does. Runs before the `/api` proxy so it wins for
+ * this exact path.
+ */
+function reliefPointsDevPlugin(): Plugin {
+  const UPSTREAM =
+    "https://script.google.com/macros/s/AKfycbzKAcMzH739iu1nL6ztBmm3uymajUy6V0lPEQmbQeBjABUJ84odAxEnv0QD9Cjy5pP0Tw/exec";
+  return {
+    name: "relief-points-dev",
+    configureServer(server) {
+      server.middlewares.use("/api/relief-points", async (_req, res) => {
+        try {
+          const upstream = await fetch(UPSTREAM, { headers: { Accept: "application/json" } });
+          const body = await upstream.text();
+          res.setHeader("Content-Type", "application/json; charset=utf-8");
+          res.setHeader("Cache-Control", "no-store");
+          res.statusCode = upstream.ok ? 200 : 502;
+          res.end(upstream.ok ? body : JSON.stringify({ error: "upstream_error" }));
+        } catch {
+          res.statusCode = 502;
+          res.setHeader("Content-Type", "application/json; charset=utf-8");
+          res.end(JSON.stringify({ error: "upstream_unreachable" }));
+        }
+      });
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [react(), donateClicksDevPlugin()],
+  plugins: [react(), donateClicksDevPlugin(), reliefPointsDevPlugin()],
   server: {
     port: 5180,
     open: true,

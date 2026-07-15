@@ -9,8 +9,9 @@
    ========================================================================== */
 .cc {
   /* Reserve --bar-h at the top as a safe-area for the floating nav, so the status
-     strip (incl. its right-aligned stats) never sits under the nav pills. */
-  height: calc(100vh - var(--bar-h));
+     strip (incl. its right-aligned stats) never sits under the nav pills. Also
+     subtract the footer so the bento grid never sits behind it. */
+  height: calc(100vh - var(--bar-h) - var(--footer-h));
   margin-top: var(--bar-h);
   max-width: 1860px;
   margin-inline: auto;
@@ -211,12 +212,12 @@
   grid-template-columns: 1fr 1.56fr 1fr;
   /* Middle column: the Tools launcher is CONTENT-SIZED (auto) — compact when its
      folders are collapsed, growing only when one expands — so it never reserves
-     dead white space. The seismic console takes whatever height is left (1fr) and
+     dead white space. The relief map takes whatever height is left (1fr) and
      thus shrinks/grows inversely as folders open and close. */
   grid-template-rows: auto minmax(0, 1fr);
   grid-template-areas:
     "news tools   donate"
-    "news seismic donate";
+    "news relief donate";
   gap: clamp(16px, 1.9vw, 24px);
 }
 
@@ -225,7 +226,7 @@
   /* Don't stretch to fill the track — size to content so the box hugs the apps. */
   align-self: start;
   /* Safety cap: if many folders/tools ever exceed this, scroll inside rather than
-     crushing the seismic console. */
+     crushing the relief map. */
   max-height: 60vh;
 }
 
@@ -243,8 +244,8 @@
 .tile--news {
   grid-area: news;
 }
-.tile--seismic {
-  grid-area: seismic;
+.tile--relief {
+  grid-area: relief;
   padding: 0;
 }
 .tile--donate {
@@ -816,7 +817,7 @@
 }
 
 /* =============================================================================
-   SEISMIC CONSOLE — feed + map
+   RELIEF CONSOLE — feed + map (collection centers & shelters)
    ========================================================================== */
 .console {
   display: grid;
@@ -1093,43 +1094,59 @@
   padding: 1px 6px;
 }
 
-/* Damage report rows (reuse quake-row layout, distinct accents) */
-.dmg-row.is-selected {
-  border-left-color: var(--dmg-severo);
+/* Relief point rows (reuse quake-row layout, distinct per-type accents).
+   acopio = instrument amber square dot · refugio = teal round dot. */
+.relief-row--acopio.is-selected {
+  border-left-color: var(--relief-acopio);
 }
-.dmg-row__badge {
+.relief-row--refugio.is-selected {
+  border-left-color: var(--relief-refugio);
+}
+.relief-row__tags {
   flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.relief-row__badge {
   font-family: var(--font-mono);
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.03em;
   text-transform: uppercase;
+  color: #fff;
   border-radius: 999px;
   padding: 2px 8px;
 }
-.dmg-badge--total {
-  color: #fff;
-  background: var(--dmg-total);
+.relief-badge--acopio {
+  background: var(--relief-acopio);
 }
-.dmg-badge--severo {
-  color: #fff;
-  background: var(--dmg-severo);
+.relief-badge--refugio {
+  background: var(--relief-refugio);
 }
-.dmg-badge--parcial {
-  color: #fff;
-  background: var(--dmg-parcial);
+.relief-row__unv {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--warn-fg);
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-line);
+  border-radius: 999px;
+  padding: 1px 6px;
 }
-.dmg-dot--total {
-  background: var(--dmg-total);
+/* acopio uses a square dot, refugio a round dot — glyph reinforces the color. */
+.relief-dot--acopio {
+  background: var(--relief-acopio);
+  border-radius: 2px;
 }
-.dmg-dot--severo {
-  background: var(--dmg-severo);
-}
-.dmg-dot--parcial {
-  background: var(--dmg-parcial);
+.relief-dot--refugio {
+  background: var(--relief-refugio);
+  border-radius: 50%;
 }
 
-/* Damage legend (bottom-left of the map on the damage layer) */
+/* Relief legend (bottom-left of the map) */
 .console__legend {
   position: absolute;
   bottom: 10px;
@@ -1156,6 +1173,9 @@
   width: 9px;
   height: 9px;
   border-radius: 2px;
+}
+.console__legend-swatch--round {
+  border-radius: 50%;
 }
 .console__legend-count {
   margin-left: auto;
@@ -1530,7 +1550,7 @@
     grid-template-rows: none;
     grid-template-areas:
       "tools tools"
-      "seismic seismic"
+      "relief relief"
       "news donate";
   }
   .tile--tools {
@@ -1539,7 +1559,7 @@
   .tile--news {
     min-height: 380px;
   }
-  .tile--seismic {
+  .tile--relief {
     min-height: 460px;
   }
   .tile--donate {
@@ -1810,11 +1830,11 @@
     text-decoration: none;
   }
   /* Give the seismic console real height when it's the open section. */
-  .cc--mobile .tile--seismic.is-open .console {
+  .cc--mobile .tile--relief.is-open .console {
     height: 100%;
     grid-template-rows: minmax(120px, 40%) 1fr;
   }
-  .cc--mobile .tile--seismic.is-open .console__feed {
+  .cc--mobile .tile--relief.is-open .console__feed {
     max-height: none;
   }
 }

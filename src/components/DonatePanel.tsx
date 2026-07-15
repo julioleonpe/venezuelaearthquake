@@ -1,13 +1,13 @@
 /**
- * DonatePanel — the Caritas donation tile.
+ * DonatePanel — the featured donation tile (GiveDirectly).
  *
- * Caritas (correctly) forbids being framed, so by default this is a polished,
+ * GiveDirectly (correctly) forbids being framed, so by default this is a polished,
  * branded LINK-OUT card: recipient identity, affiliation, a few suggested amounts
- * that deep-link to Caritas's own appeal, and a prominent donate button. The Hub
- * never collects, processes, holds, or proxies funds — donation always happens on
- * Caritas's own infrastructure (see CLAUDE.md).
+ * that deep-link to GiveDirectly's own appeal, and a prominent donate button. The
+ * Hub never collects, processes, holds, or proxies funds — donation always happens
+ * on the recipient's own infrastructure (see CLAUDE.md).
  *
- * An embedded-iframe path exists behind `CARITAS_EMBED_ENABLED` (off by default;
+ * An embedded-iframe path exists behind `FEATURED_EMBED_ENABLED` (off by default;
  * see config.ts) for any future recipient that supplies an officially embeddable
  * form URL, with this card as the guaranteed fallback.
  */
@@ -15,20 +15,20 @@
 import { useEffect, useRef, useState } from "react";
 import { track } from "@vercel/analytics";
 import {
-  CARITAS_EMBED_ENABLED,
-  CARITAS_EMBED_URL,
-  CARITAS_SITE_URL,
+  FEATURED_EMBED_ENABLED,
+  FEATURED_EMBED_URL,
+  FEATURED_DONATE_URL,
 } from "../config";
 import { sourceHostLabel } from "../domain/core";
 import { useI18n } from "../i18n/I18nProvider";
 import { recordDonateClick } from "../lib/donateClicks";
 import { ExternalIcon, HeartIcon, ShieldCheckIcon } from "./icons";
 
-const SUGGESTED = [50, 100, 250] as const;
+const SUGGESTED = [100, 500, 1000] as const;
 
 export function DonatePanel() {
   const { t } = useI18n();
-  const host = sourceHostLabel(CARITAS_SITE_URL).label;
+  const host = sourceHostLabel(FEATURED_DONATE_URL).label;
 
   return (
     <div className="donate-panel">
@@ -45,20 +45,22 @@ export function DonatePanel() {
         <span>{t("donate.affiliation")}</span>
       </div>
 
-      {CARITAS_EMBED_ENABLED && CARITAS_EMBED_URL ? (
-        <CaritasEmbed />
+      {FEATURED_EMBED_ENABLED && FEATURED_EMBED_URL ? (
+        <FeaturedEmbed />
       ) : (
-        <CaritasCard host={host} />
+        <FeaturedCard host={host} />
       )}
     </div>
   );
 }
 
 /** Default: trustworthy branded link-out card with suggested amounts. */
-function CaritasCard({ host }: { host: string }) {
+function FeaturedCard({ host }: { host: string }) {
   const { t } = useI18n();
-  // Caritas's form reads `?amount=` to preselect a gift (graceful no-op if not).
-  const amountUrl = (amt: number) => `${CARITAS_SITE_URL}?amount=${amt}`;
+  // Deep-link straight into GiveDirectly's payment step with the amount preselected
+  // (both `amountChosen` and `amountBilled` are set; frequency=once, card default).
+  const amountUrl = (amt: number) =>
+    `https://donate.givedirectly.org/payment-methods?fundraiserId=venezuelaearthquakes&frequency=once&amountChosen=${amt}&paymentMethod=card&amountBilled=${amt}`;
 
   return (
     <>
@@ -73,7 +75,7 @@ function CaritasCard({ host }: { host: string }) {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => {
-              recordDonateClick("caritas");
+              recordDonateClick("givedirectly");
               track("donate_click", { surface: "suggested_amount", amount: amt });
             }}
           >
@@ -85,11 +87,11 @@ function CaritasCard({ host }: { host: string }) {
 
       <a
         className="donate-panel__cta"
-        href={CARITAS_SITE_URL}
+        href={FEATURED_DONATE_URL}
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => {
-          recordDonateClick("caritas");
+          recordDonateClick("givedirectly");
           track("donate_click", { surface: "cta" });
         }}
       >
@@ -104,16 +106,16 @@ function CaritasCard({ host }: { host: string }) {
 }
 
 /**
- * Optional embedded form (only when CARITAS_EMBED_ENABLED). Falls back to the
+ * Optional embedded form (only when FEATURED_EMBED_ENABLED). Falls back to the
  * link-out CTA if the frame never signals load within the budget (i.e. framing
  * is blocked by the recipient's X-Frame-Options / CSP).
  */
-function CaritasEmbed() {
+function FeaturedEmbed() {
   const { t } = useI18n();
   const [loaded, setLoaded] = useState(false);
   const [blocked, setBlocked] = useState(false);
   const frameRef = useRef<HTMLIFrameElement>(null);
-  const host = sourceHostLabel(CARITAS_SITE_URL).label;
+  const host = sourceHostLabel(FEATURED_DONATE_URL).label;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -129,7 +131,7 @@ function CaritasEmbed() {
           <iframe
             ref={frameRef}
             className={`donate-panel__frame ${loaded ? "is-loaded" : ""}`}
-            src={CARITAS_EMBED_URL}
+            src={FEATURED_EMBED_URL}
             title={t("donate.frameTitle")}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
@@ -149,11 +151,11 @@ function CaritasEmbed() {
       </div>
       <a
         className="donate-panel__cta"
-        href={CARITAS_SITE_URL}
+        href={FEATURED_DONATE_URL}
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => {
-          recordDonateClick("caritas");
+          recordDonateClick("givedirectly");
           track("donate_click", { surface: blocked ? "embed_fallback" : "embed_linkout" });
         }}
       >

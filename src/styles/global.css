@@ -40,11 +40,10 @@
   --mag-strong: #cf5a25;
   --mag-major: #d6342f;
 
-  /* Community damage scale — a cool ramp kept distinct from the seismic amber→red
-     so a building's damage level is never misread as an earthquake magnitude. */
-  --dmg-parcial: #3f87c4;
-  --dmg-severo: #8a5cd1;
-  --dmg-total: #d6347f;
+  /* Relief-point palette — one color per type so a collection center is never
+     misread as a shelter. acopio reuses the instrument amber; refugio a cool teal. */
+  --relief-acopio: #c4720f;
+  --relief-refugio: #1f8a76;
 
   /* --- Venezuela civic tricolor (thin instrument markers, never fills) ----- */
   --vz-yellow: #f2c14e;
@@ -76,6 +75,7 @@
   --radius-lg: 14px;
   --maxw: 1140px;
   --bar-h: 66px;
+  --footer-h: 30px;
   --shadow-sm: 0 1px 2px rgba(24, 34, 46, 0.06), 0 1px 3px rgba(24, 34, 46, 0.05);
   --shadow-md: 0 6px 20px rgba(24, 34, 46, 0.09), 0 2px 6px rgba(24, 34, 46, 0.06);
   --shadow-lg: 0 22px 56px rgba(24, 34, 46, 0.16);
@@ -225,6 +225,30 @@ h4 {
    content doesn't start under the floating nav. */
 .app:not(.app--console) .app__main {
   padding-top: var(--bar-h);
+}
+
+/* Minimal footer — quiet attribution + contact link. */
+.app__footer {
+  flex: none;
+  height: var(--footer-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3ch;
+  padding: 0 1rem;
+  text-align: center;
+  font-size: 0.72rem;
+  line-height: 1.2;
+  color: var(--ink-faint);
+}
+.app__footer a {
+  color: var(--ink-faint);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.app__footer a:hover,
+.app__footer a:focus-visible {
+  color: var(--accent);
 }
 
 /* Home route locks to one viewport; the bento owns internal scroll. */
@@ -845,35 +869,46 @@ h4 {
   background: var(--surface);
 }
 
-/* Damage markers — small rotated squares (distinct from seismic circles). */
-.dmg-marker {
+/* Relief markers — acopios are squares, refugios circles; unverified points render
+   hollow (transparent fill, colored ring) so their "sin verificar" state shows. */
+.relief-marker {
   display: block;
-  width: 11px;
-  height: 11px;
-  border: 1.5px solid rgba(255, 255, 255, 0.85);
-  border-radius: 2px;
-  transform: rotate(45deg);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  width: 13px;
+  height: 13px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.28);
 }
-.dmg-popup .dmg-popup__lvl {
+.relief-marker--acopio {
+  border-radius: 3px;
+}
+.relief-marker--refugio {
+  border-radius: 50%;
+}
+.relief-marker--unverified {
+  border-style: dashed;
+  border-width: 2px;
+  box-shadow: none;
+}
+.relief-popup .relief-popup__badge {
   display: inline-block;
-  margin-top: 4px;
+  margin-left: 6px;
   font-family: var(--font-mono);
-  font-size: 0.66rem;
+  font-size: 0.58rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.03em;
+  color: var(--warn-fg);
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-line);
+  border-radius: 999px;
+  padding: 1px 6px;
+  vertical-align: middle;
 }
-.dmg-popup .dmg-popup__lvl--total {
-  color: var(--dmg-total);
+.relief-popup .relief-popup__row {
+  color: var(--ink-soft);
+  font-size: 0.8rem;
 }
-.dmg-popup .dmg-popup__lvl--severo {
-  color: var(--dmg-severo);
-}
-.dmg-popup .dmg-popup__lvl--parcial {
-  color: var(--dmg-parcial);
-}
-.dmg-popup .dmg-popup__src {
+.relief-popup .relief-popup__src {
   color: var(--ink-faint);
   font-size: 0.76rem;
 }
