@@ -190,6 +190,10 @@ const en = {
   "relief.needs.clear": "Clear",
   "relief.needs.receiving": "Receiving",
   "relief.capacity": "Capacity",
+  // Mobile Map/List view toggle.
+  "relief.view.aria": "Switch between map and list",
+  "relief.view.map": "Map",
+  "relief.view.list": "List",
   "relief.cat.food": "Food",
   "relief.cat.water": "Water",
   "relief.cat.medical": "Medical",
@@ -477,6 +481,10 @@ const es: Record<MessageId, string> = {
   "relief.needs.clear": "Limpiar",
   "relief.needs.receiving": "Reciben",
   "relief.capacity": "Capacidad",
+  // Alternador móvil Mapa/Lista.
+  "relief.view.aria": "Alternar entre mapa y lista",
+  "relief.view.map": "Mapa",
+  "relief.view.list": "Lista",
   "relief.cat.food": "Alimentos",
   "relief.cat.water": "Agua",
   "relief.cat.medical": "Insumos médicos",

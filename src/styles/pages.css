@@ -1919,13 +1919,93 @@
     color: var(--accent);
     text-decoration: none;
   }
-  /* Give the seismic console real height when it's the open section. */
-  .cc--mobile .tile--relief.is-open .console {
+  /* ── Mobile relief console: Map | List toggle, one full-height panel ──────
+     Replaces the cramped feed-over-map split. A segmented control swaps between
+     a full-height map and a full-height list; controls (type filter + need
+     chips) sit between the toggle and the panel and apply to both. */
+  .cc--mobile .tile--relief.is-open .console--mobile {
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    grid-template-rows: minmax(120px, 40%) 1fr;
+    min-height: 0;
   }
-  .cc--mobile .tile--relief.is-open .console__feed {
+  .console--mobile .console__mobile-bar {
+    flex: none;
+    padding: 8px 10px 0;
+  }
+  /* Segmented Map/List switch — big, thumb-friendly, one row. */
+  .console__viewseg {
+    display: flex;
+    gap: 4px;
+    padding: 3px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+  .console__viewseg-tab {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink-soft);
+    background: transparent;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .console__viewseg-tab.is-active {
+    color: var(--ink);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+  }
+  /* Type-filter tabs: keep labels on ONE line (English "Collection centers" wraps
+     otherwise), let them shrink, and drop the desktop uppercase to save width. */
+  .console--mobile .console__layers {
+    padding: 8px 10px 6px;
+    border-bottom: 0;
+  }
+  .console--mobile .console__layer-tab {
+    min-width: 0;
+    padding: 7px 6px;
+    font-size: 0.68rem;
+    letter-spacing: 0.01em;
+    text-transform: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  /* Need chips: cap height so a long chip set can't push the panel off-screen. */
+  .console--mobile .relief-needs {
+    max-height: 92px;
+    overflow-y: auto;
+    padding: 6px 10px;
+  }
+  /* The active panel (map or list) fills all remaining height. */
+  .console--mobile .console__map,
+  .console--mobile .console__feed--mobile {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+  }
+  .console--mobile .console__feed--mobile {
+    display: flex;
+    flex-direction: column;
+    border: 0;
     max-height: none;
+  }
+  .console--mobile .console__feed--mobile .console__feed-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  /* The tile header + view toggle already name the section; drop the map's
+     redundant title overlay on mobile so the small map stays uncluttered. */
+  .console--mobile .console__map-tag {
+    display: none;
   }
 }
 

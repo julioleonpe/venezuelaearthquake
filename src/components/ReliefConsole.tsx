@@ -18,10 +18,14 @@ import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { ACOPIOS_MAP_URL } from "../config";
 import { useI18n } from "../i18n/I18nProvider";
 import type { MessageId } from "../i18n/catalog";
+import { useMediaQuery } from "../lib/useMediaQuery";
 import { fetchReliefPoints, tallyRelief, type ReliefPoint, type ReliefTally } from "../lib/acopios";
 import { NEED_CATEGORIES, type NeedCategory } from "../lib/reliefNeeds";
 import { ExternalIcon } from "./icons";
 import type { ReliefFilter } from "./ReliefMap";
+
+/** Mobile splits the console into a Map/List toggle so each gets full height. */
+type MobileView = "map" | "list";
 
 // Leaflet (+ its CSS) is only loaded when the console mounts — keeps it off the
 // critical path and out of routes that don't need it.
@@ -38,8 +42,10 @@ const FILTERS: ReliefFilter[] = ["all", "acopio", "refugio"];
 
 export function ReliefConsole() {
   const { t } = useI18n();
+  const mobile = useMediaQuery("(max-width: 720px)");
   const [filter, setFilter] = useState<ReliefFilter>("all");
   const [needs, setNeeds] = useState<ReadonlySet<NeedCategory>>(() => new Set());
+  const [mobileView, setMobileView] = useState<MobileView>("map");
   const [state, setState] = useState<Loadable<ReliefPoint[]>>({ status: "loading" });
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -73,6 +79,121 @@ export function ReliefConsole() {
   const highlights = (p: ReliefPoint): boolean =>
     needs.size === 0 || p.needsCategories.some((c) => needs.has(c));
 
+  // Tapping a list row on mobile jumps to the map so its popup is visible.
+  const selectFromList = (id: string) => {
+    setSelectedId(id);
+    if (mobile) setMobileView("map");
+  };
+
+  // Shared controls — the type filter + need chips are identical in both layouts.
+  const controls = (
+    <>
+      <div className="console__layers" role="tablist" aria-label={t("relief.filter.aria")}>
+        {FILTERS.map((f) => (
+          <FilterTab key={f} active={filter === f} onClick={() => setFilter(f)}>
+            {t(FILTER_KEY[f])}
+            {tally && <span className="console__layers-count">{countFor(f, tally)}</span>}
+          </FilterTab>
+        ))}
+      </div>
+      {showNeedChips && tally && (
+        <NeedChips tally={tally} active={needs} onToggle={toggleNeed} onClear={() => setNeeds(new Set())} />
+      )}
+    </>
+  );
+
+  const feedBody = (
+    <div className="console__feed-body" role="list" aria-label={t("relief.title")}>
+      <ReliefFeed
+        state={state}
+        shown={shown}
+        selectedId={selectedId}
+        onSelect={selectFromList}
+        highlights={highlights}
+        dimmed={needs.size > 0}
+        emptyMsg={t("relief.empty")}
+        errorMsg={t("relief.unavailable")}
+        loadingMsg={t("loading.label")}
+      />
+    </div>
+  );
+
+  const mapBody = (
+    <>
+      <Suspense
+        fallback={
+          <div className="console__map-fallback">
+            <span className="spinner" aria-hidden="true" />
+          </div>
+        }
+      >
+        {points.length > 0 ? (
+          <ReliefMap
+            filter={filter}
+            points={points}
+            selectedId={selectedId}
+            onSelect={setSelectedId}
+            activeNeeds={needs}
+          />
+        ) : (
+          <div className="console__map-fallback" aria-hidden="true">
+            <span className="console__map-grid" />
+          </div>
+        )}
+      </Suspense>
+      <span className="console__map-tag">{t("relief.mapHint")}</span>
+      <ReliefLegend tally={tally} />
+    </>
+  );
+
+  // ── Mobile: Map | List segmented toggle; one panel at a time, full height. ──
+  if (mobile) {
+    return (
+      <div className="console console--mobile">
+        <div className="console__mobile-bar">
+          <div className="console__viewseg" role="tablist" aria-label={t("relief.view.aria")}>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={mobileView === "map"}
+              className={`console__viewseg-tab ${mobileView === "map" ? "is-active" : ""}`}
+              onClick={() => setMobileView("map")}
+            >
+              {t("relief.view.map")}
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={mobileView === "list"}
+              className={`console__viewseg-tab ${mobileView === "list" ? "is-active" : ""}`}
+              onClick={() => setMobileView("list")}
+            >
+              {t("relief.view.list")}
+              {tally && <span className="console__layers-count">{tally.all}</span>}
+            </button>
+          </div>
+        </div>
+        {controls}
+        {mobileView === "list" ? (
+          <div className="console__feed console__feed--mobile">{feedBody}</div>
+        ) : (
+          <div className="console__map console__map--mobile">
+            {mapBody}
+            <a
+              className="console__map-attrib"
+              href={ACOPIOS_MAP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t("relief.attribution")} <ExternalIcon size={11} />
+            </a>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // ── Desktop: feed + map side by side (unchanged). ──
   return (
     <div className="console">
       {/* Live points feed */}
@@ -92,63 +213,13 @@ export function ReliefConsole() {
           </a>
         </header>
 
-        {/* Type filter (segmented control) */}
-        <div className="console__layers" role="tablist" aria-label={t("relief.filter.aria")}>
-          {FILTERS.map((f) => (
-            <FilterTab key={f} active={filter === f} onClick={() => setFilter(f)}>
-              {t(FILTER_KEY[f])}
-              {tally && <span className="console__layers-count">{countFor(f, tally)}</span>}
-            </FilterTab>
-          ))}
-        </div>
-
-        {/* Need-category chips — highlight acopios by what they're collecting. */}
-        {showNeedChips && tally && (
-          <NeedChips tally={tally} active={needs} onToggle={toggleNeed} onClear={() => setNeeds(new Set())} />
-        )}
-
-        <div className="console__feed-body" role="list" aria-label={t("relief.title")}>
-          <ReliefFeed
-            state={state}
-            shown={shown}
-            selectedId={selectedId}
-            onSelect={setSelectedId}
-            highlights={highlights}
-            dimmed={needs.size > 0}
-            emptyMsg={t("relief.empty")}
-            errorMsg={t("relief.unavailable")}
-            loadingMsg={t("loading.label")}
-          />
-        </div>
+        {controls}
+        {feedBody}
       </div>
 
       {/* Map */}
       <div className="console__map">
-        <Suspense
-          fallback={
-            <div className="console__map-fallback">
-              <span className="spinner" aria-hidden="true" />
-            </div>
-          }
-        >
-          {points.length > 0 ? (
-            <ReliefMap
-              filter={filter}
-              points={points}
-              selectedId={selectedId}
-              onSelect={setSelectedId}
-              activeNeeds={needs}
-            />
-          ) : (
-            <div className="console__map-fallback" aria-hidden="true">
-              <span className="console__map-grid" />
-            </div>
-          )}
-        </Suspense>
-
-        <span className="console__map-tag">{t("relief.mapHint")}</span>
-
-        <ReliefLegend tally={tally} />
+        {mapBody}
 
         {/* Provenance + refer-out — always present so the community-reported,
             third-party nature is unambiguous and people can add points there. */}
