@@ -19,7 +19,7 @@ export function LastUpdatedBadge() {
     return (
       <span className="last-updated">
         <span className="badge-dot" aria-hidden="true" />
-        {t("landing.lastUpdated")}:{" "}
+        <span className="last-updated__label">{t("landing.lastUpdated")}:</span>{" "}
         <time dateTime={meta.data.lastUpdated}>{formatDateTimeTz(meta.data.lastUpdated, lang)}</time>
       </span>
     );
