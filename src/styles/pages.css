@@ -834,22 +834,23 @@
 .console__feed-head {
   flex: none;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 10px 14px 8px;
+  padding: 15px 16px;
   border-bottom: 1px solid var(--line);
 }
 .console__feed-title {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  line-height: 1.2;
   color: var(--ink);
 }
 .console__feed-src {
   font-family: var(--font-mono);
-  font-size: 0.66rem;
+  font-size: 0.62rem;
   color: var(--ink-faint);
 }
 .console__feed-src--link {
@@ -1073,9 +1074,10 @@
   justify-content: center;
   gap: 5px;
   padding: 5px 6px;
-  font-size: 0.7rem;
+  font-size: 0.62rem;
   font-weight: 600;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
   text-transform: uppercase;
   color: var(--ink-soft);
   background: var(--surface-2);
@@ -1162,8 +1164,8 @@
   flex: none;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  padding: 6px 8px;
+  gap: 4px;
+  padding: 5px 8px;
   border-bottom: 1px solid var(--line);
 }
 .relief-needs__label {
@@ -1177,12 +1179,20 @@
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
-  /* With 9 categories the chips can wrap into several rows; cap the height and let
-     them scroll internally so they never crowd the actual centers list off-screen. */
-  max-height: 92px;
+  /* With 9 categories the chips can wrap into several rows. Cap the block to ~2 rows
+     and let it scroll internally so it never crowds the actual centers list
+     off-screen — the list, not the filter, is the load-bearing content here. */
+  max-height: 58px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--line-2) transparent;
+}
+.relief-needs__chips::-webkit-scrollbar {
+  width: 8px;
+}
+.relief-needs__chips::-webkit-scrollbar-thumb {
+  background: var(--line-2);
+  border-radius: 999px;
 }
 .relief-chip {
   display: inline-flex;
