@@ -170,11 +170,12 @@ const en = {
     "Compiled from public sources (June 2026), including AP, Reuters, IFRC, PAHO/WHO, IRC, World Central Kitchen, Direct Relief, and donation guides. Casualty and magnitude figures vary by source and date.",
   "stake.back": "Back to the command center",
 
-  // Relief map — collection centers & shelters (live, community-reported)
+  // Relief map — collection centers & shelters (community-reported snapshot)
   "relief.title": "Collection Centers & Shelters",
   "relief.source": "acopios-refugios.vercel.app",
+  "relief.snapshot": "Snapshot from",
   "relief.attribution": "Community-reported · via acopios-refugios.vercel.app — report a point",
-  "relief.unavailable": "Live relief-point data is temporarily unavailable.",
+  "relief.unavailable": "Relief-point data is temporarily unavailable.",
   "relief.empty": "No relief points are currently available.",
   "relief.mapHint": "Collection centers & shelters · community-sourced",
   "relief.filter.all": "All",
@@ -464,8 +465,9 @@ const es: Record<MessageId, string> = {
 
   "relief.title": "Acopios y Refugios",
   "relief.source": "acopios-refugios.vercel.app",
+  "relief.snapshot": "Instantánea del",
   "relief.attribution": "Reportado por la comunidad · vía acopios-refugios.vercel.app — reporta un punto",
-  "relief.unavailable": "Los datos de puntos de ayuda en vivo no están disponibles temporalmente.",
+  "relief.unavailable": "Los datos de puntos de ayuda no están disponibles temporalmente.",
   "relief.empty": "No hay puntos de ayuda disponibles en este momento.",
   "relief.mapHint": "Acopios y refugios · fuente comunitaria",
   "relief.filter.all": "Todos",

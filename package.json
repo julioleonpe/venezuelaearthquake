@@ -11,7 +11,8 @@
     "server": "node server/server.ts",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "relief:refresh": "node scripts/fetch-relief-points.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

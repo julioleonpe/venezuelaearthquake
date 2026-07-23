@@ -23,9 +23,9 @@ npm run typecheck  # tsc --noEmit
 
 The Hub is a static SPA: curated content (News / Donations / Resources) is read **in the browser** from
 the published dataset (`src/api/published.ts`) and filtered through the pure domain gate — there is no
-API call. The relief map reads a public community source (the acopios & refugios feed) through a
-same-origin proxy (`/api/relief-points`; a Vite dev plugin serves the same route locally). For day-to-day
-work, **`npm run dev:web` is all you need** and matches production exactly.
+API call. The relief map reads a public community source (the acopios & refugios feed) from a bundled
+static snapshot (`src/data/relief-points.json`); refresh it with `npm run relief:refresh`, then commit
+and redeploy. For day-to-day work, **`npm run dev:web` is all you need** and matches production exactly.
 
 A `server/` directory holds a zero-dep Node read service from an earlier (two-process) architecture.
 `npm run dev` still spawns it alongside Vite, but the deployed static build does **not** use it — it's
@@ -35,10 +35,11 @@ kept only as a reference / backend-reuse target.
 
 - **Single command center.** Everything lives in one view at `/` — News, the Relief Tools & Apps
   launcher, the relief map, and Donate. There are no drill-down pages; unknown paths fall back home.
-- **Live relief map.** Filter the centerpiece by **All / Acopios / Refugios** — live community-reported
+- **Relief map.** Filter the centerpiece by **All / Acopios / Refugios** — community-reported
   donation **collection centers** (amber squares) and **shelters** (teal circles) from
-  acopios-refugios.vercel.app, with a legend and an always-on provenance line that refers you there to
-  report new points. Unverified ("sin verificar") acopios are flagged as such and never shown as vetted.
+  acopios-refugios.vercel.app, with a legend, a snapshot-date line, and an always-on provenance line that
+  refers you there to report new points. Unverified ("sin verificar") acopios are flagged as such and
+  never shown as vetted.
 - **Language toggle** (EN/ES) — re-renders chrome in place, persists across navigation, never
   machine-translates curated record content (those keep a small `EN`/`ES` language indicator).
 - **Graceful degradation** — append `?fail=news,donations` (any subset of `news`/`donations`/`resources`)
@@ -58,16 +59,16 @@ A static-first SPA over a shared, trust-critical domain, plus a few serverless f
   independently and maps a rejection to its "unavailable by name" notice.
 - **`src/domain/{core,types}.ts` — pure, framework-free trust logic.** The single place the visibility
   gate, search, sort, donation-completeness, and source-host labeling live. No DB/HTTP/React deps.
-- **Live external layer** (`src/lib/acopios.ts`) is a third-party feed read through a same-origin proxy
-  (`/api/relief-points`). It is **deliberately outside the curated gate** and rendered as a
-  clearly-attributed external layer, preserving the source's own moderation state (unverified acopios stay
-  flagged) — never laundered into curated records.
+- **External layer** (`src/lib/acopios.ts`) is a third-party feed read from a bundled static snapshot
+  (`src/data/relief-points.json`, refreshed via `npm run relief:refresh`). It is **deliberately outside
+  the curated gate** and rendered as a clearly-attributed external layer, preserving the source's own
+  moderation state (unverified acopios stay flagged) — never laundered into curated records.
 - **`api/` (root) — Vercel serverless functions.** `api/[...path].ts` is a read API mirroring `src/api`
   (present for parity; the SPA no longer calls it). `api/donate-clicks.ts` is a tiny counter of donation
   links opened, backed by **Vercel KV** — kept entirely separate from the curated read path (engagement
   telemetry, never curated content). It degrades to a hidden count when KV isn't configured (local dev /
-  previews), so the Hub never depends on it. `api/relief-points.ts` is a same-origin read proxy for the
-  live acopios/refugios feed — it fetches the upstream server-side (no CORS) and re-serves it, so the
-  browser never hits the upstream's cross-origin redirect directly.
+  previews), so the Hub never depends on it. The relief map no longer needs a proxy — its points ship as
+  a bundled static snapshot refreshed at build time by `scripts/fetch-relief-points.mjs`, so the browser
+  never hits the upstream's cross-origin redirect at all.
 
 See `CLAUDE.md` for the full set of architecture invariants.

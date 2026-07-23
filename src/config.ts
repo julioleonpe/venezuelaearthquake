@@ -28,17 +28,17 @@ export const DAMAGE_MAP_URL = "https://terremotovenezuela.com/";
 /**
  * External "Acopios y Refugios" map — a community-run ("Venezuela Resiste") crisis
  * map of donation collection centers (acopios) and shelters (refugios) across all
- * Venezuelan states. This is the live source behind the Hub's map centerpiece; the
+ * Venezuelan states. This is the source behind the Hub's map centerpiece; the
  * client links out here for attribution + "report a point".
  *
- * The point data itself is read through our OWN same-origin proxy
- * (`/api/relief-points`, see api/relief-points.ts) rather than fetched directly:
- * the site's underlying Google Apps Script endpoint 302-redirects to
+ * The point data itself ships as a bundled STATIC SNAPSHOT
+ * (src/data/relief-points.json, refreshed via `npm run relief:refresh`) rather than
+ * fetched live: the site's underlying Google Apps Script endpoint 302-redirects to
  * script.googleusercontent.com, and that cross-origin redirect trips the browser's
- * CORS check. A server-to-server proxy has no CORS, so it works in dev and prod.
- * It is deliberately kept OUT of the Hub's verification gate — third-party,
- * community-reported data, attributed and normalized client-side (see
- * src/lib/acopios.ts), with each point's "sin verificar" state preserved.
+ * CORS check, so a live browser fetch can't reach it. It is deliberately kept OUT
+ * of the Hub's verification gate — third-party, community-reported data, attributed
+ * and normalized client-side (see src/lib/acopios.ts), with each point's
+ * "sin verificar" state preserved.
  */
 export const ACOPIOS_MAP_URL = "https://acopios-refugios.vercel.app/";
 

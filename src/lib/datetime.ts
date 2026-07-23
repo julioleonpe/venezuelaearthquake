@@ -11,6 +11,17 @@ import type { Locale } from "../i18n/catalog";
 
 const localeTag: Record<Locale, string> = { en: "en-US", es: "es-VE" };
 
+/** Date only. e.g. "Jun 25, 2026" — for freshness lines where time adds noise. */
+export function formatDate(iso: string, locale: Locale): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  return new Intl.DateTimeFormat(localeTag[locale], {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }).format(d);
+}
+
 /** Date + time of day (Req 4.2). e.g. "Jun 25, 2026, 7:45 AM". */
 export function formatDateTime(iso: string, locale: Locale): string {
   const d = new Date(iso);

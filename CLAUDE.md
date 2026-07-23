@@ -15,10 +15,11 @@ Key source layout (`src/`):
 - `api/` (`src/api/`) — in-browser read API over a published dataset: `store.ts` (reads `published.ts`
   and runs the pure gate; no network call), `published.ts` (the verified-only dataset that ships in the
   bundle), `seed.ts` (authoring data the published set is derived from).
-- `lib/` — `acopios.ts` (live collection-center & shelter feed from acopios-refugios.vercel.app),
+- `lib/` — `acopios.ts` (collection-center & shelter layer, read from a bundled static snapshot of
+  acopios-refugios.vercel.app — see `src/data/relief-points.json`, refreshed via `npm run relief:refresh`),
   `donateClicks.ts` (client for the donation click-counter endpoint), `useSubsystem.ts`,
   `useMediaQuery.ts`, `datetime.ts`, `usePageTitle.ts`, `openExternal.ts`.
-- `components/` — `AppShell` (console command bar), `ReliefConsole` + `ReliefMap` (live relief-point
+- `components/` — `AppShell` (console command bar), `ReliefConsole` + `ReliefMap` (relief-point
   feed + Leaflet map), `DonatePanel` (featured GiveDirectly link-out card), `ExternalLink`, `LanguageToggle`,
   `RouteError`, `primitives`, `icons`.
 - `pages/` — `CommandCenter` only (the bento home, `/`). There are **no drill-down routes** — the Hub
@@ -31,12 +32,12 @@ Router, Leaflet for the map. It is **static-first**: curated content (News / Don
 read **in the browser** from `published.ts` (verified-only, no network call), so the core Hub renders
 with no backend. A **small set of Vercel serverless functions** lives in the root `api/` directory for
 the things that genuinely need a server: `api/[...path].ts` (a read API mirroring `src/api`, present but
-no longer called by the SPA), `api/donate-clicks.ts` (the donation click counter, backed by Vercel KV),
-and `api/relief-points.ts` (a same-origin read proxy for the live acopios/refugios feed — the upstream
-Google Apps Script 302-redirects cross-origin, which trips the browser's CORS check on a direct fetch, so
-we proxy it server-side; a matching Vite dev plugin serves the same route locally). A root `server/`
-directory holds a zero-dep Node version of the read core used by local dev; the shared TS domain
-types/functions stay reusable across all of these.
+no longer called by the SPA) and `api/donate-clicks.ts` (the donation click counter, backed by Vercel KV).
+The relief map no longer uses a server proxy: its points ship as a bundled static snapshot
+(`src/data/relief-points.json`, refreshed with `npm run relief:refresh` — the upstream Google Apps Script
+302-redirects cross-origin, which trips the browser's CORS check on a direct fetch, so a build-time
+Node fetch snapshots it instead). A root `server/` directory holds a zero-dep Node version of the read
+core used by local dev; the shared TS domain types/functions stay reusable across all of these.
 
 ## What the product is
 
@@ -66,16 +67,17 @@ The Hub is a **single-view bento "command center"** — an instrument-grade emer
 - **Everything lives in one view.** There are no `/news`, `/donate`, or `/resources` drill-down pages
   anymore — depth that used to live on sub-pages now lives inside the tiles (internal scroll, the tools
   launcher's expandable folders, etc.). External tools open in a new tab.
-- **The live relief map is the centerpiece.** `ReliefConsole` shows a live feed list (left, the
+- **The relief map is the centerpiece.** `ReliefConsole` shows a feed list (left, the
   accessible source of truth) beside a **Leaflet** map (right), with a segmented **type filter**
-  (**All / Acopios / Refugios**). Points are pulled live from acopios-refugios.vercel.app via a
-  same-origin proxy (`lib/acopios.ts` → `/api/relief-points`, to sidestep the upstream's cross-origin
-  redirect / CORS), a community-run map of donation **collection centers (acopios)** and **shelters
-  (refugios)**: acopios render as amber squares, refugios as teal circles, so a center is never misread
-  as a shelter. The data is COMMUNITY-REPORTED — acopios may be "sin verificar" (unverified) at the
-  source; those points are flagged as such on the map and in the feed and never presented as vetted. An
-  always-on provenance line attributes the source and refers people there to report new points. The
-  feed fetches and degrades **independently** of the rest of the command center.
+  (**All / Acopios / Refugios**). Points come from a bundled static snapshot of
+  acopios-refugios.vercel.app (`lib/acopios.ts` reads `src/data/relief-points.json`; refresh with
+  `npm run relief:refresh` — a live browser fetch can't reach the upstream because its Google Apps Script
+  302-redirects cross-origin and trips CORS), a community-run map of donation **collection centers
+  (acopios)** and **shelters (refugios)**: acopios render as amber squares, refugios as teal circles, so a
+  center is never misread as a shelter. The data is COMMUNITY-REPORTED — acopios may be "sin verificar"
+  (unverified) at the source; those points are flagged as such on the map and in the feed and never
+  presented as vetted. An always-on provenance line attributes the source and refers people there to
+  report new points, and a snapshot-date line makes clear the data is a snapshot, not a live feed.
 - **Donate is a branded link-out card (embed OFF by default).** `DonatePanel.tsx` renders GiveDirectly's
   Venezuela earthquakes appeal as a trustworthy link-out card (recipient identity, affiliation, suggested
   amounts that deep-link to GiveDirectly, prominent donate button). Funds are processed entirely on
@@ -102,14 +104,14 @@ invariants — honor these and the rest follow:
 - **Verified-only data ships; nothing else.** `published.ts` contains ONLY verified records, so
   `pending`/`rejected` records are never put in the bundle. (The published set is the static-host
   equivalent of the old server's server-side enforcement.)
-- **Live external layers are NOT curated content.** The relief-point feed (collection centers +
-  shelters) is third-party live data the Hub neither owns nor verifies. It is **deliberately kept out of
-  the visibility gate** and rendered as a clearly-attributed external layer (an always-on provenance line
-  shows "community-reported · via acopios-refugios.vercel.app"). The source's own moderation state is
-  preserved: acopios flagged `por_verificar` are shown marked "sin verificar", refugios only once
-  `aprobado`. Never launder live external data into the curated record types or through the gate. The
-  feed also carries only public fields — the reporter's name and verification notes the source keeps
-  private are never fetched.
+- **External layers are NOT curated content.** The relief-point layer (collection centers +
+  shelters) is third-party data the Hub neither owns nor verifies — a bundled static snapshot of the
+  source (`src/data/relief-points.json`). It is **deliberately kept out of the visibility gate** and
+  rendered as a clearly-attributed external layer (an always-on provenance line shows "community-reported
+  · via acopios-refugios.vercel.app"). The source's own moderation state is preserved: acopios flagged
+  `por_verificar` are shown marked "sin verificar", refugios only once `aprobado`. Never launder external
+  data into the curated record types or through the gate. The snapshot also carries only public fields —
+  the reporter's name and verification notes the source keeps private are never captured.
 - **Pure, framework-free domain functions.** The error-prone logic — case-insensitive substring
   search, descending-by-timestamp sort, field validation, donation completeness, source-host
   labeling — lives in pure functions in `src/domain/core.ts`. These are the primary

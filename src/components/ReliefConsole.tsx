@@ -19,7 +19,14 @@ import { ACOPIOS_MAP_URL } from "../config";
 import { useI18n } from "../i18n/I18nProvider";
 import type { MessageId } from "../i18n/catalog";
 import { useMediaQuery } from "../lib/useMediaQuery";
-import { fetchReliefPoints, tallyRelief, type ReliefPoint, type ReliefTally } from "../lib/acopios";
+import {
+  fetchReliefPoints,
+  tallyRelief,
+  RELIEF_SNAPSHOT_AT,
+  type ReliefPoint,
+  type ReliefTally,
+} from "../lib/acopios";
+import { formatDate } from "../lib/datetime";
 import { NEED_CATEGORIES, type NeedCategory } from "../lib/reliefNeeds";
 import { ExternalIcon } from "./icons";
 import type { ReliefFilter } from "./ReliefMap";
@@ -41,7 +48,7 @@ type Loadable<T> =
 const FILTERS: ReliefFilter[] = ["all", "acopio", "refugio"];
 
 export function ReliefConsole() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const mobile = useMediaQuery("(max-width: 720px)");
   const [filter, setFilter] = useState<ReliefFilter>("all");
   const [needs, setNeeds] = useState<ReadonlySet<NeedCategory>>(() => new Set());
@@ -85,9 +92,15 @@ export function ReliefConsole() {
     if (mobile) setMobileView("map");
   };
 
-  // Shared controls — the type filter + need chips are identical in both layouts.
+  // Shared controls — the snapshot line + type filter + need chips are identical
+  // in both layouts.
   const controls = (
     <>
+      {/* Snapshot freshness — this is a bundled snapshot, not a live feed, so we
+          state when it was pulled rather than implying real-time data. */}
+      <p className="console__feed-snapshot">
+        {t("relief.snapshot")} {formatDate(RELIEF_SNAPSHOT_AT, lang)}
+      </p>
       <div className="console__layers" role="tablist" aria-label={t("relief.filter.aria")}>
         {FILTERS.map((f) => (
           <FilterTab key={f} active={filter === f} onClick={() => setFilter(f)}>
@@ -199,10 +212,7 @@ export function ReliefConsole() {
       {/* Live points feed */}
       <div className="console__feed">
         <header className="console__feed-head">
-          <span className="console__feed-title">
-            <span className="live-dot" aria-hidden="true" />
-            {t("relief.title")}
-          </span>
+          <span className="console__feed-title">{t("relief.title")}</span>
           <a
             className="console__feed-src console__feed-src--link"
             href={ACOPIOS_MAP_URL}
